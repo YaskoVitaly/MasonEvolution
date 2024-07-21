@@ -70,6 +70,7 @@ public class UpgradeSystem : MonoBehaviour
     {
         
     }
+    #region Upgrades
     public void UpgradeMaxEnergy()
     {
         if (_playerController.experience >= energyMaxUpgradeCost)
@@ -86,8 +87,8 @@ public class UpgradeSystem : MonoBehaviour
         {
             _playerController.experience -= energyRegUpgradeCost;
             energyRegUpgradeCost *= 2;
-            _playerController.energySpend *= 0.9f;
-            OnEnergyRegenUpgraded(energySpendUpgradeCost, _playerController.experience);
+            _playerController.energyReg += 1f;
+            OnEnergyRegenUpgraded(energyRegUpgradeCost, _playerController.experience);
         }
     }
     public void UpgradeEnergySpend()
@@ -161,5 +162,6 @@ public class UpgradeSystem : MonoBehaviour
             OnExperienceIncomeUpgraded(expIncomeUpgradeCost, _playerController.experience);
         }
     }
-    
+    #endregion
+
 }

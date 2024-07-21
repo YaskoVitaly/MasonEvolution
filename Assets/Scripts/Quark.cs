@@ -7,15 +7,6 @@ public class Quark : MonoBehaviour
     public int cost;
     public float size = 0.1f;
 
-    void Start()
-    {
-
-    }
-
-    void Update()
-    {
-        
-    }
     public void Init(Vector3 pos, int material)
     {
         gameObject.transform.position = pos;

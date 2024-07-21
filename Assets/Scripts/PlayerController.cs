@@ -128,15 +128,14 @@ public class PlayerController : MonoBehaviour
     }
     private void ObjectCreate(List<Quark> selectedQuarks)//написать метод для создания кварков
     {
-        List<Quark> purchasedQuarks = QuarkListAssembly(selectedQuarks);
-        float totalCost = TotalCost(purchasedQuarks);
+        float totalCost = TotalCost(selectedQuarks);
         
-        if(purchasedQuarks.Count > 0 && totalCost <= forceCur)
+        if(selectedQuarks.Count > 0 && totalCost <= forceCur)
         {
             forceCur -= totalCost;
             OnWorked(forceCur);
             isProduction = true;
-            OnProductionStarted(productionTime, currentQuark, totalCost * experienceMult, experience, purchasedQuarks);
+            OnProductionStarted(productionTime, currentQuark, totalCost * experienceMult, experience, selectedQuarks);
             if(creator != null)
                 StopCoroutine(creator);
             Debug.Log("Current force: " + forceCur + " Total cost: " + totalCost);
@@ -144,16 +143,16 @@ public class PlayerController : MonoBehaviour
     }
     private IEnumerator ObjectCreator(List<Quark> currentQuarks)
     {
-        float totalCost = TotalCost(currentQuarks);
         while (currentQuark <= _objectScheme.quarksList.Count && !isProduction)
         {
+            List<Quark> purchasedQuarks = QuarkListAssembly(currentQuarks);
+            float totalCost = TotalCost(purchasedQuarks);
             Debug.Log("Total cost: " + totalCost);
-
             if (forceCur >= totalCost)
             {
                 if (currentQuarks != null && currentQuark < _objectScheme.quarksList.Count)
                 {
-                    ObjectCreate(currentQuarks);
+                    ObjectCreate(purchasedQuarks);
                 }
                 else if (currentQuark == _objectScheme.quarksList.Count)
                 {

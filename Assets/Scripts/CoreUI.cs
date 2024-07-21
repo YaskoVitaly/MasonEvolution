@@ -73,17 +73,11 @@ public class CoreUI : MonoBehaviour
         FinishedObjectsChange(0);
         StartCoroutine(PlayTimer());
     }
-    private void Production(float time, int currentQuark, float expCur, float expCount, List<Quark> purchasedQuarks)
+    private void Update()
     {
-        if(tempCoroutine != null)
-        {
-            Debug.Log("Production bar filler stopped");
-            StopCoroutine(tempCoroutine);
-            tempCoroutine = null;
-        }
-        Debug.Log("Production bar filler started");
-        tempCoroutine = StartCoroutine(ProductionBarFiller(time, currentQuark, expCur, expCount, purchasedQuarks));
+        
     }
+    #region Text Changers
     private void ExperinceChange(float value)
     {
         experienceText.text = "Exp: " + value.ToString("0.0");
@@ -105,6 +99,7 @@ public class CoreUI : MonoBehaviour
     {
         quarkCounterText.text = "Quark count: " + count;
     }
+    #endregion
     #region Upgrades
     private void EnegryLimitUpgradePriceChange(int count, float exp)
     {
@@ -152,21 +147,36 @@ public class CoreUI : MonoBehaviour
         ExperinceChange(exp);
     }
     #endregion
+    private void Production(float time, int currentQuark, float expCur, float expCount, List<Quark> purchasedQuarks)
+    {
+        //ProductionBarFill(time, currentQuark, expCur, expCount, purchasedQuarks);
+        
+        if(tempCoroutine != null)
+        {
+            Debug.Log("Production bar filler stopped");
+            StopCoroutine(tempCoroutine);
+            tempCoroutine = null;
+        }
+        
+        Debug.Log("Production bar filler started");
+        tempCoroutine = StartCoroutine(ProductionBarFiller(time, currentQuark, expCur, expCount, purchasedQuarks));
+    }
+    
 
     private IEnumerator ProductionBarFiller(float time, int currentQuark, float expCur, float expCount, List<Quark> purchasedQuarks)
     {
         float productionTimer = 0;
-        while (true)
+        Debug.Log("Prod timer: " + productionTimer + "Prod time: " + time);
+
+        while (productionTimer < time)
         {
             productionTimer += Time.deltaTime;
             productionBar.fillAmount = productionTimer / time;
             if (productionTimer >= time)
             {
+                productionBar.fillAmount = 0;
                 OnProductionFinished(purchasedQuarks.Count, currentQuark, expCur, purchasedQuarks);
-                //productionTimer = 0;
-                //productionBar.fillAmount = productionTimer / time;
                 Debug.Log("Prod timer: " + productionTimer + "Prod time: " + time);
-                StopCoroutine(tempCoroutine);
             }
             yield return null;
         }
