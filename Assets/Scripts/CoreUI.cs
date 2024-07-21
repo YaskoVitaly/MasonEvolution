@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -14,7 +15,6 @@ public class CoreUI : MonoBehaviour
     private PlayerController _playerController;
     private UpgradeSystem _upgradeSystem;
 
-    public float productionTimer;
     public float timer;
 
     public TextMeshProUGUI forceCountText;
@@ -65,7 +65,6 @@ public class CoreUI : MonoBehaviour
         OnQuarkGenerated += QuarkCounterChange;
 
         productionBar.fillAmount = 0;
-        productionTimer = 0;
         timer = 0;
         forceCountText.text = "Force: 0";
         experienceText.text = "EXP: " + playerController.experience.ToString();
@@ -78,10 +77,11 @@ public class CoreUI : MonoBehaviour
     {
         if(tempCoroutine != null)
         {
-            Debug.Log("WTF?");
+            Debug.Log("Production bar filler stopped");
             StopCoroutine(tempCoroutine);
+            tempCoroutine = null;
         }
-        Debug.Log("WTF2?");
+        Debug.Log("Production bar filler started");
         tempCoroutine = StartCoroutine(ProductionBarFiller(time, currentQuark, expCur, expCount, purchasedQuarks));
     }
     private void ExperinceChange(float value)
@@ -153,27 +153,23 @@ public class CoreUI : MonoBehaviour
     }
     #endregion
 
-
     private IEnumerator ProductionBarFiller(float time, int currentQuark, float expCur, float expCount, List<Quark> purchasedQuarks)
     {
-        while (productionTimer <= time)
+        float productionTimer = 0;
+        while (true)
         {
             productionTimer += Time.deltaTime;
             productionBar.fillAmount = productionTimer / time;
             if (productionTimer >= time)
             {
                 OnProductionFinished(purchasedQuarks.Count, currentQuark, expCur, purchasedQuarks);
-                Debug.Log("ARBAYTEN SHNELA!! " + productionTimer + " TIME: " + time + " It can't be!!!");
-                ResetBarFiller();
+                //productionTimer = 0;
+                //productionBar.fillAmount = productionTimer / time;
+                Debug.Log("Prod timer: " + productionTimer + "Prod time: " + time);
+                StopCoroutine(tempCoroutine);
             }
-            yield return new WaitForEndOfFrame();
+            yield return null;
         }
-    }
-    private void ResetBarFiller()
-    {
-        productionTimer = 0;
-        productionBar.fillAmount = 0;
-        StopCoroutine(tempCoroutine);
     }
     private IEnumerator PlayTimer()
     {
