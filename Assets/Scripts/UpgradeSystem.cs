@@ -15,15 +15,15 @@ public class UpgradeSystem : MonoBehaviour
     public Action<int, float> OnProductionCountUpgraded;
     public Action<int, float> OnExperienceIncomeUpgraded;
 
-    public int energyMaxUpgradeCost;
-    public int energyRegUpgradeCost;
-    public int energySpendUpgradeCost;
-    public int forceProductionUpgradeCost;
-    public int forceGenerationUpgradeCost;
-    public int forceTimeUpgradeCost;
-    public int productionTimeUpgradeCost;
-    public int productionCountUpgradeCost;
-    public int expIncomeUpgradeCost;
+    public int energyMaxUpgradeCost = 1;
+    public int energyRegUpgradeCost = 1;
+    public int energySpendUpgradeCost = 1;
+    public int forceProductionUpgradeCost = 1;
+    public int forceGenerationUpgradeCost = 1;
+    public int forceTimeUpgradeCost = 1;
+    public int productionTimeUpgradeCost = 1;
+    public int productionCountUpgradeCost = 1;
+    public int expIncomeUpgradeCost = 1;
 
     public PlayerController _playerController;
     public ObjectCreator _objectCreator;
@@ -38,19 +38,6 @@ public class UpgradeSystem : MonoBehaviour
     void Start()
     {
         _coreUI = GetComponent<CoreUI>();
-
-        energyMaxUpgradeCost = 10;
-        energyRegUpgradeCost = 10;
-        energySpendUpgradeCost = 10;
-
-        forceProductionUpgradeCost = 10;
-        forceGenerationUpgradeCost = 10;
-        forceTimeUpgradeCost = 10;
-
-        productionTimeUpgradeCost = 10;
-        productionCountUpgradeCost = 10;
-        expIncomeUpgradeCost = 10;
-
 
         OnEnergyLimitUpgraded(energyMaxUpgradeCost, _playerController.experience);
         OnEnergyRegenUpgraded(energyRegUpgradeCost, _playerController.experience);
@@ -138,7 +125,7 @@ public class UpgradeSystem : MonoBehaviour
         {
             _playerController.experience -= productionTimeUpgradeCost;
             productionTimeUpgradeCost *= 2;
-            _playerController.productionTime /= 2;
+            _playerController.productionTime -= _playerController.productionTime/10;
             OnProductionTimeUpgraded(productionTimeUpgradeCost, _playerController.experience);
         }
     }

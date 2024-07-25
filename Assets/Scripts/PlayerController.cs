@@ -35,7 +35,7 @@ public class PlayerController : MonoBehaviour
     public float energySpend = 1;
     public float forceTime = 5;
     public int productionCount = 1;
-    public float experienceMult = 1;
+    public float experienceMult = 0.1f;
     public int completedObjects = 0;
 
     private bool isProduction = false;
@@ -186,9 +186,10 @@ public class PlayerController : MonoBehaviour
     {
         while (true)
         {
-            if (forceReg > 0)
+            if (forceReg > 0 && energyCur >= forceReg*energySpend)
             {
                 forceCur += forceReg;
+                energyCur -= workCost * energySpend;
                 OnWorked(forceCur);
             }
             yield return new WaitForSeconds(forceTime);
@@ -196,7 +197,7 @@ public class PlayerController : MonoBehaviour
     }
     public void Work()
     {
-        if (energyCur >= workCost)
+        if (energyCur >= workCost*energySpend)
         {
             energyCur -= workCost * energySpend;
             forceCur += forceProduction;

@@ -17,6 +17,13 @@ public class CoreUI : MonoBehaviour
 
     public float timer;
 
+    public Button energyUpgradeOpenButton;
+    public GameObject energyUpgradePanel;
+    public Button forceUpgradeOpenButton;
+    public GameObject forceUpgradePanel;
+    public Button productionUpgradeOpenButton;
+    public GameObject productionUpgradePanel;
+
     public TextMeshProUGUI forceCountText;
     public TextMeshProUGUI timerText;
     public TextMeshProUGUI energyText;
@@ -76,6 +83,45 @@ public class CoreUI : MonoBehaviour
     private void Update()
     {
         
+    }
+    public void OpenEnergyUpgradePanel()
+    {
+        if (!energyUpgradePanel.activeSelf)
+        {
+            energyUpgradePanel.SetActive(true);
+            energyUpgradeOpenButton.image.sprite = Resources.Load<Sprite>("Sprites/UI/Free Flat Arrow 1 S Icon");
+        }
+        else
+        {
+            energyUpgradePanel.SetActive(false);
+            energyUpgradeOpenButton.image.sprite = Resources.Load<Sprite>("Sprites/UI/Free Flat Arrow 1 N Icon");
+        }
+    }
+    public void OpenForceUpgradePanel()
+    {
+        if (!forceUpgradePanel.activeSelf)
+        {
+            forceUpgradePanel.SetActive(true);
+            forceUpgradeOpenButton.image.sprite = Resources.Load<Sprite>("Sprites/UI/Free Flat Arrow 1 S Icon");
+        }
+        else
+        {
+            forceUpgradePanel.SetActive(false);
+            forceUpgradeOpenButton.image.sprite = Resources.Load<Sprite>("Sprites/UI/Free Flat Arrow 1 N Icon");
+        }
+    }
+    public void OpenProductionUpgradePanel()
+    {
+        if (!productionUpgradePanel.activeSelf)
+        {
+            productionUpgradePanel.SetActive(true);
+            productionUpgradeOpenButton.image.sprite = Resources.Load<Sprite>("Sprites/UI/Free Flat Arrow 1 S Icon");
+        }
+        else
+        {
+            productionUpgradePanel.SetActive(false);
+            productionUpgradeOpenButton.image.sprite = Resources.Load<Sprite>("Sprites/UI/Free Flat Arrow 1 N Icon");
+        }
     }
     #region Text Changers
     private void ExperinceChange(float value)
