@@ -62,7 +62,7 @@ public class ObjectScheme : MonoBehaviour
         }
         else
         {
-            for (int i = currentQuark; i < quarksList.Count-1; i++)
+            for (int i = currentQuark; i < quarksList.Count; i++)
             {
                 result.Add(quarksList[i]);
             }

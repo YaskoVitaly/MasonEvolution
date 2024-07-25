@@ -89,7 +89,12 @@ public class PlayerController : MonoBehaviour
         ExperinceChange(exp);
         currentQuark += purchasedQuarks.Count;
         if (currentQuark >= _objectScheme.quarksList.Count)
-            currentQuark = _objectScheme.quarksList.Count-1;
+        {
+            completedObjects++;
+            currentQuark = 0;
+            Debug.Log("Object compleated");
+            OnObjectCompleted(completedObjects);
+        }
         isProduction = false;
         Launcher();
     }
@@ -154,13 +159,8 @@ public class PlayerController : MonoBehaviour
                 {
                     ObjectCreate(purchasedQuarks);
                 }
-                else if (currentQuark == _objectScheme.quarksList.Count)
-                {
-                    completedObjects++;
-                    currentQuark = 0;
-                    Debug.Log("Object compleated");
-                    OnObjectCompleted(completedObjects);
-                }
+                else
+                    Debug.LogWarning("Player controller can't create");
             }
             yield return new WaitForEndOfFrame();
         }
