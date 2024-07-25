@@ -85,16 +85,32 @@ public class PlayerController : MonoBehaviour
     }
     public void ProductionCompleate(float exp, List<Quark> purchasedQuarks)//переписать под список кварков
     {
-        Debug.Log("Production compeate");
-        ExperinceChange(exp);
-        currentQuark += purchasedQuarks.Count;
-        if (currentQuark >= _objectScheme.quarksList.Count)
+        if(currentQuark <= _objectScheme.quarksList.Count)
         {
+            Debug.Log("Production compeate");
+            ExperinceChange(exp);
+            currentQuark += purchasedQuarks.Count;
+        }
+        /*
+        else
+        {
+            ExperinceChange(TotalCost(_objectScheme.quarksList) * experienceMult);
             completedObjects++;
             currentQuark = 0;
             Debug.Log("Object compleated");
             OnObjectCompleted(completedObjects);
         }
+        */
+        isProduction = false;
+        Launcher();
+    }
+    private void ProductCompleate()
+    {
+        ExperinceChange(TotalCost(_objectScheme.quarksList) * experienceMult);
+        completedObjects++;
+        currentQuark = 0;
+        Debug.Log("Object compleated");
+        OnObjectCompleted(completedObjects);
         isProduction = false;
         Launcher();
     }
@@ -145,6 +161,10 @@ public class PlayerController : MonoBehaviour
                 StopCoroutine(creator);
             Debug.Log("Current force: " + forceCur + " Total cost: " + totalCost);
         }
+        else if(selectedQuarks.Count == 0 && currentQuark == _objectScheme.quarksList.Count)
+        {
+            ProductCompleate();
+        }
     }
     private IEnumerator ObjectCreator(List<Quark> currentQuarks)
     {
@@ -155,7 +175,7 @@ public class PlayerController : MonoBehaviour
             Debug.Log("Total cost: " + totalCost);
             if (forceCur >= totalCost)
             {
-                if (currentQuarks != null && currentQuark < _objectScheme.quarksList.Count)
+                if (currentQuarks != null && currentQuark <= _objectScheme.quarksList.Count)
                 {
                     ObjectCreate(purchasedQuarks);
                 }

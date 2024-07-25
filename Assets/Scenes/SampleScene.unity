@@ -4517,8 +4517,8 @@ MonoBehaviour:
   energyRegUpgradeCost: 1
   energySpendUpgradeCost: 3
   forceProductionUpgradeCost: 2
-  forceGenerationUpgradeCost: 3
-  forceTimeUpgradeCost: 5
+  forceGenerationUpgradeCost: 2
+  forceTimeUpgradeCost: 4
   productionTimeUpgradeCost: 3
   productionCountUpgradeCost: 5
   expIncomeUpgradeCost: 2
