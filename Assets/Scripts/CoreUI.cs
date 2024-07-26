@@ -199,12 +199,12 @@ public class CoreUI : MonoBehaviour
         
         if(tempCoroutine != null)
         {
-            Debug.Log("Production bar filler stopped");
+            //Debug.Log("Production bar filler stopped");
             StopCoroutine(tempCoroutine);
             tempCoroutine = null;
         }
         
-        Debug.Log("Production bar filler started");
+        //Debug.Log("Production bar filler started");
         tempCoroutine = StartCoroutine(ProductionBarFiller(time, currentQuark, expCur, expCount, purchasedQuarks));
     }
     
@@ -212,7 +212,7 @@ public class CoreUI : MonoBehaviour
     private IEnumerator ProductionBarFiller(float time, int currentQuark, float expCur, float expCount, List<Quark> purchasedQuarks)
     {
         float productionTimer = 0;
-        Debug.Log("Prod timer: " + productionTimer + "Prod time: " + time);
+        //Debug.Log("Prod timer: " + productionTimer + "Prod time: " + time);
 
         while (productionTimer < time)
         {
@@ -222,7 +222,7 @@ public class CoreUI : MonoBehaviour
             {
                 productionBar.fillAmount = 0;
                 OnProductionFinished(purchasedQuarks.Count, currentQuark, expCur, purchasedQuarks);
-                Debug.Log("Prod timer: " + productionTimer + "Prod time: " + time);
+                //Debug.Log("Prod timer: " + productionTimer + "Prod time: " + time);
             }
             yield return null;
         }

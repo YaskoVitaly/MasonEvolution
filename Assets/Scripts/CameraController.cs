@@ -7,15 +7,9 @@ public class CameraController : MonoBehaviour
     public Camera mainCamera;
     public Vector3 zeroPoint;
 
-
-    void Start()
+    public void Init(Transform _schemePrefab)
     {
-        mainCamera.transform.position = Vector3.one*6;
-
-    }
-
-    void Update()
-    {
-        mainCamera.transform.LookAt(zeroPoint);
+        mainCamera.transform.position = Vector3.one * 6;
+        mainCamera.transform.LookAt(_schemePrefab);
     }
 }

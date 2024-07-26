@@ -4492,9 +4492,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 801995245f5e3b5488dedae30bd47869, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sizeX: 10
-  sizeY: 10
-  sizeZ: 10
+  sizeX: 4
+  sizeY: 2
+  sizeZ: 8
   quarkX: 0
   quarkY: 0
   quarkZ: 0
