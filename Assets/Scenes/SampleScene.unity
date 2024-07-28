@@ -4476,6 +4476,7 @@ MonoBehaviour:
   experience: 0
   productionTime: 10
   energySpend: 1
+  forceSpend: 1
   forceTime: 5
   productionCount: 1
   experienceMult: 0.1

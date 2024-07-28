@@ -37,7 +37,7 @@ public class CoreUI : MonoBehaviour
     public TextMeshProUGUI energySpendUpgradePriceText;
     public TextMeshProUGUI forceProductionUpgradePriceText;
     public TextMeshProUGUI forceGenerationUpgradePriceText;
-    public TextMeshProUGUI forceTimeUpgradePriceText;
+    public TextMeshProUGUI forceSpendUpgradePriceText;
     public TextMeshProUGUI productionTimeUpgradePriceText;
     public TextMeshProUGUI productionCountUpgradePriceText;
     public TextMeshProUGUI experienceIncomeUpgradePriceText;
@@ -57,7 +57,7 @@ public class CoreUI : MonoBehaviour
         upgradeSystem.OnEnergySpendUpgraded += EnegrySpendUpgradePriceChange;
         upgradeSystem.OnForceProductionUpgraded += ForceProductionUpgradePriceChange;
         upgradeSystem.OnForceGenerationUpgraded += ForceGenerationUpgradePriceChange;
-        upgradeSystem.OnForceTimeUpgraded += ForceTimeUpgradePriceChange;
+        upgradeSystem.OnForceSpendUpgraded += ForceSpendUpgradePriceChange;
         upgradeSystem.OnProductionTimeUpgraded += ProductionTimeUpgradePriceChange;
         upgradeSystem.OnProductionCountUpgraded += ProductionCountUpgradePriceChange;
         upgradeSystem.OnExperienceIncomeUpgraded += ExperienceIncomeUpgradePriceChange;
@@ -172,9 +172,9 @@ public class CoreUI : MonoBehaviour
         forceGenerationUpgradePriceText.text = "Exp: " + count;
         ExperinceChange(exp);
     }
-    private void ForceTimeUpgradePriceChange(int count, float exp)
+    private void ForceSpendUpgradePriceChange(int count, float exp)
     {
-        forceTimeUpgradePriceText.text = "Exp: " + count;
+        forceSpendUpgradePriceText.text = "Exp: " + count;
         ExperinceChange(exp);
     }
     private void ProductionTimeUpgradePriceChange(int count, float exp)

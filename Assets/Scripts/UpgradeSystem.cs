@@ -10,7 +10,7 @@ public class UpgradeSystem : MonoBehaviour
     public Action<int, float> OnEnergySpendUpgraded;
     public Action<int, float> OnForceProductionUpgraded;
     public Action<int, float> OnForceGenerationUpgraded;
-    public Action<int, float> OnForceTimeUpgraded;
+    public Action<int, float> OnForceSpendUpgraded;
     public Action<int, float> OnProductionTimeUpgraded;
     public Action<int, float> OnProductionCountUpgraded;
     public Action<int, float> OnExperienceIncomeUpgraded;
@@ -20,7 +20,7 @@ public class UpgradeSystem : MonoBehaviour
     public int energySpendUpgradeCost = 1;
     public int forceProductionUpgradeCost = 1;
     public int forceGenerationUpgradeCost = 1;
-    public int forceTimeUpgradeCost = 1;
+    public int forceSpendUpgradeCost = 1;
     public int productionTimeUpgradeCost = 1;
     public int productionCountUpgradeCost = 1;
     public int expIncomeUpgradeCost = 1;
@@ -45,7 +45,7 @@ public class UpgradeSystem : MonoBehaviour
 
         OnForceProductionUpgraded(forceProductionUpgradeCost, _playerController.experience);
         OnForceGenerationUpgraded(forceGenerationUpgradeCost, _playerController.experience);
-        OnForceTimeUpgraded(forceTimeUpgradeCost, _playerController.experience);
+        OnForceSpendUpgraded(forceSpendUpgradeCost, _playerController.experience);
 
         OnProductionTimeUpgraded(productionTimeUpgradeCost, _playerController.experience);
         OnProductionCountUpgraded(productionCountUpgradeCost, _playerController.experience);
@@ -99,14 +99,14 @@ public class UpgradeSystem : MonoBehaviour
             OnForceProductionUpgraded(forceProductionUpgradeCost, _playerController.experience);
         }
     }
-    public void UpgradeForceTime()
+    public void UpgradeForceSpend()
     {
-        if (_playerController.experience >= forceTimeUpgradeCost)
+        if (_playerController.experience >= forceSpendUpgradeCost)
         {
-            _playerController.experience -= forceTimeUpgradeCost;
-            forceTimeUpgradeCost *= 2;
+            _playerController.experience -= forceSpendUpgradeCost;
+            forceSpendUpgradeCost *= 2;
             _playerController.forceTime *= 0.8f;
-            OnForceTimeUpgraded(forceTimeUpgradeCost, _playerController.experience);
+            OnForceSpendUpgraded(forceSpendUpgradeCost, _playerController.experience);
         }
     }
     public void UpgradeForceAutoGeneration()
@@ -115,7 +115,10 @@ public class UpgradeSystem : MonoBehaviour
         {
             _playerController.experience -= forceGenerationUpgradeCost;
             forceGenerationUpgradeCost *= 2;
+            if(_playerController.forceReg == 0)
             _playerController.forceReg++;
+            else
+                _playerController.forceTime = _playerController.forceTime - _playerController.forceTime/10;
             OnForceGenerationUpgraded(forceGenerationUpgradeCost, _playerController.experience);
         }
     }
