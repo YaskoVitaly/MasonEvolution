@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class UpgradeSystem : MonoBehaviour
 {
-    public Action<int, float> OnEnergyLimitUpgraded;
+    public Action<int, float, float> OnEnergyLimitUpgraded;
     public Action<int, float> OnEnergyRegenUpgraded;
     public Action<int, float> OnEnergySpendUpgraded;
     public Action<int, float> OnForceProductionUpgraded;
@@ -25,6 +25,16 @@ public class UpgradeSystem : MonoBehaviour
     public int productionCountUpgradeCost = 1;
     public int expIncomeUpgradeCost = 1;
 
+    private int energyLimitUpgradeLevel = 0;
+    private int energyRegenerationUpgradeLevel = 0;
+    private int energySpendUpgradeLevel = 0;
+    private int forceProductionUpgradeLevel = 0;
+    private int forceGenerationUpgradeLevel = 0;
+    private int forceSpendUpgradeLevel = 0;
+    private int productionTimeUpgradeLevel = 0;
+    private int productionCountUpgradeLevel = 0;
+    private int expIncomeUpgradeLevel = 0;
+
     public PlayerController _playerController;
     public ObjectCreator _objectCreator;
     public CoreUI _coreUI;
@@ -39,7 +49,7 @@ public class UpgradeSystem : MonoBehaviour
     {
         _coreUI = GetComponent<CoreUI>();
 
-        OnEnergyLimitUpgraded(energyMaxUpgradeCost, _playerController.experience);
+        OnEnergyLimitUpgraded(energyMaxUpgradeCost, _playerController.experience, _playerController.energyMax);
         OnEnergyRegenUpgraded(energyRegUpgradeCost, _playerController.experience);
         OnEnergySpendUpgraded(energySpendUpgradeCost, _playerController.experience);
 
@@ -65,7 +75,7 @@ public class UpgradeSystem : MonoBehaviour
             _playerController.experience -= energyMaxUpgradeCost;
             energyMaxUpgradeCost *= 2;
             _playerController.energyMax *= 2;
-            OnEnergyLimitUpgraded(energyMaxUpgradeCost, _playerController.experience);
+            OnEnergyLimitUpgraded(energyMaxUpgradeCost, _playerController.experience, _playerController.energyMax);
         }
     }
     public void UpgradeEnergyRegen()
