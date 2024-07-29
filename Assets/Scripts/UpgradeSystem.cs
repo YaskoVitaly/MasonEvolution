@@ -105,7 +105,7 @@ public class UpgradeSystem : MonoBehaviour
         {
             _playerController.experience -= forceSpendUpgradeCost;
             forceSpendUpgradeCost *= 2;
-            _playerController.forceTime *= 0.8f;
+            _playerController.forceSpend *= 0.9f;
             OnForceSpendUpgraded(forceSpendUpgradeCost, _playerController.experience);
         }
     }
@@ -118,7 +118,7 @@ public class UpgradeSystem : MonoBehaviour
             if(_playerController.forceReg == 0)
             _playerController.forceReg++;
             else
-                _playerController.forceTime = _playerController.forceTime - _playerController.forceTime/10;
+                _playerController.forceTime *= 0.9f;
             OnForceGenerationUpgraded(forceGenerationUpgradeCost, _playerController.experience);
         }
     }

@@ -879,7 +879,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: +1
+  m_text: -10%
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -1374,7 +1374,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: +1
+  m_text: +10%
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -2152,7 +2152,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: +1
+  m_text: -10%
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -2556,7 +2556,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: /2
+  m_text: -10%
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -3429,7 +3429,7 @@ MonoBehaviour:
       m_Calls: []
   m_text: 'Force
 
-    Time'
+    Spend'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -4477,7 +4477,7 @@ MonoBehaviour:
   productionTime: 10
   energySpend: 1
   forceSpend: 1
-  forceTime: 5
+  forceTime: 1
   productionCount: 1
   experienceMult: 0.1
   completedObjects: 0
@@ -4516,13 +4516,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   energyMaxUpgradeCost: 1
   energyRegUpgradeCost: 1
-  energySpendUpgradeCost: 3
+  energySpendUpgradeCost: 5
   forceProductionUpgradeCost: 2
   forceGenerationUpgradeCost: 2
-  forceTimeUpgradeCost: 4
+  forceSpendUpgradeCost: 10
   productionTimeUpgradeCost: 3
-  productionCountUpgradeCost: 5
-  expIncomeUpgradeCost: 2
+  productionCountUpgradeCost: 4
+  expIncomeUpgradeCost: 5
   _playerController: {fileID: 0}
   _objectCreator: {fileID: 0}
   _coreUI: {fileID: 0}
@@ -4557,7 +4557,7 @@ MonoBehaviour:
   energySpendUpgradePriceText: {fileID: 800035287}
   forceProductionUpgradePriceText: {fileID: 978315638}
   forceGenerationUpgradePriceText: {fileID: 1342174243}
-  forceTimeUpgradePriceText: {fileID: 1978646019}
+  forceSpendUpgradePriceText: {fileID: 1978646019}
   productionTimeUpgradePriceText: {fileID: 945652442}
   productionCountUpgradePriceText: {fileID: 1093210022}
   experienceIncomeUpgradePriceText: {fileID: 1194504002}
@@ -5916,7 +5916,7 @@ GameObject:
   - component: {fileID: 1523236760}
   - component: {fileID: 1523236759}
   m_Layer: 5
-  m_Name: ForceTimeUpgrade_Button
+  m_Name: ForceSpendUpgrade_Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5990,7 +5990,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1159191033}
         m_TargetAssemblyTypeName: UpgradeSystem, Assembly-CSharp
-        m_MethodName: UpgradeForceTime
+        m_MethodName: UpgradeForceSpend
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -6545,7 +6545,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: /2
+  m_text: -10%
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -7022,7 +7022,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: +5
+  m_text: '*2'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}

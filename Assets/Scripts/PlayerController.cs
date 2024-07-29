@@ -122,12 +122,12 @@ public class PlayerController : MonoBehaviour
     private List<Quark> QuarkListAssembly(List<Quark> selectedQuarks) //протестировать метод, убедиться, что все работает верно.
     {
         List<Quark> purchasedQuarks = new List<Quark>(); //создаю новый список кварков, для покупки
-        int totalCost = 0; //создаю переменную, для общей стоимости кварков в списке
+        float totalCost = 0; //создаю переменную, для общей стоимости кварков в списке
         for (int i = 0; i < selectedQuarks.Count; i++) //собираю список кварков из списка кварков
         {
-            if(totalCost + selectedQuarks[i].cost <= forceCur) //проверяю возможность покупки
+            if(totalCost*forceSpend + selectedQuarks[i].cost*forceSpend <= forceCur) //проверяю возможность покупки
             {
-                totalCost += selectedQuarks[i].cost; //прибавляю к общей стоимости цену очередного кварка
+                totalCost += selectedQuarks[i].cost * forceSpend; //прибавляю к общей стоимости цену очередного кварка
                 purchasedQuarks.Add(selectedQuarks[i]);
             }
             else
@@ -135,12 +135,12 @@ public class PlayerController : MonoBehaviour
                 //Debug.Log("Not enough force!");
             }
         }
-        Debug.Log("QuarkListAssembly: " + " Total cost: " + totalCost + "; Purchased quarks count: " + purchasedQuarks.Count);
+        Debug.Log("QuarkListAssembly: " + " Total cost: " + totalCost * forceSpend + "; Purchased quarks count: " + purchasedQuarks.Count);
         return purchasedQuarks;
     }
     private float TotalCost(List<Quark> selectedQuarks)
     {
-        int totalCost = 0;
+        float totalCost = 0;
         for(int i = 0;i < selectedQuarks.Count;i++)
         {
             totalCost += selectedQuarks[i].cost;
@@ -151,14 +151,14 @@ public class PlayerController : MonoBehaviour
     {
         float totalCost = TotalCost(purchasedQuarks);
         
-        if(purchasedQuarks.Count > 0 && totalCost <= forceCur)
+        if(purchasedQuarks.Count > 0 && totalCost * forceSpend <= forceCur)
         {
-            Debug.Log("Current force: " + forceCur + " Total cost: " + totalCost + " - Before deducting");
-            forceCur -= totalCost;
+            Debug.Log("Current force: " + forceCur + " Total cost: " + totalCost*forceSpend + " - Before deducting");
+            forceCur -= totalCost * forceSpend;
             OnWorked(forceCur);
             isProduction = true;
             OnProductionStarted(productionTime, currentQuark, totalCost * experienceMult, experience, purchasedQuarks);
-            Debug.Log("Current force: " + forceCur + " Total cost: " + totalCost + " - After deducting");
+            Debug.Log("Current force: " + forceCur + " Total cost: " + totalCost * forceSpend + " - After deducting");
             if (creator != null)
                 StopCoroutine(creator);
         }
@@ -172,7 +172,7 @@ public class PlayerController : MonoBehaviour
                 List<Quark> purchasedQuarks = QuarkListAssembly(currentQuarks);
                 float totalCost = TotalCost(purchasedQuarks);
                 Debug.Log("Total cost: " + totalCost);
-                if (forceCur >= totalCost)
+                if (forceCur >= totalCost * forceSpend)
                 {
                     if (purchasedQuarks != null && currentQuark <= _objectScheme.quarksList.Count)
                     {
