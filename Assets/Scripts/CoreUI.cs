@@ -135,7 +135,7 @@ public class CoreUI : MonoBehaviour
     }
     private void ForceChange(float value)
     {
-        forceCountText.text = "Force: " + value.ToString();
+        forceCountText.text = "Force: " + value.ToString("0.0");
     }
     private void FinishedObjectsChange(int value)
     {

@@ -157,8 +157,26 @@ public class PlayerController : MonoBehaviour
             forceCur -= totalCost * forceSpend;
             OnWorked(forceCur);
             isProduction = true;
-            OnProductionStarted(productionTime, currentQuark, totalCost * experienceMult, experience, purchasedQuarks);
-            Debug.Log("Current force: " + forceCur + " Total cost: " + totalCost * forceSpend + " - After deducting");
+            if(forceCur < 100)
+            {
+                OnProductionStarted(productionTime, currentQuark, totalCost * experienceMult, experience, purchasedQuarks);
+                Debug.Log("Current force: " + forceCur + " Total cost: " + totalCost * forceSpend + " - After deducting" + "; Production time: " + productionTime);
+            }
+            else if(forceCur >= 100 && forceCur < 1000)
+            {
+                OnProductionStarted(productionTime / 1.25f, currentQuark, totalCost * experienceMult, experience, purchasedQuarks);
+                Debug.Log("Current force: " + forceCur + " Total cost: " + totalCost * forceSpend + " - After deducting" + "; Production time: " + productionTime / 1.25f);
+            }
+            else if(forceCur >= 1000 && forceCur < 10000)
+            {
+                OnProductionStarted(productionTime / 1.5f, currentQuark, totalCost * experienceMult, experience, purchasedQuarks);
+                Debug.Log("Current force: " + forceCur + " Total cost: " + totalCost * forceSpend + " - After deducting" + "; Production time: " + productionTime / 1.5f);
+            }
+            else if(forceCur >= 10000)
+            {
+                OnProductionStarted(productionTime / 2, currentQuark, totalCost * experienceMult, experience, purchasedQuarks);
+                Debug.Log("Current force: " + forceCur + " Total cost: " + totalCost * forceSpend + " - After deducting" + "; Production time: " + productionTime / 2);
+            }
             if (creator != null)
                 StopCoroutine(creator);
         }
