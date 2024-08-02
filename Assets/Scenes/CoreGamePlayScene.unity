@@ -340,7 +340,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1159191034}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: CoreUI, Assembly-CSharp
         m_MethodName: OpenEnergyUpgradePanel
         m_Mode: 1
@@ -1189,7 +1189,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1159191034}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: CoreUI, Assembly-CSharp
         m_MethodName: OpenProductionUpgradePanel
         m_Mode: 1
@@ -1751,6 +1751,131 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 7881488983399865904, guid: ad6c23b1951528a47bbb4c7c04c98388, type: 3}
   m_PrefabInstance: {fileID: 367702536}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &410293805
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 410293806}
+  - component: {fileID: 410293808}
+  - component: {fileID: 410293809}
+  m_Layer: 0
+  m_Name: GameManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &410293806
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 410293805}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &410293808
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 410293805}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cf2769706d02f4b4798e5d8ee9a40cda, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerData:
+    energyMax: 10
+    energyCur: 10
+    energyReg: 1
+    energySpend: 1
+    forceProd: 1
+    forceCur: 0
+    forceReg: 0
+    forceTime: 5
+    workCost: 1
+    expCur: 0
+    experienceMult: 1
+    productionTime: 10
+    productionCount: 1
+    expTotal: 0
+    completedObjects: 0
+    energyLimitUpgradeLevel: 0
+    energyRegenerationUpgradeLevel: 0
+    energySpendUpgradeLevel: 0
+    forceProductionUpgradeLevel: 0
+    forceGenerationUpgradeLevel: 0
+    forceSpendUpgradeLevel: 0
+    productionTimeUpgradeLevel: 0
+    productionCountUpgradeLevel: 0
+    expIncomeUpgradeLevel: 0
+--- !u!114 &410293809
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 410293805}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: beda4db90531bf94ebdc8867abb5e3bd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  timer: 0
+  energyUpgradeOpenButton: {fileID: 41276299}
+  energyUpgradePanel: {fileID: 1289696145}
+  forceUpgradeOpenButton: {fileID: 1978178060}
+  forceUpgradePanel: {fileID: 2135326267}
+  productionUpgradeOpenButton: {fileID: 207972916}
+  productionUpgradePanel: {fileID: 754719465}
+  energyLimitUpgradeButton: {fileID: 189490640}
+  energyRegenUpgradeButton: {fileID: 445337787}
+  energySpendUpgradeButton: {fileID: 1963195685}
+  forceProductionUpgradeButton: {fileID: 31577989}
+  forceGenerationUpgradeButton: {fileID: 1499423316}
+  forceSpendUpgradeButton: {fileID: 1523236759}
+  productionTimeUpgradeButton: {fileID: 1229969893}
+  productionCountUpgradeButton: {fileID: 2092091934}
+  experienceIncomeUpgradeButton: {fileID: 330562111}
+  forceCountText: {fileID: 413191009}
+  timerText: {fileID: 140821903}
+  energyText: {fileID: 1488645459}
+  productionText: {fileID: 2008243778}
+  experienceText: {fileID: 1801621235}
+  quarkCounterText: {fileID: 792996122}
+  finishedObjectsText: {fileID: 1798430125}
+  energyLimitUpgradePriceText: {fileID: 91902010}
+  energyRegenUpgradePriceText: {fileID: 1277308560}
+  energySpendUpgradePriceText: {fileID: 800035287}
+  forceProductionUpgradePriceText: {fileID: 978315638}
+  forceGenerationUpgradePriceText: {fileID: 1342174243}
+  forceSpendUpgradePriceText: {fileID: 1978646019}
+  productionTimeUpgradePriceText: {fileID: 945652442}
+  productionCountUpgradePriceText: {fileID: 1093210022}
+  experienceIncomeUpgradePriceText: {fileID: 1194504002}
+  energyLimitUpgradeDescriptionText: {fileID: 1875105536}
+  energyRegenUpgradeDescriptionText: {fileID: 0}
+  energySpendUpgradeDescriptionText: {fileID: 0}
+  forceProductionUpgradeDescriptionText: {fileID: 0}
+  forceGenerationUpgradeDescriptionText: {fileID: 0}
+  forceSpendUpgradeDescriptionText: {fileID: 0}
+  productionTimeUpgradeDescriptionText: {fileID: 0}
+  productionCountUpgradeDescriptionText: {fileID: 0}
+  experienceIncomeUpgradeDescriptionText: {fileID: 0}
+  energyBar: {fileID: 163221234}
+  productionBar: {fileID: 181262614}
 --- !u!114 &413191009 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 6314365852931759873, guid: 58a0ab9461ab48d43971a7ad525aa332, type: 3}
@@ -4422,7 +4547,6 @@ GameObject:
   - component: {fileID: 1159191032}
   - component: {fileID: 1159191036}
   - component: {fileID: 1159191033}
-  - component: {fileID: 1159191034}
   - component: {fileID: 1159191035}
   m_Layer: 0
   m_Name: PlayerController
@@ -4458,6 +4582,31 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 35724bde94cab6c4e85a9c5b57e6e40c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _playerData:
+    energyMax: 10
+    energyCur: 10
+    energyReg: 1
+    energySpend: 1
+    forceProd: 1
+    forceCur: 0
+    forceReg: 0
+    forceTime: 5
+    workCost: 1
+    expCur: 0
+    experienceMult: 1
+    productionTime: 10
+    productionCount: 1
+    expTotal: 0
+    completedObjects: 0
+    energyLimitUpgradeLevel: 0
+    energyRegenerationUpgradeLevel: 0
+    energySpendUpgradeLevel: 0
+    forceProductionUpgradeLevel: 0
+    forceGenerationUpgradeLevel: 0
+    forceSpendUpgradeLevel: 0
+    productionTimeUpgradeLevel: 0
+    productionCountUpgradeLevel: 0
+    expIncomeUpgradeLevel: 0
   _cam: {fileID: 0}
   _objectCreator: {fileID: 0}
   _objectScheme: {fileID: 0}
@@ -4524,61 +4673,6 @@ MonoBehaviour:
   _playerController: {fileID: 0}
   _objectCreator: {fileID: 0}
   _coreUI: {fileID: 0}
---- !u!114 &1159191034
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1159191027}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: beda4db90531bf94ebdc8867abb5e3bd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  timer: 0
-  energyUpgradeOpenButton: {fileID: 41276299}
-  energyUpgradePanel: {fileID: 1289696145}
-  forceUpgradeOpenButton: {fileID: 1978178060}
-  forceUpgradePanel: {fileID: 2135326267}
-  productionUpgradeOpenButton: {fileID: 207972916}
-  productionUpgradePanel: {fileID: 754719465}
-  energyLimitUpgradeButton: {fileID: 189490640}
-  energyRegenUpgradeButton: {fileID: 445337787}
-  energySpendUpgradeButton: {fileID: 1963195685}
-  forceProductionUpgradeButton: {fileID: 31577989}
-  forceGenerationUpgradeButton: {fileID: 1499423316}
-  forceSpendUpgradeButton: {fileID: 1523236759}
-  productionTimeUpgradeButton: {fileID: 1229969893}
-  productionCountUpgradeButton: {fileID: 2092091934}
-  experienceIncomeUpgradeButton: {fileID: 330562111}
-  forceCountText: {fileID: 413191009}
-  timerText: {fileID: 140821903}
-  energyText: {fileID: 1488645459}
-  productionText: {fileID: 2008243778}
-  experienceText: {fileID: 1801621235}
-  quarkCounterText: {fileID: 792996122}
-  finishedObjectsText: {fileID: 1798430125}
-  energyLimitUpgradePriceText: {fileID: 91902010}
-  energyRegenUpgradePriceText: {fileID: 1277308560}
-  energySpendUpgradePriceText: {fileID: 800035287}
-  forceProductionUpgradePriceText: {fileID: 978315638}
-  forceGenerationUpgradePriceText: {fileID: 1342174243}
-  forceSpendUpgradePriceText: {fileID: 1978646019}
-  productionTimeUpgradePriceText: {fileID: 945652442}
-  productionCountUpgradePriceText: {fileID: 1093210022}
-  experienceIncomeUpgradePriceText: {fileID: 1194504002}
-  energyLimitUpgradeDescriptionText: {fileID: 1875105536}
-  energyRegenUpgradeDescriptionText: {fileID: 0}
-  energySpendUpgradeDescriptionText: {fileID: 0}
-  forceProductionUpgradeDescriptionText: {fileID: 0}
-  forceGenerationUpgradeDescriptionText: {fileID: 0}
-  forceSpendUpgradeDescriptionText: {fileID: 0}
-  productionTimeUpgradeDescriptionText: {fileID: 0}
-  productionCountUpgradeDescriptionText: {fileID: 0}
-  experienceIncomeUpgradeDescriptionText: {fileID: 0}
-  energyBar: {fileID: 163221234}
-  productionBar: {fileID: 181262614}
 --- !u!114 &1159191035
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7595,7 +7689,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1159191034}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: CoreUI, Assembly-CSharp
         m_MethodName: OpenForceUpgradePanel
         m_Mode: 1
@@ -8189,3 +8283,4 @@ SceneRoots:
   - {fileID: 1374836881}
   - {fileID: 541715973}
   - {fileID: 1159191028}
+  - {fileID: 410293806}

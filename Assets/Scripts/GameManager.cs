@@ -1,11 +1,18 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
 
-public class PlayerDataManager : MonoBehaviour
+public class GameManager : MonoBehaviour
 {
-    public static PlayerDataManager Instance;
-
-    public PlayerData playerData;
+    private static GameManager Instance;
+    private PlayerData playerData;
+    private PlayerController playerController;
+    private ObjectScheme objectScheme;
+    private ObjectCreator objectCreator;
+    private CameraController cameraController;
+    private UpgradeSystem upgradeSystem;
+    private CoreUI coreUI;
 
     private void Awake()
     {
@@ -18,7 +25,9 @@ public class PlayerDataManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
+
     }
+
 
     public void SaveData()
     {
@@ -40,4 +49,3 @@ public class PlayerDataManager : MonoBehaviour
         }
     }
 }
-

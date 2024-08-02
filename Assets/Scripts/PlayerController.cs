@@ -57,6 +57,10 @@ public class PlayerController : MonoBehaviour
         _objectScheme.Init(_objectCreator);
         _cam.Init(_objectScheme.productScheme.transform);
     }
+    public void Init()
+    {
+
+    }
     void Start()
     {
         _objectCreator.OnQuarkGenerated += ProductionCompleate;//переписать под список кварков
