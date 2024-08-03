@@ -4,12 +4,9 @@ using UnityEngine;
 
 public class CameraController : MonoBehaviour
 {
-    public Camera mainCamera;
-    public Vector3 zeroPoint;
-
-    public void Init(Transform _schemePrefab)
+    public void Init(Camera cam, Vector3 zeroPoint)
     {
-        mainCamera.transform.position = Vector3.one * 6;
-        mainCamera.transform.LookAt(_schemePrefab);
+        cam.transform.position = Vector3.one * 6;
+        cam.transform.LookAt(zeroPoint);
     }
 }

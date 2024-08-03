@@ -9,28 +9,15 @@ public class ObjectCreator : MonoBehaviour
     public Action OnSchemeUpdated;
     public Action<float, List<Quark>> OnQuarkGenerated;
 
-    private PlayerController _playerController;
-    private ObjectScheme _objectScheme;
-    private CoreUI _coreUI;
-    public GameObject quark;
+    private ObjectScheme objectScheme;
+    private GameObject quark;
     
-    
-    public void Init(PlayerController playerController, ObjectScheme objectScheme, CoreUI coreUI)
+    public void Init(PlayerController playerController, ObjectScheme _objectScheme, CoreUI coreUI, GameObject _quark)
     {
-        _playerController = playerController;
-        _objectScheme = objectScheme;
-        _coreUI = coreUI;
-        _coreUI.OnProductionFinished += QuarkGeneration;
-        _playerController.OnObjectCompleted += SchemeUpdate;
-    }
-    void Start()
-    {
-        
-    }
-
-    void Update()
-    {
-        
+        objectScheme = _objectScheme;
+        quark = _quark;
+        coreUI.OnProductionFinished += QuarkGeneration;
+        playerController.OnObjectCompleted += SchemeUpdate;
     }
     
     private void QuarkGeneration(int quarkCount, int currentQuark, float exp, List<Quark> purchasedQuarks)//переписать под список кварков
@@ -43,9 +30,9 @@ public class ObjectCreator : MonoBehaviour
     }
     private void SchemeUpdate(int compleatedObjects) //Создавать новые схемы, а не обновлять единственную.
     {
-        for(int i = 0; i < _objectScheme.quarksList.Count; i++)
+        for(int i = 0; i < objectScheme.quarksList.Count; i++)
         {
-            _objectScheme.quarksList[i].GetComponent<MeshRenderer>().enabled = false;
+            objectScheme.quarksList[i].GetComponent<MeshRenderer>().enabled = false;
         }
         Debug.Log("Scheme updated");
         OnSchemeUpdated();

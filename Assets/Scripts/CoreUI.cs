@@ -11,9 +11,10 @@ public class CoreUI : MonoBehaviour
     public Action<int> OnQuarkGenerated;
     public Action<int, int, float, List<Quark>> OnProductionFinished;
 
-    private ObjectCreator _objectCreator;
-    private PlayerController _playerController;
-    private UpgradeSystem _upgradeSystem;
+    private ObjectCreator objectCreator;
+    private PlayerController playerController;
+    private UpgradeSystem upgradeSystem;
+    private PlayerData playerData;
 
     public float timer;
 
@@ -66,11 +67,12 @@ public class CoreUI : MonoBehaviour
     public Image productionBar;
 
     private Coroutine tempCoroutine;
-    public void Init(PlayerController playerController, ObjectCreator objectCreator, UpgradeSystem upgradeSystem)
+    public void Init(PlayerController _playerController, PlayerData _playerData, ObjectCreator _objectCreator, UpgradeSystem _upgradeSystem)
     {
-        _playerController = playerController;
-        _objectCreator = objectCreator;
-        _upgradeSystem = upgradeSystem;
+        playerController = _playerController;
+        objectCreator = _objectCreator;
+        upgradeSystem = _upgradeSystem;
+        playerData = _playerData;
 
         upgradeSystem.OnEnergyLimitUpgraded += EnegryLimitUpgradePriceChange;
         upgradeSystem.OnEnergyRegenUpgraded += EnegryRegenUpgradePriceChange;
@@ -94,27 +96,22 @@ public class CoreUI : MonoBehaviour
         productionBar.fillAmount = 0;
         timer = 0;
         forceCountText.text = "Force: 0";
-        experienceText.text = "EXP: " + playerController.experience.ToString();
+        experienceText.text = "EXP: " + _playerData.expCur.ToString();
         quarkCounterText.text = "Quark count: " + playerController.currentQuark;
 
         FinishedObjectsChange(0);
         StartCoroutine(PlayTimer());
 
-        CheckUpgradeButtonPrice(_playerController.experience, energyLimitUpgradeButton, _upgradeSystem.energyMaxUpgradeCost);
-        CheckUpgradeButtonPrice(_playerController.experience, energyRegenUpgradeButton, _upgradeSystem.energyRegUpgradeCost);
-        CheckUpgradeButtonPrice(_playerController.experience, energySpendUpgradeButton, _upgradeSystem.energySpendUpgradeCost);
-        CheckUpgradeButtonPrice(_playerController.experience, forceProductionUpgradeButton, _upgradeSystem.forceProductionUpgradeCost);
-        CheckUpgradeButtonPrice(_playerController.experience, forceGenerationUpgradeButton, _upgradeSystem.forceGenerationUpgradeCost);
-        CheckUpgradeButtonPrice(_playerController.experience, forceSpendUpgradeButton, _upgradeSystem.forceSpendUpgradeCost);
-        CheckUpgradeButtonPrice(_playerController.experience, productionTimeUpgradeButton, _upgradeSystem.productionTimeUpgradeCost);
-        CheckUpgradeButtonPrice(_playerController.experience, productionCountUpgradeButton, _upgradeSystem.productionCountUpgradeCost);
-        CheckUpgradeButtonPrice(_playerController.experience, experienceIncomeUpgradeButton, _upgradeSystem.expIncomeUpgradeCost);
+        CheckUpgradeButtonPrice(_playerData.expCur, energyLimitUpgradeButton, _upgradeSystem.energyMaxUpgradeCost);
+        CheckUpgradeButtonPrice(_playerData.expCur, energyRegenUpgradeButton, _upgradeSystem.energyRegUpgradeCost);
+        CheckUpgradeButtonPrice(_playerData.expCur, energySpendUpgradeButton, _upgradeSystem.energySpendUpgradeCost);
+        CheckUpgradeButtonPrice(_playerData.expCur, forceProductionUpgradeButton, _upgradeSystem.forceProductionUpgradeCost);
+        CheckUpgradeButtonPrice(_playerData.expCur, forceGenerationUpgradeButton, _upgradeSystem.forceGenerationUpgradeCost);
+        CheckUpgradeButtonPrice(_playerData.expCur, forceSpendUpgradeButton, _upgradeSystem.forceSpendUpgradeCost);
+        CheckUpgradeButtonPrice(_playerData.expCur, productionTimeUpgradeButton, _upgradeSystem.productionTimeUpgradeCost);
+        CheckUpgradeButtonPrice(_playerData.expCur, productionCountUpgradeButton, _upgradeSystem.productionCountUpgradeCost);
+        CheckUpgradeButtonPrice(_playerData.expCur, experienceIncomeUpgradeButton, _upgradeSystem.expIncomeUpgradeCost);
     }
-    private void Update()
-    {
-        
-    }
-
     private void CheckUpgradeButtonPrice(float value, Button button, int upgradePrice)
     {
         if(value < upgradePrice)
@@ -166,15 +163,15 @@ public class CoreUI : MonoBehaviour
     private void ExperinceChange(float value)
     {
         experienceText.text = "Exp: " + value.ToString("0.0");
-        CheckUpgradeButtonPrice(_playerController.experience, energyLimitUpgradeButton, _upgradeSystem.energyMaxUpgradeCost);
-        CheckUpgradeButtonPrice(_playerController.experience, energyRegenUpgradeButton, _upgradeSystem.energyRegUpgradeCost);
-        CheckUpgradeButtonPrice(_playerController.experience, energySpendUpgradeButton, _upgradeSystem.energySpendUpgradeCost);
-        CheckUpgradeButtonPrice(_playerController.experience, forceProductionUpgradeButton, _upgradeSystem.forceProductionUpgradeCost);
-        CheckUpgradeButtonPrice(_playerController.experience, forceGenerationUpgradeButton, _upgradeSystem.forceGenerationUpgradeCost);
-        CheckUpgradeButtonPrice(_playerController.experience, forceSpendUpgradeButton, _upgradeSystem.forceSpendUpgradeCost);
-        CheckUpgradeButtonPrice(_playerController.experience, productionTimeUpgradeButton, _upgradeSystem.productionTimeUpgradeCost);
-        CheckUpgradeButtonPrice(_playerController.experience, productionCountUpgradeButton, _upgradeSystem.productionCountUpgradeCost);
-        CheckUpgradeButtonPrice(_playerController.experience, experienceIncomeUpgradeButton, _upgradeSystem.expIncomeUpgradeCost);
+        CheckUpgradeButtonPrice(playerData.expCur, energyLimitUpgradeButton, upgradeSystem.energyMaxUpgradeCost);
+        CheckUpgradeButtonPrice(playerData.expCur, energyRegenUpgradeButton, upgradeSystem.energyRegUpgradeCost);
+        CheckUpgradeButtonPrice(playerData.expCur, energySpendUpgradeButton, upgradeSystem.energySpendUpgradeCost);
+        CheckUpgradeButtonPrice(playerData.expCur, forceProductionUpgradeButton, upgradeSystem.forceProductionUpgradeCost);
+        CheckUpgradeButtonPrice(playerData.expCur, forceGenerationUpgradeButton, upgradeSystem.forceGenerationUpgradeCost);
+        CheckUpgradeButtonPrice(playerData.expCur, forceSpendUpgradeButton, upgradeSystem.forceSpendUpgradeCost);
+        CheckUpgradeButtonPrice(playerData.expCur, productionTimeUpgradeButton, upgradeSystem.productionTimeUpgradeCost);
+        CheckUpgradeButtonPrice(playerData.expCur, productionCountUpgradeButton, upgradeSystem.productionCountUpgradeCost);
+        CheckUpgradeButtonPrice(playerData.expCur, experienceIncomeUpgradeButton, upgradeSystem.expIncomeUpgradeCost);
     }
     private void EnergyChange(float energyCur, float energyMax)
     {

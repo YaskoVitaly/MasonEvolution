@@ -14,6 +14,7 @@ public class PlayerData
     public float forceCur;
     public float forceReg;
     public float forceTime;
+    public float forceSpend;
     public float workCost;
     public float expCur;
     public float experienceMult;
@@ -43,9 +44,10 @@ public class PlayerData
         forceCur = 0;
         forceReg = 0;
         forceTime = 5;
+        forceSpend = 1;
         workCost = 1;
         expCur = 0;
-        experienceMult = 1;
+        experienceMult = 0.1f;
         productionTime = 10;
         productionCount = 1;
         expTotal = 0;

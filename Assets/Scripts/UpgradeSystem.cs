@@ -25,6 +25,7 @@ public class UpgradeSystem : MonoBehaviour
     public int productionCountUpgradeCost = 1;
     public int expIncomeUpgradeCost = 1;
 
+    /*
     private int energyLimitUpgradeLevel = 0;
     private int energyRegenerationUpgradeLevel = 0;
     private int energySpendUpgradeLevel = 0;
@@ -34,33 +35,32 @@ public class UpgradeSystem : MonoBehaviour
     private int productionTimeUpgradeLevel = 0;
     private int productionCountUpgradeLevel = 0;
     private int expIncomeUpgradeLevel = 0;
+    */
 
-    public PlayerController _playerController;
-    public ObjectCreator _objectCreator;
-    public CoreUI _coreUI;
+    private PlayerData playerData;
+    private ObjectCreator objectCreator;
+    private CoreUI coreUI;
 
-    private void Awake()
+    public void Init(PlayerData _playerData, ObjectCreator _objectCreator, CoreUI _coreUI)
     {
-        _playerController = GetComponent<PlayerController>();
-        _objectCreator = GetComponent<ObjectCreator>();
-        
+        playerData = _playerData;
+        objectCreator = _objectCreator;
+        coreUI = _coreUI;
     }
+
     void Start()
     {
-        _coreUI = GetComponent<CoreUI>();
+        OnEnergyLimitUpgraded(energyMaxUpgradeCost, playerData.expCur, playerData.energyMax);
+        OnEnergyRegenUpgraded(energyRegUpgradeCost, playerData.expCur);
+        OnEnergySpendUpgraded(energySpendUpgradeCost, playerData.expCur);
 
-        OnEnergyLimitUpgraded(energyMaxUpgradeCost, _playerController.experience, _playerController.energyMax);
-        OnEnergyRegenUpgraded(energyRegUpgradeCost, _playerController.experience);
-        OnEnergySpendUpgraded(energySpendUpgradeCost, _playerController.experience);
+        OnForceProductionUpgraded(forceProductionUpgradeCost, playerData.expCur);
+        OnForceGenerationUpgraded(forceGenerationUpgradeCost, playerData.expCur);
+        OnForceSpendUpgraded(forceSpendUpgradeCost, playerData.expCur);
 
-        OnForceProductionUpgraded(forceProductionUpgradeCost, _playerController.experience);
-        OnForceGenerationUpgraded(forceGenerationUpgradeCost, _playerController.experience);
-        OnForceSpendUpgraded(forceSpendUpgradeCost, _playerController.experience);
-
-        OnProductionTimeUpgraded(productionTimeUpgradeCost, _playerController.experience);
-        OnProductionCountUpgraded(productionCountUpgradeCost, _playerController.experience);
-        OnExperienceIncomeUpgraded(expIncomeUpgradeCost, _playerController.experience);
-
+        OnProductionTimeUpgraded(productionTimeUpgradeCost, playerData.expCur);
+        OnProductionCountUpgraded(productionCountUpgradeCost, playerData.expCur);
+        OnExperienceIncomeUpgraded(expIncomeUpgradeCost, playerData.expCur);
     }
 
     void Update()
@@ -70,96 +70,96 @@ public class UpgradeSystem : MonoBehaviour
     #region Upgrades
     public void UpgradeMaxEnergy()
     {
-        if (_playerController.experience >= energyMaxUpgradeCost)
+        if (playerData.expCur >= energyMaxUpgradeCost)
         {
-            _playerController.experience -= energyMaxUpgradeCost;
+            playerData.expCur -= energyMaxUpgradeCost;
             energyMaxUpgradeCost *= 2;
-            _playerController.energyMax *= 2;
-            OnEnergyLimitUpgraded(energyMaxUpgradeCost, _playerController.experience, _playerController.energyMax);
+            playerData.energyMax *= 2;
+            OnEnergyLimitUpgraded(energyMaxUpgradeCost, playerData.expCur, playerData.energyMax);
         }
     }
     public void UpgradeEnergyRegen()
     {
-        if (_playerController.experience >= energyRegUpgradeCost)
+        if (playerData.expCur >= energyRegUpgradeCost)
         {
-            _playerController.experience -= energyRegUpgradeCost;
+            playerData.expCur -= energyRegUpgradeCost;
             energyRegUpgradeCost *= 2;
-            _playerController.energyReg += 1f;
-            OnEnergyRegenUpgraded(energyRegUpgradeCost, _playerController.experience);
+            playerData.energyReg += 1f;
+            OnEnergyRegenUpgraded(energyRegUpgradeCost, playerData.expCur);
         }
     }
     public void UpgradeEnergySpend()
     {
-        if (_playerController.experience >= energySpendUpgradeCost)
+        if (playerData.expCur >= energySpendUpgradeCost)
         {
-            _playerController.experience -= energySpendUpgradeCost;
+            playerData.expCur -= energySpendUpgradeCost;
             energySpendUpgradeCost *= 2;
-            _playerController.energySpend *= 0.9f;
-            OnEnergySpendUpgraded(energySpendUpgradeCost, _playerController.experience);
+            playerData.energySpend *= 0.9f;
+            OnEnergySpendUpgraded(energySpendUpgradeCost, playerData.expCur);
         }
     }
     public void UpgradeForceProduction()
     {
-        if(_playerController.experience >= forceProductionUpgradeCost)
+        if(playerData.expCur >= forceProductionUpgradeCost)
         {
-            _playerController.experience -= forceProductionUpgradeCost;
+            playerData.expCur -= forceProductionUpgradeCost;
             forceProductionUpgradeCost *= 2;
-            _playerController.workCost++;
-            _playerController.forceProduction++;
-            OnForceProductionUpgraded(forceProductionUpgradeCost, _playerController.experience);
+            playerData.workCost++;
+            playerData.forceProd++;
+            OnForceProductionUpgraded(forceProductionUpgradeCost, playerData.expCur);
         }
     }
     public void UpgradeForceSpend()
     {
-        if (_playerController.experience >= forceSpendUpgradeCost)
+        if (playerData.expCur >= forceSpendUpgradeCost)
         {
-            _playerController.experience -= forceSpendUpgradeCost;
+            playerData.expCur -= forceSpendUpgradeCost;
             forceSpendUpgradeCost *= 2;
-            _playerController.forceSpend *= 0.9f;
-            OnForceSpendUpgraded(forceSpendUpgradeCost, _playerController.experience);
+            playerData.forceSpend *= 0.9f;
+            OnForceSpendUpgraded(forceSpendUpgradeCost, playerData.expCur);
         }
     }
     public void UpgradeForceAutoGeneration()
     {
-        if(_playerController.experience >= forceGenerationUpgradeCost)
+        if(playerData.expCur >= forceGenerationUpgradeCost)
         {
-            _playerController.experience -= forceGenerationUpgradeCost;
+            playerData.expCur -= forceGenerationUpgradeCost;
             forceGenerationUpgradeCost *= 2;
-            if(_playerController.forceReg == 0)
-            _playerController.forceReg++;
+            if(playerData.forceReg == 0)
+                playerData.forceReg++;
             else
-                _playerController.forceTime *= 0.9f;
-            OnForceGenerationUpgraded(forceGenerationUpgradeCost, _playerController.experience);
+                playerData.forceTime *= 0.9f;
+            OnForceGenerationUpgraded(forceGenerationUpgradeCost, playerData.expCur);
         }
     }
     public void UpgradeProductionTime()
     {
-        if(_playerController.experience >= productionTimeUpgradeCost)
+        if(playerData.expCur >= productionTimeUpgradeCost)
         {
-            _playerController.experience -= productionTimeUpgradeCost;
+            playerData.expCur -= productionTimeUpgradeCost;
             productionTimeUpgradeCost *= 2;
-            _playerController.productionTime -= _playerController.productionTime/10;
-            OnProductionTimeUpgraded(productionTimeUpgradeCost, _playerController.experience);
+            playerData.productionTime -= playerData.productionTime/10;
+            OnProductionTimeUpgraded(productionTimeUpgradeCost, playerData.expCur);
         }
     }
     public void UpgradeProductionCount()
     {
-        if (_playerController.experience >= productionCountUpgradeCost)
+        if (playerData.expCur >= productionCountUpgradeCost)
         {
-            _playerController.experience -= productionCountUpgradeCost;
+            playerData.expCur -= productionCountUpgradeCost;
             productionCountUpgradeCost *= 2;
-            _playerController.productionCount++;
-            OnProductionCountUpgraded(productionCountUpgradeCost, _playerController.experience);
+            playerData.productionCount++;
+            OnProductionCountUpgraded(productionCountUpgradeCost, playerData.expCur);
         }
     }
     public void UpgradeExpirienceIncome()
     {
-        if(_playerController.experience >= expIncomeUpgradeCost)
+        if(playerData.expCur >= expIncomeUpgradeCost)
         {
-            _playerController.experience -= expIncomeUpgradeCost;
+            playerData.expCur -= expIncomeUpgradeCost;
             expIncomeUpgradeCost *= 2;
-            _playerController.experienceMult *= 1.2f;
-            OnExperienceIncomeUpgraded(expIncomeUpgradeCost, _playerController.experience);
+            playerData.experienceMult *= 1.2f;
+            OnExperienceIncomeUpgraded(expIncomeUpgradeCost, playerData.expCur);
         }
     }
     #endregion
