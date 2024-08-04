@@ -69,7 +69,7 @@ public class ObjectScheme : MonoBehaviour
         {
             if (quarkX < sizeX && quarkZ < sizeZ && quarkY < sizeY)
             {
-                Quark temp = Instantiate(quark, productScheme.transform).AddComponent<Quark>();
+                Quark temp = Instantiate(quark, productScheme.transform).GetComponent<Quark>();
                 quarks[quarkX, quarkY, quarkZ] = temp;
                 curPos = new Vector3(quarkX * temp.size, quarkY * temp.size, quarkZ * temp.size);
                 QuarkInstantiate(temp, curPos);

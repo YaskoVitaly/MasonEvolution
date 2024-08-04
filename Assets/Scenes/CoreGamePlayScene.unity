@@ -207,9 +207,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: UpgradeSystem, Assembly-CSharp
-        m_MethodName: UpgradeForceProduction
+      - m_Target: {fileID: 410293809}
+        m_TargetAssemblyTypeName: CoreUI, Assembly-CSharp
+        m_MethodName: ForceProductionUpgrade
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1056,9 +1056,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 410293805}
-        m_TargetAssemblyTypeName: UpgradeSystem, Assembly-CSharp
-        m_MethodName: 
+      - m_Target: {fileID: 410293809}
+        m_TargetAssemblyTypeName: CoreUI, Assembly-CSharp
+        m_MethodName: EnergyLimitUpgrade
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1540,9 +1540,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: UpgradeSystem, Assembly-CSharp
-        m_MethodName: UpgradeExpirienceIncome
+      - m_Target: {fileID: 410293809}
+        m_TargetAssemblyTypeName: CoreUI, Assembly-CSharp
+        m_MethodName: ExperienceIncomeUpgrade
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1983,9 +1983,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: UpgradeSystem, Assembly-CSharp
-        m_MethodName: UpgradeEnergyRegen
+      - m_Target: {fileID: 410293809}
+        m_TargetAssemblyTypeName: CoreUI, Assembly-CSharp
+        m_MethodName: EnergyRegenUpgrade
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -4764,9 +4764,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: UpgradeSystem, Assembly-CSharp
-        m_MethodName: UpgradeProductionTime
+      - m_Target: {fileID: 410293809}
+        m_TargetAssemblyTypeName: CoreUI, Assembly-CSharp
+        m_MethodName: ProductionTimeUpgrade
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -5806,9 +5806,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: UpgradeSystem, Assembly-CSharp
-        m_MethodName: UpgradeForceAutoGeneration
+      - m_Target: {fileID: 410293809}
+        m_TargetAssemblyTypeName: CoreUI, Assembly-CSharp
+        m_MethodName: ForceGenerationUpgrade
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -5941,9 +5941,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: UpgradeSystem, Assembly-CSharp
-        m_MethodName: UpgradeForceSpend
+      - m_Target: {fileID: 410293809}
+        m_TargetAssemblyTypeName: CoreUI, Assembly-CSharp
+        m_MethodName: ForceSpendUpgrade
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -7401,9 +7401,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: UpgradeSystem, Assembly-CSharp
-        m_MethodName: UpgradeEnergySpend
+      - m_Target: {fileID: 410293809}
+        m_TargetAssemblyTypeName: CoreUI, Assembly-CSharp
+        m_MethodName: EnergySpendUpgrade
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -7814,9 +7814,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: UpgradeSystem, Assembly-CSharp
-        m_MethodName: UpgradeProductionCount
+      - m_Target: {fileID: 410293809}
+        m_TargetAssemblyTypeName: CoreUI, Assembly-CSharp
+        m_MethodName: ProductionCountUpgrade
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -8086,10 +8086,14 @@ PrefabInstance:
     - target: {fileID: 6112016754227984314, guid: 58a0ab9461ab48d43971a7ad525aa332, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 410293805}
+      objectReference: {fileID: 410293809}
     - target: {fileID: 6112016754227984314, guid: 58a0ab9461ab48d43971a7ad525aa332, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: 
+      value: Work
+      objectReference: {fileID: 0}
+    - target: {fileID: 6112016754227984314, guid: 58a0ab9461ab48d43971a7ad525aa332, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: CoreUI, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 6314365852931759873, guid: 58a0ab9461ab48d43971a7ad525aa332, type: 3}
       propertyPath: m_text

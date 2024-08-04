@@ -53,18 +53,8 @@ public class GameManager : MonoBehaviour
 
     private void InitializeSystems()
     {
-        //PlayerData load or create
-        /*
-        if (playerData != null)
-        {
-            LoadData();
-        }
-        else
-        {
-            playerData = new PlayerData();
-            Debug.LogWarning("New PlayerData created");
-        }
-        */
+        Quark quark = quarkPrefab.GetComponent<Quark>();
+
         playerData = new PlayerData();
         playerController = gameObject.AddComponent<PlayerController>();
         objectScheme = gameObject.AddComponent<ObjectScheme>();
@@ -78,7 +68,7 @@ public class GameManager : MonoBehaviour
         objectCreator.Init(playerController, objectScheme, coreUI, quarkPrefab);
         coreUI.Init(playerController, playerData, objectCreator, upgradeSystem);
         upgradeSystem.Init(playerData, objectCreator, coreUI);
-        cameraController.Init(Camera.main, new Vector3(productSizeX/2, productSizeY/2, productSizeZ/2));
+        cameraController.Init(Camera.main, new Vector3(productSizeX/2 * quark.size, productSizeY/2 * quark.size, productSizeZ/2 * quark.size));//Откорректировать фокус камеры. Добавить управление камерой (вращение вокруг объекта, приближение/отдаление).
     }
 
     public void SaveData()

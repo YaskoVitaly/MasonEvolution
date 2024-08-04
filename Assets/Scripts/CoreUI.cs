@@ -101,16 +101,11 @@ public class CoreUI : MonoBehaviour
 
         FinishedObjectsChange(0);
         StartCoroutine(PlayTimer());
-
-        CheckUpgradeButtonPrice(_playerData.expCur, energyLimitUpgradeButton, _upgradeSystem.energyMaxUpgradeCost);
-        CheckUpgradeButtonPrice(_playerData.expCur, energyRegenUpgradeButton, _upgradeSystem.energyRegUpgradeCost);
-        CheckUpgradeButtonPrice(_playerData.expCur, energySpendUpgradeButton, _upgradeSystem.energySpendUpgradeCost);
-        CheckUpgradeButtonPrice(_playerData.expCur, forceProductionUpgradeButton, _upgradeSystem.forceProductionUpgradeCost);
-        CheckUpgradeButtonPrice(_playerData.expCur, forceGenerationUpgradeButton, _upgradeSystem.forceGenerationUpgradeCost);
-        CheckUpgradeButtonPrice(_playerData.expCur, forceSpendUpgradeButton, _upgradeSystem.forceSpendUpgradeCost);
-        CheckUpgradeButtonPrice(_playerData.expCur, productionTimeUpgradeButton, _upgradeSystem.productionTimeUpgradeCost);
-        CheckUpgradeButtonPrice(_playerData.expCur, productionCountUpgradeButton, _upgradeSystem.productionCountUpgradeCost);
-        CheckUpgradeButtonPrice(_playerData.expCur, experienceIncomeUpgradeButton, _upgradeSystem.expIncomeUpgradeCost);
+        ExperinceChange(0);
+    }
+    public void Work()
+    {
+        playerController.Work();
     }
     private void CheckUpgradeButtonPrice(float value, Button button, int upgradePrice)
     {
@@ -192,6 +187,44 @@ public class CoreUI : MonoBehaviour
     }
     #endregion
     #region Upgrades
+
+    public void EnergyLimitUpgrade()
+    {
+        upgradeSystem.UpgradeMaxEnergy();
+    }
+    public void EnergyRegenUpgrade()
+    {
+        upgradeSystem.UpgradeEnergyRegen();
+    }
+    public void EnergySpendUpgrade()
+    {
+        upgradeSystem.UpgradeEnergySpend();
+    }
+    public void ForceProductionUpgrade()
+    {
+        upgradeSystem.UpgradeForceProduction();
+    }
+    public void ForceGenerationUpgrade()
+    {
+        upgradeSystem.UpgradeForceAutoGeneration();
+    }
+    public void ForceSpendUpgrade()
+    {
+        upgradeSystem.UpgradeForceSpend();
+    }
+    public void ProductionTimeUpgrade()
+    {
+        upgradeSystem.UpgradeProductionTime();
+    }
+    public void ProductionCountUpgrade()
+    {
+        upgradeSystem.UpgradeProductionCount();
+    }
+    public void ExperienceIncomeUpgrade()
+    {
+        upgradeSystem.UpgradeExpirienceIncome();
+    }
+
     private void EnegryLimitUpgradePriceChange(int count, float exp, float energyMax)
     {
         energyLimitUpgradePriceText.text = "Exp: " + count;
@@ -241,25 +274,16 @@ public class CoreUI : MonoBehaviour
     #endregion
     private void Production(float time, int currentQuark, float expCur, float expCount, List<Quark> purchasedQuarks)//¬ыводить врем€ до окончани€ производства
     {
-        //ProductionBarFill(time, currentQuark, expCur, expCount, purchasedQuarks);
-        
         if(tempCoroutine != null)
         {
-            //Debug.Log("Production bar filler stopped");
             StopCoroutine(tempCoroutine);
             tempCoroutine = null;
         }
-        
-        //Debug.Log("Production bar filler started");
         tempCoroutine = StartCoroutine(ProductionBarFiller(time, currentQuark, expCur, expCount, purchasedQuarks));
     }
-    
-
     private IEnumerator ProductionBarFiller(float time, int currentQuark, float expCur, float expCount, List<Quark> purchasedQuarks)
     {
         float productionTimer = 0;
-        //Debug.Log("Prod timer: " + productionTimer + "Prod time: " + time);
-
         while (productionTimer < time)
         {
             productionTimer += Time.deltaTime;
@@ -269,7 +293,6 @@ public class CoreUI : MonoBehaviour
             {
                 productionBar.fillAmount = 0;
                 OnProductionFinished(purchasedQuarks.Count, currentQuark, expCur, purchasedQuarks);
-                //Debug.Log("Prod timer: " + productionTimer + "Prod time: " + time);
             }
             yield return null;
         }
