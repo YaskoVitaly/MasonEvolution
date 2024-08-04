@@ -7,42 +7,27 @@ using static UnityEditor.Experimental.AssetDatabaseExperimental.AssetDatabaseCou
 
 public class ObjectScheme : MonoBehaviour
 {
-    private ObjectCreator _objectCreator;
+    private GameObject quark;
+    private int sizeX = 0;
+    private int sizeY = 0;
+    private int sizeZ = 0;
 
-    public int sizeX = 0;
-    public int sizeY = 0;
-    public int sizeZ = 0;
-
-    public Quark[,,] quarks;
-
-    public int quarkX = 0;
-    public int quarkY = 0;
-    public int quarkZ = 0;
+    //private Quark[,,] quarks;
 
     public List<Quark> quarksList;
 
     public float quarkSize;
     private bool incomplited = true;
 
-    public GameObject productScheme;
-
-    private void Awake()
+    private GameObject productScheme;
+    
+    public void Init(GameObject _quark, int _sizeX, int _sizeY, int _sizeZ)
     {
-        
-    }
-    void Start()
-    {
-        
-    }
-
-    void Update()
-    {
-        
-    }
-    public void Init(ObjectCreator objectCreator)
-    {
-        _objectCreator = objectCreator;
-        quarks = new Quark[sizeX, sizeY, sizeZ];
+        sizeX = _sizeX;
+        sizeY = _sizeY;
+        sizeZ = _sizeZ;
+        quark = _quark;
+        //quarks = new Quark[sizeX, sizeY, sizeZ];
         quarksList = new List<Quark>();
         QuarkGen();
     }
@@ -74,14 +59,17 @@ public class ObjectScheme : MonoBehaviour
     }
     public void QuarkGen()
     {
+        int quarkX = 0;
+        int quarkY = 0;
+        int quarkZ = 0;
+        Quark[,,] quarks = new Quark[sizeX, sizeY, sizeZ];
         productScheme = new GameObject("Product");
         Vector3 curPos = new Vector3();
         while (incomplited)
         {
             if (quarkX < sizeX && quarkZ < sizeZ && quarkY < sizeY)
             {
-
-                Quark temp = Instantiate(_objectCreator.quark, productScheme.transform).AddComponent<Quark>();
+                Quark temp = Instantiate(quark, productScheme.transform).GetComponent<Quark>();
                 quarks[quarkX, quarkY, quarkZ] = temp;
                 curPos = new Vector3(quarkX * temp.size, quarkY * temp.size, quarkZ * temp.size);
                 QuarkInstantiate(temp, curPos);
@@ -104,7 +92,7 @@ public class ObjectScheme : MonoBehaviour
                     }
                     else
                     {
-                        Debug.Log("Scheme completed");
+                        Debug.Log("Scheme completed: " + quarks.Length);
                         incomplited = false;
                     }
                 }

@@ -1,0 +1,147 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &7207775448073604206
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7372314900133882621}
+  - component: {fileID: 4024641064278411728}
+  - component: {fileID: 7195981029944428378}
+  - component: {fileID: 602005462995502421}
+  - component: {fileID: 7453866057080658764}
+  - component: {fileID: 1810701621493879387}
+  m_Layer: 0
+  m_Name: PlayerController
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7372314900133882621
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7207775448073604206}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4024641064278411728
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7207775448073604206}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 35724bde94cab6c4e85a9c5b57e6e40c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerData:
+    energyMax: 10
+    energyCur: 10
+    energyReg: 1
+    energySpend: 1
+    forceProd: 1
+    forceCur: 0
+    forceReg: 0
+    forceTime: 5
+    forceSpend: 1
+    workCost: 1
+    expCur: 0
+    experienceMult: 0.1
+    productionTime: 10
+    productionCount: 1
+    expTotal: 0
+    completedObjects: 0
+    energyLimitUpgradeLevel: 0
+    energyRegenerationUpgradeLevel: 0
+    energySpendUpgradeLevel: 0
+    forceProductionUpgradeLevel: 0
+    forceGenerationUpgradeLevel: 0
+    forceSpendUpgradeLevel: 0
+    productionTimeUpgradeLevel: 0
+    productionCountUpgradeLevel: 0
+    expIncomeUpgradeLevel: 0
+  objectScheme: {fileID: 0}
+  currentQuark: 0
+  completedObjects: 0
+--- !u!114 &7195981029944428378
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7207775448073604206}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 801995245f5e3b5488dedae30bd47869, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sizeX: 4
+  sizeY: 2
+  sizeZ: 8
+  quarkX: 0
+  quarkY: 0
+  quarkZ: 0
+  quarksList: []
+  quarkSize: 0
+  productScheme: {fileID: 0}
+--- !u!114 &602005462995502421
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7207775448073604206}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ed82bd2c12189ca4f8d3bdc4b7b562c3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &7453866057080658764
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7207775448073604206}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1fe05c4172fe49e4ea53e3d503ea2889, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  energyMaxUpgradeCost: 1
+  energyRegUpgradeCost: 1
+  energySpendUpgradeCost: 5
+  forceProductionUpgradeCost: 2
+  forceGenerationUpgradeCost: 2
+  forceSpendUpgradeCost: 10
+  productionTimeUpgradeCost: 3
+  productionCountUpgradeCost: 4
+  expIncomeUpgradeCost: 5
+--- !u!114 &1810701621493879387
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7207775448073604206}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3fee81e522df9dc4f91c351e9b3fd397, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mainCamera: {fileID: 0}
+  zeroPoint: {x: 0, y: 0, z: 0}

@@ -14,58 +14,30 @@ public class PlayerController : MonoBehaviour
     public Action<float> OnWorked;
     public Action<float> OnExperienceChanged;
 
-    public PlayerData _playerData;
-    public CameraController _cam;
-    public ObjectCreator _objectCreator;
-    public ObjectScheme _objectScheme;
-    public UpgradeSystem _upgradeSystem;
-    public CoreUI _coreUI;
+    public PlayerData playerData;
+    public ObjectScheme objectScheme;
 
     public int currentQuark = 0;
-
-    public float energyMax;
-    public float energyCur;
-    public float energyReg;
-    public float workCost;
-    public float forceProduction;
-    public float forceCur;
-    public float forceReg;
-    public float experience;
-    public float productionTime;
-
-    public float energySpend = 1;
-    public float forceSpend = 1;
-    public float forceTime = 5;
-    public int productionCount = 1;
-    public float experienceMult = 0.1f;
     public int completedObjects = 0;
 
     private bool isProduction = false;
 
     private Coroutine creator;
     private List<Quark> productionQuarks;
-
-    private void Awake()
+    
+    public void Init(PlayerData _playerData, ObjectCreator _objectCreator, ObjectScheme _objectScheme)
     {
-        _cam = GetComponent<CameraController>();
-        _objectCreator = GetComponent<ObjectCreator>();
-        _objectScheme = GetComponent<ObjectScheme>();
-        _upgradeSystem = GetComponent<UpgradeSystem>();
-        _coreUI = GetComponent<CoreUI>();
-        _coreUI.Init(this, _objectCreator, _upgradeSystem);
-        _objectCreator.Init(this, _objectScheme, _coreUI);
-        _objectScheme.Init(_objectCreator);
-        _cam.Init(_objectScheme.productScheme.transform);
+        playerData = _playerData;
+        objectScheme = _objectScheme;
+        _objectCreator.OnQuarkGenerated += ProductionCompleate;
+        _objectCreator.OnSchemeUpdated += Launcher;
     }
     void Start()
     {
-        _objectCreator.OnQuarkGenerated += ProductionCompleate;//переписать под список кварков
-        _objectCreator.OnSchemeUpdated += Launcher;
-        _cam.zeroPoint = new Vector3(_objectScheme.sizeX/2, _objectScheme.sizeY/2, _objectScheme.sizeZ/2);
-        experience = 0;
-        energyMax = 10;
-        energyCur = energyMax;
-        OnEnergyChanged(energyCur, energyMax);
+        //experience = 0;
+        //energyMax = 10;
+        //energyCur = playerData.energyMax;
+        OnEnergyChanged(playerData.energyCur, playerData.energyMax);
         StartCoroutine(EnergyRegeneration());
         StartCoroutine(ForceGeneration());
         Launcher();
@@ -85,13 +57,13 @@ public class PlayerController : MonoBehaviour
             StopCoroutine(creator);
         }
         Debug.Log("Launcher");
-        Debug.Log("Current quark: " + currentQuark + "; Object quark count: " + _objectScheme.quarksList.Count + "; Production: " + isProduction);
+        Debug.Log("Current quark: " + currentQuark + "; Object quark count: " + objectScheme.quarksList.Count + "; Production: " + isProduction);
 
-        creator = StartCoroutine(ObjectCreator(_objectScheme.CurrentQuarks(productionCount, currentQuark)));
+        creator = StartCoroutine(ObjectCreator(objectScheme.CurrentQuarks(playerData.productionCount, currentQuark)));
     }
     public void ProductionCompleate(float exp, List<Quark> purchasedQuarks)//переписать под список кварков
     {
-        if(purchasedQuarks.Last() != _objectScheme.quarksList.Last())
+        if(purchasedQuarks.Last() != objectScheme.quarksList.Last())
         {
             Debug.Log("Production compleate");
             ExperinceChange(exp);
@@ -107,7 +79,7 @@ public class PlayerController : MonoBehaviour
     }
     private void ProductCompleate()
     {
-        ExperinceChange(TotalCost(_objectScheme.quarksList) * experienceMult);
+        ExperinceChange(TotalCost(objectScheme.quarksList) * playerData.experienceMult);
         completedObjects++;
         currentQuark = 0;
         Debug.Log("Object compleated");
@@ -116,8 +88,8 @@ public class PlayerController : MonoBehaviour
     }
     private void ExperinceChange(float value)
     {
-        experience += value;
-        OnExperienceChanged(experience);
+        playerData.expCur += value;
+        OnExperienceChanged(playerData.expCur);
     }
     private List<Quark> QuarkListAssembly(List<Quark> selectedQuarks) //протестировать метод, убедиться, что все работает верно.
     {
@@ -125,9 +97,9 @@ public class PlayerController : MonoBehaviour
         float totalCost = 0; //создаю переменную, для общей стоимости кварков в списке
         for (int i = 0; i < selectedQuarks.Count; i++) //собираю список кварков из списка кварков
         {
-            if(totalCost*forceSpend + selectedQuarks[i].cost*forceSpend <= forceCur) //проверяю возможность покупки
+            if(totalCost*playerData.forceSpend + selectedQuarks[i].cost* playerData.forceSpend <= playerData.forceCur) //проверяю возможность покупки
             {
-                totalCost += selectedQuarks[i].cost * forceSpend; //прибавляю к общей стоимости цену очередного кварка
+                totalCost += selectedQuarks[i].cost * playerData.forceSpend; //прибавляю к общей стоимости цену очередного кварка
                 purchasedQuarks.Add(selectedQuarks[i]);
             }
             else
@@ -135,7 +107,7 @@ public class PlayerController : MonoBehaviour
                 //Debug.Log("Not enough force!");
             }
         }
-        Debug.Log("QuarkListAssembly: " + " Total cost: " + totalCost * forceSpend + "; Purchased quarks count: " + purchasedQuarks.Count);
+        Debug.Log("QuarkListAssembly: " + " Total cost: " + totalCost * playerData.forceSpend + "; Purchased quarks count: " + purchasedQuarks.Count);
         return purchasedQuarks;
     }
     private float TotalCost(List<Quark> selectedQuarks)
@@ -151,31 +123,31 @@ public class PlayerController : MonoBehaviour
     {
         float totalCost = TotalCost(purchasedQuarks);
         
-        if(purchasedQuarks.Count > 0 && totalCost * forceSpend <= forceCur)
+        if(purchasedQuarks.Count > 0 && totalCost * playerData.forceSpend <= playerData.forceCur)
         {
-            Debug.Log("Current force: " + forceCur + " Total cost: " + totalCost*forceSpend + " - Before deducting");
-            forceCur -= totalCost * forceSpend;
-            OnWorked(forceCur);
+            Debug.Log("Current force: " + playerData.forceCur + " Total cost: " + totalCost* playerData.forceSpend + " - Before deducting");
+            playerData.forceCur -= totalCost * playerData.forceSpend;
+            OnWorked(playerData.forceCur);
             isProduction = true;
-            if(forceCur < 100)
+            if(playerData.forceCur < 100)
             {
-                OnProductionStarted(productionTime, currentQuark, totalCost * experienceMult, experience, purchasedQuarks);
-                Debug.Log("Current force: " + forceCur + " Total cost: " + totalCost * forceSpend + " - After deducting" + "; Production time: " + productionTime);
+                OnProductionStarted(playerData.productionTime, currentQuark, totalCost * playerData.experienceMult, playerData.expCur, purchasedQuarks);
+                Debug.Log("Current force: " + playerData.forceCur + " Total cost: " + totalCost * playerData.forceSpend + " - After deducting" + "; Production time: " + playerData.productionTime);
             }
-            else if(forceCur >= 100 && forceCur < 1000)
+            else if(playerData.forceCur >= 100 && playerData.forceCur < 1000)
             {
-                OnProductionStarted(productionTime / 1.25f, currentQuark, totalCost * experienceMult, experience, purchasedQuarks);
-                Debug.Log("Current force: " + forceCur + " Total cost: " + totalCost * forceSpend + " - After deducting" + "; Production time: " + productionTime / 1.25f);
+                OnProductionStarted(playerData.productionTime / 1.25f, currentQuark, totalCost * playerData.experienceMult, playerData.expCur, purchasedQuarks);
+                Debug.Log("Current force: " + playerData.forceCur + " Total cost: " + totalCost * playerData.forceSpend + " - After deducting" + "; Production time: " + playerData.productionTime / 1.25f);
             }
-            else if(forceCur >= 1000 && forceCur < 10000)
+            else if(playerData.forceCur >= 1000 && playerData.forceCur < 10000)
             {
-                OnProductionStarted(productionTime / 1.5f, currentQuark, totalCost * experienceMult, experience, purchasedQuarks);
-                Debug.Log("Current force: " + forceCur + " Total cost: " + totalCost * forceSpend + " - After deducting" + "; Production time: " + productionTime / 1.5f);
+                OnProductionStarted(playerData.productionTime / 1.5f, currentQuark, totalCost * playerData.experienceMult, playerData.expCur, purchasedQuarks);
+                Debug.Log("Current force: " + playerData.forceCur + " Total cost: " + totalCost * playerData.forceSpend + " - After deducting" + "; Production time: " + playerData.productionTime / 1.5f);
             }
-            else if(forceCur >= 10000)
+            else if(playerData.forceCur >= 10000)
             {
-                OnProductionStarted(productionTime / 2, currentQuark, totalCost * experienceMult, experience, purchasedQuarks);
-                Debug.Log("Current force: " + forceCur + " Total cost: " + totalCost * forceSpend + " - After deducting" + "; Production time: " + productionTime / 2);
+                OnProductionStarted(playerData.productionTime / 2, currentQuark, totalCost * playerData.experienceMult, playerData.expCur, purchasedQuarks);
+                Debug.Log("Current force: " + playerData.forceCur + " Total cost: " + totalCost * playerData.forceSpend + " - After deducting" + "; Production time: " + playerData.productionTime / 2);
             }
             if (creator != null)
                 StopCoroutine(creator);
@@ -183,16 +155,16 @@ public class PlayerController : MonoBehaviour
     }
     private IEnumerator ObjectCreator(List<Quark> currentQuarks)
     {
-        while (currentQuark <= _objectScheme.quarksList.Count && !isProduction)
+        while (currentQuark <= objectScheme.quarksList.Count && !isProduction)
         {
-            if(currentQuarks.Count > 0 && forceCur >= currentQuarks[0].cost)
+            if(currentQuarks.Count > 0 && playerData.forceCur >= currentQuarks[0].cost)
             {
                 List<Quark> purchasedQuarks = QuarkListAssembly(currentQuarks);
                 float totalCost = TotalCost(purchasedQuarks);
                 Debug.Log("Total cost: " + totalCost);
-                if (forceCur >= totalCost * forceSpend)
+                if (playerData.forceCur >= totalCost * playerData.forceSpend)
                 {
-                    if (purchasedQuarks != null && currentQuark <= _objectScheme.quarksList.Count)
+                    if (purchasedQuarks != null && currentQuark <= objectScheme.quarksList.Count)
                     {
                         ObjectCreate(purchasedQuarks);
                     }
@@ -207,14 +179,14 @@ public class PlayerController : MonoBehaviour
     {
         while (true)
         {
-            if (energyCur < energyMax)
+            if (playerData.energyCur < playerData.energyMax)
             {
-                energyCur += energyReg * Time.deltaTime;
-                OnEnergyChanged(energyCur, energyMax);
-                if (energyCur > energyMax)
+                playerData.energyCur += playerData.energyReg * Time.deltaTime;
+                OnEnergyChanged(playerData.energyCur, playerData.energyMax);
+                if (playerData.energyCur > playerData.energyMax)
                 {
-                    energyCur = energyMax;
-                    OnEnergyChanged(energyCur, energyMax);
+                    playerData.energyCur = playerData.energyMax;
+                    OnEnergyChanged(playerData.energyCur, playerData.energyMax);
                 }
             }
             yield return new WaitForEndOfFrame();
@@ -224,20 +196,20 @@ public class PlayerController : MonoBehaviour
     {
         while (true)
         {
-            if (forceReg > 0 && energyCur >= workCost*energySpend)
+            if (playerData.forceReg > 0 && playerData.energyCur >= playerData.workCost * playerData.energySpend)
             {
                 Work();
             }
-            yield return new WaitForSeconds(forceTime);
+            yield return new WaitForSeconds(playerData.forceTime);
         }
     }
     public void Work()
     {
-        if (energyCur >= workCost*energySpend)
+        if (playerData.energyCur >= playerData.workCost * playerData.energySpend)
         {
-            energyCur -= workCost * energySpend;
-            forceCur += forceProduction;
-            OnWorked(forceCur);
+            playerData.energyCur -= playerData.workCost * playerData.energySpend;
+            playerData.forceCur += playerData.forceProd;
+            OnWorked(playerData.forceCur);
         }
     }
 
