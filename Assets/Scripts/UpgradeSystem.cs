@@ -15,15 +15,15 @@ public class UpgradeSystem : MonoBehaviour
     public Action<int, float> OnProductionCountUpgraded;
     public Action<int, float> OnExperienceIncomeUpgraded;
 
-    public int energyMaxUpgradeCost = 1;
+    public int energyMaxUpgradeCost = 2;
     public int energyRegUpgradeCost = 1;
-    public int energySpendUpgradeCost = 1;
-    public int forceProductionUpgradeCost = 1;
-    public int forceGenerationUpgradeCost = 1;
-    public int forceSpendUpgradeCost = 1;
-    public int productionTimeUpgradeCost = 1;
-    public int productionCountUpgradeCost = 1;
-    public int expIncomeUpgradeCost = 1;
+    public int energySpendUpgradeCost = 4;
+    public int forceProductionUpgradeCost = 2;
+    public int forceGenerationUpgradeCost = 3;
+    public int forceSpendUpgradeCost = 4;
+    public int productionTimeUpgradeCost = 3;
+    public int productionCountUpgradeCost = 3;
+    public int expIncomeUpgradeCost = 4;
 
     /*
     private int energyLimitUpgradeLevel = 0;

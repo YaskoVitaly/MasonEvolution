@@ -2,8 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
-using UnityEditor.SceneManagement;
-using Unity.VisualScripting;
 
 public class GameManager : MonoBehaviour
 {
@@ -48,14 +46,17 @@ public class GameManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
-        InitializeSystems();
+
+        CoreInitializeSystems();
     }
 
-    private void InitializeSystems()
+    private void CoreInitializeSystems()
     {
         Quark quark = quarkPrefab.GetComponent<Quark>();
 
-        playerData = new PlayerData();
+        
+        LoadData();
+        //playerData = new PlayerData();
         playerController = gameObject.AddComponent<PlayerController>();
         objectScheme = gameObject.AddComponent<ObjectScheme>();
         objectCreator = gameObject.AddComponent<ObjectCreator>();
