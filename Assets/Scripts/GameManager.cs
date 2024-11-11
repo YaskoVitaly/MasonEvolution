@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
+using UnityEditor.SearchService;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -47,7 +49,14 @@ public class GameManager : MonoBehaviour
             Destroy(gameObject);
         }
 
-        CoreInitializeSystems();
+        if(SceneManager.GetActiveScene().name == "CoreGamePlayScene")
+        {
+            CoreInitializeSystems();
+        }
+        else
+        {
+            Debug.LogWarning("This scene is not a CoreGmaPlayScene");
+        }
     }
 
     private void CoreInitializeSystems()
