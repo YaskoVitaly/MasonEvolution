@@ -71,7 +71,7 @@ public class GameManager : MonoBehaviour
         objectCreator = gameObject.AddComponent<ObjectCreator>();
         cameraController = gameObject.AddComponent<CameraController>();
         upgradeSystem = gameObject.AddComponent<UpgradeSystem>();
-        coreUI = GetComponent<CoreUI>();
+        coreUI = FindObjectOfType<CoreUI>();
 
         objectScheme.Init(quarkPrefab, productSizeX, productSizeY, productSizeZ); //переработать схему. Должны быть схемы на выбор.
         playerController.Init(playerData, objectCreator, objectScheme);
