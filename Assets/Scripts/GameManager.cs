@@ -48,8 +48,9 @@ public class GameManager : MonoBehaviour
         {
             Destroy(gameObject);
             Debug.Log("Gameobject destoed " + gameObject.name);
-            SceneManager.activeSceneChanged += SceneCheck;
         }
+        SceneManager.activeSceneChanged += SceneCheck;
+
     }
 
     private void CoreInitializeSystems()
