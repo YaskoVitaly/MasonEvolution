@@ -17,6 +17,7 @@ public class ObjectCreator : MonoBehaviour
         quark = _quark;
         coreUI.OnProductionFinished += QuarkGeneration;
         playerController.OnObjectCompleted += SchemeUpdate;
+        Debug.Log("ObjectCreator init");
     }
     
     private void QuarkGeneration(int quarkCount, int currentQuark, float exp, List<Quark> purchasedQuarks)//переписать под список кварков

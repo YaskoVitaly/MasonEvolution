@@ -29,16 +29,12 @@ public class PlayerController : MonoBehaviour
         objectScheme = _objectScheme;
         _objectCreator.OnQuarkGenerated += ProductionCompleate;
         _objectCreator.OnSchemeUpdated += Launcher;
-    }
-    void Start()
-    {
-        //experience = 0;
-        //energyMax = 10;
-        //energyCur = playerData.energyMax;
+
         OnEnergyChanged(playerData.energyCur, playerData.energyMax);
         StartCoroutine(EnergyRegeneration());
         StartCoroutine(ForceGeneration());
         Launcher();
+        Debug.Log("PlayerController init");
     }
 
     void Update()

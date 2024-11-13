@@ -101,6 +101,7 @@ public class CoreUI : MonoBehaviour
         FinishedObjectsChange(0);
         StartCoroutine(PlayTimer());
         ExperinceChange(0);
+        Debug.Log("CoreUI initialized");
     }
     public void Work()
     {

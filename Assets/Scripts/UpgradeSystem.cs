@@ -46,10 +46,7 @@ public class UpgradeSystem : MonoBehaviour
         playerData = _playerData;
         objectCreator = _objectCreator;
         coreUI = _coreUI;
-    }
 
-    void Start()
-    {
         OnEnergyLimitUpgraded(energyMaxUpgradeCost, playerData.expCur, playerData.energyMax);
         OnEnergyRegenUpgraded(energyRegUpgradeCost, playerData.expCur);
         OnEnergySpendUpgraded(energySpendUpgradeCost, playerData.expCur);
@@ -61,12 +58,9 @@ public class UpgradeSystem : MonoBehaviour
         OnProductionTimeUpgraded(productionTimeUpgradeCost, playerData.expCur);
         OnProductionCountUpgraded(productionCountUpgradeCost, playerData.expCur);
         OnExperienceIncomeUpgraded(expIncomeUpgradeCost, playerData.expCur);
+        Debug.Log("UpgradeSystem init");
     }
-
-    void Update()
-    {
-        
-    }
+    
     #region Upgrades
     public void UpgradeMaxEnergy()
     {

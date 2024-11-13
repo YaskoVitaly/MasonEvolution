@@ -8,5 +8,6 @@ public class CameraController : MonoBehaviour
     {
         cam.transform.position = Vector3.one * 6;
         cam.transform.LookAt(zeroPoint);
+        Debug.Log("Cam init");
     }
 }

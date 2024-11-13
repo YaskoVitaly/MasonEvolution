@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
-using UnityEditor.SearchService;
 using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
@@ -43,19 +42,13 @@ public class GameManager : MonoBehaviour
         {
             Instance = this;
             DontDestroyOnLoad(gameObject);
+            Debug.Log("InstanceCreate");
         }
         else
         {
             Destroy(gameObject);
-        }
-
-        if(SceneManager.GetActiveScene().name == "CoreGamePlayScene")
-        {
-            CoreInitializeSystems();
-        }
-        else
-        {
-            Debug.LogWarning("This scene is not a CoreGmaPlayScene");
+            Debug.Log("Gameobject destoed " + gameObject.name);
+            SceneManager.activeSceneChanged += SceneCheck;
         }
     }
 
@@ -73,12 +66,13 @@ public class GameManager : MonoBehaviour
         upgradeSystem = gameObject.AddComponent<UpgradeSystem>();
         coreUI = FindObjectOfType<CoreUI>();
 
+        coreUI.Init(playerController, playerData, objectCreator, upgradeSystem);
         objectScheme.Init(quarkPrefab, productSizeX, productSizeY, productSizeZ); //переработать схему. Должны быть схемы на выбор.
         playerController.Init(playerData, objectCreator, objectScheme);
         objectCreator.Init(playerController, objectScheme, coreUI, quarkPrefab);
-        coreUI.Init(playerController, playerData, objectCreator, upgradeSystem);
         upgradeSystem.Init(playerData, objectCreator, coreUI);
         cameraController.Init(Camera.main, new Vector3(productSizeX/2 * quark.size, productSizeY/2 * quark.size, productSizeZ/2 * quark.size));//Откорректировать фокус камеры. Добавить управление камерой (вращение вокруг объекта, приближение/отдаление).
+        Debug.Log("CoreInit");
     }
 
     public void SaveData()
@@ -100,6 +94,21 @@ public class GameManager : MonoBehaviour
         {
             playerData = new PlayerData();
             Debug.Log("PlayerData new");
+        }
+    }
+    public void LoadCoreScene()
+    {
+        SceneManager.LoadScene("CoreGamePlayScene");
+    }
+    private void SceneCheck(Scene current, Scene next)
+    {
+        if (SceneManager.GetActiveScene().name == "CoreGamePlayScene")
+        {
+            CoreInitializeSystems();
+        }
+        else
+        {
+            Debug.LogWarning("This scene is not a CoreGmaPlayScene");
         }
     }
 }
