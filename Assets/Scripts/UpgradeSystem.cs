@@ -47,6 +47,8 @@ public class UpgradeSystem : MonoBehaviour
         objectCreator = _objectCreator;
         coreUI = _coreUI;
 
+
+
         OnEnergyLimitUpgraded(energyMaxUpgradeCost, playerData.expCur, playerData.energyMax);
         OnEnergyRegenUpgraded(energyRegUpgradeCost, playerData.expCur);
         OnEnergySpendUpgraded(energySpendUpgradeCost, playerData.expCur);

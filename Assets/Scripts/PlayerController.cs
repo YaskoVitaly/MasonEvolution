@@ -11,8 +11,10 @@ public class PlayerController : MonoBehaviour
     public Action<float, float> OnEnergyChanged;
     public Action<float> OnWorked;
     public Action<float> OnExperienceChanged;
+    public Action<float> OnContractCompleated;
 
     public PlayerData playerData;
+    public ContractData contractData;
     public ObjectScheme objectScheme;
 
     public int currentQuark = 0;
@@ -23,10 +25,11 @@ public class PlayerController : MonoBehaviour
     private Coroutine creator;
     private List<Quark> productionQuarks;
     
-    public void Init(PlayerData _playerData, ObjectCreator _objectCreator, ObjectScheme _objectScheme)
+    public void Init(PlayerData _playerData, ObjectCreator _objectCreator, ObjectScheme _objectScheme, ContractData _contractData)
     {
         playerData = _playerData;
         objectScheme = _objectScheme;
+        contractData = _contractData;
         _objectCreator.OnQuarkGenerated += ProductionCompleate;
         _objectCreator.OnSchemeUpdated += Launcher;
 
@@ -73,12 +76,26 @@ public class PlayerController : MonoBehaviour
     }
     private void ProductCompleate()
     {
-        ExperinceChange(TotalCost(objectScheme.quarksList) * playerData.experienceMult);
-        completedObjects++;
-        currentQuark = 0;
-        Debug.Log("Object compleated");
-        isProduction = false;
-        OnObjectCompleted(completedObjects);
+        if (completedObjects < contractData.count-1)
+        {
+            ExperinceChange(TotalCost(objectScheme.quarksList) * playerData.experienceMult);
+            completedObjects++;
+            currentQuark = 0;
+            Debug.Log("Object compleated");
+            isProduction = false;
+            OnObjectCompleted(completedObjects);
+        }
+        else
+        {
+            ExperinceChange(TotalCost(objectScheme.quarksList) * playerData.experienceMult);
+            completedObjects++;
+            currentQuark = 0;
+            Debug.Log("Object compleated");
+            isProduction = false;
+            OnObjectCompleted(completedObjects);
+            OnContractCompleated(playerData.expCur/100);
+        }
+        
     }
     private void ExperinceChange(float value)
     {

@@ -9,8 +9,17 @@ public class GameManager : MonoBehaviour
     private static GameManager Instance;
 
     [SerializeField]
+    private GlobalData globalData;
+
+    [SerializeField]
     private PlayerData playerData;
-    
+
+    [SerializeField]
+    private ContractData contractData;
+
+    [SerializeField]
+    private ContractManager contractManager;
+
     [SerializeField]
     private PlayerController playerController;
     
@@ -53,12 +62,18 @@ public class GameManager : MonoBehaviour
 
     }
 
-    private void CoreInitializeSystems()
+    private void MetaInit()
+    {
+        contractManager = gameObject.GetComponent<ContractManager>();
+        contractManager.OnContractSelected += LoadCoreScene;
+    }
+
+    private void CoreInit()
     {
         Quark quark = quarkPrefab.GetComponent<Quark>();
 
         
-        LoadData();
+        //LoadData();
         //playerData = new PlayerData();
         playerController = gameObject.AddComponent<PlayerController>();
         objectScheme = gameObject.AddComponent<ObjectScheme>();
@@ -69,10 +84,13 @@ public class GameManager : MonoBehaviour
 
         coreUI.Init(playerController, playerData, objectCreator, upgradeSystem);
         objectScheme.Init(quarkPrefab, productSizeX, productSizeY, productSizeZ); //переработать схему. Должны быть схемы на выбор.
-        playerController.Init(playerData, objectCreator, objectScheme);
+        playerController.Init(playerData, objectCreator, objectScheme, contractData);
         objectCreator.Init(playerController, objectScheme, coreUI, quarkPrefab);
         upgradeSystem.Init(playerData, objectCreator, coreUI);
         cameraController.Init(Camera.main, new Vector3(productSizeX/2 * quark.size, productSizeY/2 * quark.size, productSizeZ/2 * quark.size));//Откорректировать фокус камеры. Добавить управление камерой (вращение вокруг объекта, приближение/отдаление).
+
+        playerController.OnContractCompleated += LoadMetaScene;
+        
         Debug.Log("CoreInit");
     }
 
@@ -97,19 +115,37 @@ public class GameManager : MonoBehaviour
             Debug.Log("PlayerData new");
         }
     }
-    public void LoadCoreScene()
+    public void LoadCoreScene(ContractData currentContract)
     {
+        contractData = currentContract;
         SceneManager.LoadScene("CoreGamePlayScene");
+    }
+
+    public void LoadMetaScene(float exp)
+    {
+        globalData.totalExperience += exp;
+        globalData.money += contractData.reward;
+        contractManager.OnContractSelected -= LoadCoreScene;
+
+        playerController = null;
+        objectScheme = null;
+        objectCreator = null;
+        cameraController = null;
+        upgradeSystem = null;
+        coreUI = null;
+
+        SceneManager.LoadScene("MetaGamePlayScene");
     }
     private void SceneCheck(Scene current, Scene next)
     {
         if (SceneManager.GetActiveScene().name == "CoreGamePlayScene")
         {
-            CoreInitializeSystems();
+            CoreInit();
         }
-        else
+        else if (SceneManager.GetActiveScene().name == "MetaGamePlayScene")
         {
-            Debug.LogWarning("This scene is not a CoreGmaPlayScene");
+            MetaInit();
+            Debug.LogWarning("This scene is a MetaGamePlayScene");
         }
     }
 }
