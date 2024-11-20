@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
 using UnityEngine.SceneManagement;
+using UnityEditor;
+using Unity.VisualScripting;
 
 public class GameManager : MonoBehaviour
 {
@@ -39,6 +41,9 @@ public class GameManager : MonoBehaviour
     private CoreUI coreUI;
 
     [SerializeField]
+    private MetaUI metaUI;
+
+    [SerializeField]
     private GameObject quarkPrefab;
 
     public int productSizeX;
@@ -51,6 +56,7 @@ public class GameManager : MonoBehaviour
         {
             Instance = this;
             DontDestroyOnLoad(gameObject);
+            SceneManager.activeSceneChanged += SceneCheck;
             Debug.Log("InstanceCreate");
         }
         else
@@ -58,23 +64,27 @@ public class GameManager : MonoBehaviour
             Destroy(gameObject);
             Debug.Log("Gameobject destoed " + gameObject.name);
         }
-        SceneManager.activeSceneChanged += SceneCheck;
-
     }
 
     private void MetaInit()
     {
-        contractManager = gameObject.GetComponent<ContractManager>();
+        contractManager = gameObject.AddComponent<ContractManager>();
         contractManager.OnContractSelected += LoadCoreScene;
+
+        metaUI = FindObjectOfType<MetaUI>();
+
+        metaUI.Init(globalData.money, globalData.totalExperience);
+        contractManager.Init(metaUI, globalData, quarkPrefab);
     }
 
     private void CoreInit()
     {
-        Quark quark = quarkPrefab.GetComponent<Quark>();
 
+
+        Quark quark = quarkPrefab.GetComponent<Quark>();
         
         //LoadData();
-        //playerData = new PlayerData();
+        playerData = new PlayerData();
         playerController = gameObject.AddComponent<PlayerController>();
         objectScheme = gameObject.AddComponent<ObjectScheme>();
         objectCreator = gameObject.AddComponent<ObjectCreator>();
@@ -117,22 +127,36 @@ public class GameManager : MonoBehaviour
     }
     public void LoadCoreScene(ContractData currentContract)
     {
+        Destroy(contractManager);
+        Destroy(metaUI);
+
         contractData = currentContract;
         SceneManager.LoadScene("CoreGamePlayScene");
     }
 
     public void LoadMetaScene(float exp)
     {
+
         globalData.totalExperience += exp;
         globalData.money += contractData.reward;
-        contractManager.OnContractSelected -= LoadCoreScene;
 
+        Destroy(playerController);
+        Destroy(objectScheme);
+        Destroy(objectCreator);
+        Destroy(cameraController);
+        Destroy(upgradeSystem);
+        Destroy(coreUI);
+
+
+
+        /*
         playerController = null;
         objectScheme = null;
         objectCreator = null;
         cameraController = null;
         upgradeSystem = null;
         coreUI = null;
+        */
 
         SceneManager.LoadScene("MetaGamePlayScene");
     }
@@ -141,11 +165,13 @@ public class GameManager : MonoBehaviour
         if (SceneManager.GetActiveScene().name == "CoreGamePlayScene")
         {
             CoreInit();
+            Debug.LogWarning("This scene is a CoreGamePlayScene" + gameObject.name);
+
         }
         else if (SceneManager.GetActiveScene().name == "MetaGamePlayScene")
         {
             MetaInit();
-            Debug.LogWarning("This scene is a MetaGamePlayScene");
+            Debug.LogWarning("This scene is a MetaGamePlayScene" + gameObject.name);
         }
     }
 }
