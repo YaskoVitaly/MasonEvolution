@@ -1260,9 +1260,35 @@ MonoBehaviour:
   globalData:
     totalExperience: 0
     money: 0
-    newContractTime: 10
+    newContractTime: 600
     maxContracts: 3
+    contractsQueue: 0
     activeContracts: []
+    possibleContracts:
+    - title: Common production
+      description: Create 10 stone blocks
+      quark: {fileID: 7913515013568206170, guid: 88d3d984ebfa580488e4fb4ac137b978, type: 3}
+      count: 10
+      sizeX: 4
+      sizeY: 2
+      sizeZ: 8
+      reward: 10
+    - title: Common production
+      description: Create 20 stone blocks
+      quark: {fileID: 7913515013568206170, guid: 88d3d984ebfa580488e4fb4ac137b978, type: 3}
+      count: 20
+      sizeX: 4
+      sizeY: 2
+      sizeZ: 8
+      reward: 20
+    - title: Common production
+      description: Create 50 stone blocks
+      quark: {fileID: 7913515013568206170, guid: 88d3d984ebfa580488e4fb4ac137b978, type: 3}
+      count: 50
+      sizeX: 4
+      sizeY: 2
+      sizeZ: 8
+      reward: 50
   playerData:
     energyMaxBasic: 10
     energyRegBasic: 1
@@ -1302,6 +1328,7 @@ MonoBehaviour:
     expIncomeUpgradeLevel: 0
   contractData:
     title: 
+    description: 
     quark: {fileID: 0}
     count: 0
     sizeX: 0

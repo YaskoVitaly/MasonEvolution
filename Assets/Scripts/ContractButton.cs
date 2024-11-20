@@ -20,7 +20,7 @@ public class ContractButton : MonoBehaviour
             }
             if (textList[i].name == "Reward")
             {
-                textList[i].text = "Reward: " + cd.reward * cd.count;
+                textList[i].text = "Reward: " + cd.reward;
             }
         }
     }

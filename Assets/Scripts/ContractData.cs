@@ -7,6 +7,7 @@ using UnityEngine;
 public class ContractData
 {
     public string title;
+    public string description;
     public GameObject quark;
     public int count;
     public int sizeX;

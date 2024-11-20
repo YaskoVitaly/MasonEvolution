@@ -68,13 +68,19 @@ public class GameManager : MonoBehaviour
 
     private void MetaInit()
     {
-        contractManager = gameObject.AddComponent<ContractManager>();
-        contractManager.OnContractSelected += LoadCoreScene;
-
         metaUI = FindObjectOfType<MetaUI>();
-
         metaUI.Init(globalData.money, globalData.totalExperience);
-        contractManager.Init(metaUI, globalData, quarkPrefab);
+
+        if (contractManager == null)
+        {
+            contractManager = gameObject.AddComponent<ContractManager>();
+            contractManager.OnContractSelected += LoadCoreScene;
+            contractManager.Init(metaUI, globalData);
+        }
+        else
+        {
+            contractManager.Init(metaUI, globalData);
+        }
     }
 
     private void CoreInit()
@@ -127,7 +133,6 @@ public class GameManager : MonoBehaviour
     }
     public void LoadCoreScene(ContractData currentContract)
     {
-        Destroy(contractManager);
         Destroy(metaUI);
 
         contractData = currentContract;
