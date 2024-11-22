@@ -225,50 +225,59 @@ public class CoreUI : MonoBehaviour
         upgradeSystem.UpgradeExpirienceIncome();
     }
 
-    private void EnegryLimitUpgradePriceChange(int count, float exp, float energyMax)
+    private void EnegryLimitUpgradePriceChange(int count, float exp, float energyMaxCur, float energyMaxNext)
     {
         energyLimitUpgradePriceText.text = "Exp: " + count;
-        energyLimitUpgradeDescriptionText.text = energyMax.ToString("0") + " => " + (energyMax*2).ToString("0");
+        energyLimitUpgradeDescriptionText.text = energyMaxCur.ToString("0") + " => " + (energyMaxNext).ToString("0");
         ExperinceChange(exp);
     }
-    private void EnegryRegenUpgradePriceChange(int count, float exp)
+    private void EnegryRegenUpgradePriceChange(int count, float exp, float energyRegCur, float energyRegNext)
     {
         energyRegenUpgradePriceText.text = "Exp: " + count;
+        energyRegenUpgradeDescriptionText.text = energyRegCur.ToString("0") + " => " + energyRegNext.ToString("0");
         ExperinceChange(exp);
     }
-    private void EnegrySpendUpgradePriceChange(int count, float exp)
+    private void EnegrySpendUpgradePriceChange(int count, float exp, float energySpendCur, float energySpendNext)
     {
         energySpendUpgradePriceText.text = "Exp: " + count;
+        energySpendUpgradeDescriptionText.text = energySpendCur.ToString("0.0") + " => " + energySpendNext.ToString("0.0");
+
         ExperinceChange(exp);
     }
-    private void ForceProductionUpgradePriceChange(int count, float exp)
+    private void ForceProductionUpgradePriceChange(int count, float exp, float workCostCur, float workCostNext, float forceProdCur, float forceProdNext)
     {
         forceProductionUpgradePriceText.text = "Exp: " + count;
+        forceProductionUpgradeDescriptionText.text = workCostCur.ToString("0") + " => " + workCostNext.ToString("0");
         ExperinceChange(exp);
     }
-    private void ForceGenerationUpgradePriceChange(int count, float exp)
+    private void ForceGenerationUpgradePriceChange(int count, float exp, float forceGenCur, float forceGenNext)
     {
         forceGenerationUpgradePriceText.text = "Exp: " + count;
+        forceGenerationUpgradeDescriptionText.text = forceGenCur.ToString("0.0") + " => " + forceGenNext.ToString("0.0");
         ExperinceChange(exp);
     }
-    private void ForceSpendUpgradePriceChange(int count, float exp)
+    private void ForceSpendUpgradePriceChange(int count, float exp, float forceSpendCur, float forceSpendNext)
     {
         forceSpendUpgradePriceText.text = "Exp: " + count;
+        forceSpendUpgradeDescriptionText.text = forceSpendCur.ToString("0.0") + " => " + forceSpendNext.ToString("0.0");
         ExperinceChange(exp);
     }
-    private void ProductionTimeUpgradePriceChange(int count, float exp)
+    private void ProductionTimeUpgradePriceChange(int count, float exp, float prodTimeCur, float prodTimeNext)
     {
         productionTimeUpgradePriceText.text = "Exp: " + count;
+        productionTimeUpgradeDescriptionText.text = prodTimeCur.ToString("0.0") + " => " + prodTimeNext.ToString("0.0");
         ExperinceChange(exp);
     }
-    private void ProductionCountUpgradePriceChange(int count, float exp)
+    private void ProductionCountUpgradePriceChange(int count, float exp, float prodCountCur, float prodCountNext)
     {
         productionCountUpgradePriceText.text = "Exp: " + count;
+        productionCountUpgradeDescriptionText.text = prodCountCur.ToString("0") + " => " + prodCountNext.ToString("0");
         ExperinceChange(exp);
     }
-    private void ExperienceIncomeUpgradePriceChange(int count, float exp)
+    private void ExperienceIncomeUpgradePriceChange(int count, float exp, float expMultCur, float expMultNext)
     {
         experienceIncomeUpgradePriceText.text = "Exp: " + count;
+        experienceIncomeUpgradeDescriptionText.text = expMultCur.ToString("0.0") + " => " + expMultNext.ToString("0.0");
         ExperinceChange(exp);
     }
     #endregion

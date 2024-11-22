@@ -1116,14 +1116,14 @@ MonoBehaviour:
   productionCountUpgradePriceText: {fileID: 1093210022}
   experienceIncomeUpgradePriceText: {fileID: 1194504002}
   energyLimitUpgradeDescriptionText: {fileID: 1875105536}
-  energyRegenUpgradeDescriptionText: {fileID: 0}
-  energySpendUpgradeDescriptionText: {fileID: 0}
-  forceProductionUpgradeDescriptionText: {fileID: 0}
-  forceGenerationUpgradeDescriptionText: {fileID: 0}
-  forceSpendUpgradeDescriptionText: {fileID: 0}
-  productionTimeUpgradeDescriptionText: {fileID: 0}
-  productionCountUpgradeDescriptionText: {fileID: 0}
-  experienceIncomeUpgradeDescriptionText: {fileID: 0}
+  energyRegenUpgradeDescriptionText: {fileID: 592010663}
+  energySpendUpgradeDescriptionText: {fileID: 168551877}
+  forceProductionUpgradeDescriptionText: {fileID: 515934597}
+  forceGenerationUpgradeDescriptionText: {fileID: 562983822}
+  forceSpendUpgradeDescriptionText: {fileID: 623570116}
+  productionTimeUpgradeDescriptionText: {fileID: 1770887814}
+  productionCountUpgradeDescriptionText: {fileID: 933032249}
+  experienceIncomeUpgradeDescriptionText: {fileID: 263138693}
   energyBar: {fileID: 163221234}
   productionBar: {fileID: 181262614}
 --- !u!1 &189490638

@@ -8,6 +8,20 @@ using UnityEngine.UI;
 public class MetaUI : MonoBehaviour
 {
     public Action<int> OnContractSelected;
+    public Action<string> OnResearchSelected;
+
+    public GameObject researchPanel;
+    public Button researchOpenButton;
+
+    public Button energyLimitResearchButton;
+    public Button energyRegenResearchButton;
+    public Button energySpendResearchButton;
+    public Button forceProductionResearchButton;
+    public Button forceGenerationResearchButton;
+    public Button forceSpendResearchButton;
+    public Button productionTimeResearchButton;
+    public Button productionCountResearchButton;
+    public Button experienceIncomeResearchButton;
 
     public GameObject contractButtonPrefab;
     public Transform contractPanel;
@@ -15,7 +29,8 @@ public class MetaUI : MonoBehaviour
     public TextMeshProUGUI experienceText;
 
     public List<GameObject> contractButtons;
-
+    public List<Button> researchButtons;
+    
     public void Init(int money, float exp)
     {
 
@@ -29,5 +44,23 @@ public class MetaUI : MonoBehaviour
         OnContractSelected(index);
     }
 
+    public void SelectResearch(string name)
+    {
+        OnResearchSelected(name);
+    }
+    public void OpenResearchPanel()
+    {
+        if (!researchPanel.activeSelf)
+        {
+            researchPanel.SetActive(true);
+            researchOpenButton.image.sprite = Resources.Load<Sprite>("Sprites/UI/Free Flat Arrow 1 N Icon");
+
+        }
+        else
+        {
+            researchPanel.SetActive(false);
+            researchOpenButton.image.sprite = Resources.Load<Sprite>("Sprites/UI/Free Flat Arrow 1 S Icon");
+        }
+    }
 
 }

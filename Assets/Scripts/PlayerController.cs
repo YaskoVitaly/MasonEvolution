@@ -140,7 +140,11 @@ public class PlayerController : MonoBehaviour
             playerData.forceCur -= totalCost * playerData.forceSpend;
             OnWorked(playerData.forceCur);
             isProduction = true;
-            if(playerData.forceCur < 100)
+
+            OnProductionStarted(playerData.productionTime, currentQuark, totalCost * playerData.experienceMult, playerData.expCur, purchasedQuarks);
+            Debug.Log("Current force: " + playerData.forceCur + " Total cost: " + totalCost * playerData.forceSpend + " - After deducting" + "; Production time: " + playerData.productionTime);
+            /*
+            if (playerData.forceCur < 100)
             {
                 OnProductionStarted(playerData.productionTime, currentQuark, totalCost * playerData.experienceMult, playerData.expCur, purchasedQuarks);
                 Debug.Log("Current force: " + playerData.forceCur + " Total cost: " + totalCost * playerData.forceSpend + " - After deducting" + "; Production time: " + playerData.productionTime);
@@ -160,6 +164,7 @@ public class PlayerController : MonoBehaviour
                 OnProductionStarted(playerData.productionTime / 2, currentQuark, totalCost * playerData.experienceMult, playerData.expCur, purchasedQuarks);
                 Debug.Log("Current force: " + playerData.forceCur + " Total cost: " + totalCost * playerData.forceSpend + " - After deducting" + "; Production time: " + playerData.productionTime / 2);
             }
+            */
             if (creator != null)
                 StopCoroutine(creator);
         }

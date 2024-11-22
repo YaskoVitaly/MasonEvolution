@@ -33,8 +33,8 @@ public class PlayerData
     public float experienceMult;
     public float productionTime;
     public int productionCount;
-    public float expTotal;
 
+    public float expTotal;
     public int completedObjects;
 
     public int energyLimitUpgradeLevel;
@@ -53,8 +53,8 @@ public class PlayerData
         energyRegBasic = 1;
         energySpendBasic = 1;
         forceProdBasic = 1;
-        forceRegBasic = 0;
-        forceTimeBasic = 5;
+        forceRegBasic = 5;
+        forceTimeBasic = 3;
         forceSpendBasic = 1;
         workCostBasic = 1;
         experienceMultBasic = 0.1f;
@@ -88,18 +88,4 @@ public class PlayerData
         expTotal = 0;
         completedObjects = 0;
     }
-
-    /*//ƒоработать при необходимости!
-    public float EnergyMax { get { return energyMax + (energyMax * energyLimitUpgradeLevel); } } //Ќужен баланс
-    public float EnergyCur { get { return energyCur; } } //возможно нет необходимости в хранении. 
-    public float EnergyReg { get { return energyReg + energyRegenerationUpgradeLevel;} }
-    public float EnergySpend { get { return energySpend * (1 - energySpendUpgradeLevel/10);} } //доработать. необходимо снижение текущего показател€ на 10% при каждом повышении уровн€
-    public float ForceProd {  get { return forceProd + forceProductionUpgradeLevel; } }
-    public float ForceCur { get { return forceCur; } }
-    public float ForceReg { get { return forceReg + forceGenerationUpgradeLevel; } } //Check
-    public float ForceTime { get { return forceTime * (1 - forceGenerationUpgradeLevel/10); } }//доработать. необходимо снижение текущего показател€ на 10% при каждом повышении уровн€
-    public float WorkCost { get { return workCost; } }
-    */
-
-
 }

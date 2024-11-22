@@ -85,12 +85,12 @@ public class GameManager : MonoBehaviour
 
     private void CoreInit()
     {
-
-
         Quark quark = quarkPrefab.GetComponent<Quark>();
-        
+
         //LoadData();
-        playerData = new PlayerData();
+
+        PlayerDataInit();
+
         playerController = gameObject.AddComponent<PlayerController>();
         objectScheme = gameObject.AddComponent<ObjectScheme>();
         objectCreator = gameObject.AddComponent<ObjectCreator>();
@@ -108,6 +108,20 @@ public class GameManager : MonoBehaviour
         playerController.OnContractCompleated += LoadMetaScene;
         
         Debug.Log("CoreInit");
+    }
+
+    private void PlayerDataInit()
+    {
+        playerData = new PlayerData();
+        playerData.energyLimitUpgradeLevel = globalData.energyLimitResearchLevel;
+        playerData.energyRegenerationUpgradeLevel = globalData.energyRegenResearchLevel;
+        playerData.energySpendUpgradeLevel = globalData.energySpendResearchLevel;
+        playerData.forceProductionUpgradeLevel = globalData.forceProductionResearchLevel;
+        playerData.forceGenerationUpgradeLevel = globalData.forceAutogenResearchLevel;
+        playerData.forceSpendUpgradeLevel = globalData.forceSpendResearchLevel;
+        playerData.productionTimeUpgradeLevel = globalData.productionSpeedResearchLevel;
+        playerData.productionCountUpgradeLevel = globalData.productionCountResearchLevel;
+        playerData.expIncomeUpgradeLevel = globalData.experienceMultResearchLevel;
     }
 
     public void SaveData()
