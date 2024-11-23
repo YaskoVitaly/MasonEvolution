@@ -609,7 +609,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 154917829}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 165229962}
+        m_TargetAssemblyTypeName: MetaUI, Assembly-CSharp
+        m_MethodName: SelectResearch
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 6
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &154917829
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -692,17 +704,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f440fc243826d4f49a58ca383777016a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  globalData:
+    totalExperience: 0
+    money: 0
+    newContractTime: 600
+    maxContracts: 3
+    activeContracts: []
+    possibleContracts: []
+    allResearches: []
   researchPanel: {fileID: 795111005}
   researchOpenButton: {fileID: 1699923870}
-  energyLimitResearchButton: {fileID: 0}
-  energyRegenResearchButton: {fileID: 0}
-  energySpendResearchButton: {fileID: 0}
-  forceProductionResearchButton: {fileID: 0}
-  forceGenerationResearchButton: {fileID: 0}
-  forceSpendResearchButton: {fileID: 0}
-  productionTimeResearchButton: {fileID: 0}
-  productionCountResearchButton: {fileID: 0}
-  experienceIncomeResearchButton: {fileID: 0}
+  energyLimitResearchButton: {fileID: 168590694}
+  energyRegenResearchButton: {fileID: 1974531490}
+  energySpendResearchButton: {fileID: 245897588}
+  forceProductionResearchButton: {fileID: 303831481}
+  forceGenerationResearchButton: {fileID: 1273460503}
+  forceSpendResearchButton: {fileID: 993392432}
+  productionTimeResearchButton: {fileID: 154917828}
+  productionCountResearchButton: {fileID: 965581204}
+  experienceIncomeResearchButton: {fileID: 667972002}
   contractButtonPrefab: {fileID: 8830396143361190129, guid: 5726c53a34d548d46951639b41f881ee, type: 3}
   contractPanel: {fileID: 678590062}
   moneyText: {fileID: 2114468842}
@@ -794,9 +814,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1935655771}
-        m_TargetAssemblyTypeName: ResearchSystem, Assembly-CSharp
-        m_MethodName: StartResearch
+      - m_Target: {fileID: 165229962}
+        m_TargetAssemblyTypeName: MetaUI, Assembly-CSharp
+        m_MethodName: SelectResearch
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1021,7 +1041,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 245897589}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 165229962}
+        m_TargetAssemblyTypeName: MetaUI, Assembly-CSharp
+        m_MethodName: SelectResearch
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 2
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &245897589
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1143,7 +1175,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 303831482}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 165229962}
+        m_TargetAssemblyTypeName: MetaUI, Assembly-CSharp
+        m_MethodName: SelectResearch
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 3
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &303831482
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1807,7 +1851,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 667972003}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 165229962}
+        m_TargetAssemblyTypeName: MetaUI, Assembly-CSharp
+        m_MethodName: SelectResearch
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 8
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &667972003
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2443,7 +2499,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 965581205}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 165229962}
+        m_TargetAssemblyTypeName: MetaUI, Assembly-CSharp
+        m_MethodName: SelectResearch
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 7
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &965581205
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2565,7 +2633,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 993392433}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 165229962}
+        m_TargetAssemblyTypeName: MetaUI, Assembly-CSharp
+        m_MethodName: SelectResearch
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 5
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &993392433
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3464,7 +3544,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1273460504}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 165229962}
+        m_TargetAssemblyTypeName: MetaUI, Assembly-CSharp
+        m_MethodName: SelectResearch
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 4
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1273460504
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4540,22 +4632,22 @@ MonoBehaviour:
     - {fileID: 11400000, guid: 87c2ef4fe0f84c041af5ccbaddbb8f14, type: 2}
     - {fileID: 11400000, guid: 86ad4d7b5a0b2f04a83c6e3ad91d865a, type: 2}
     - {fileID: 11400000, guid: 296f712b45af5b64eadcadea36b7e613, type: 2}
-    energyLimitResearchLevel: 0
-    energyRegenResearchLevel: 0
-    energySpendResearchLevel: 0
-    forceProductionResearchLevel: 0
-    forceAutogenResearchLevel: 0
-    forceSpendResearchLevel: 0
-    productionSpeedResearchLevel: 0
-    productionCountResearchLevel: 0
-    experienceMultResearchLevel: 0
+    allResearches:
+    - {fileID: 11400000, guid: fe6fa87a0a836c04197af9b8736b0f1d, type: 2}
+    - {fileID: 11400000, guid: f5a340de191b5024fba82837e17507e3, type: 2}
+    - {fileID: 11400000, guid: 8563e8dc54d5d0c4080520ff00132b9e, type: 2}
+    - {fileID: 11400000, guid: 213681fe844fcfb4f96427f657d83a33, type: 2}
+    - {fileID: 11400000, guid: b832e77cc1d343c46a7c3ba6ed325121, type: 2}
+    - {fileID: 11400000, guid: 899cec136b2a7624288c08c7e892aca6, type: 2}
+    - {fileID: 11400000, guid: 5ce68e1296965f24d8c571a26af30493, type: 2}
+    - {fileID: 11400000, guid: e472434fe5d402440a0cabbbc4181ecd, type: 2}
+    - {fileID: 11400000, guid: a6fe2060f2bc08d49b5d2fcd44dba04b, type: 2}
   playerData:
     energyMaxBasic: 10
     energyRegBasic: 1
     energySpendBasic: 1
     forceProdBasic: 1
     forceRegBasic: 0
-    forceTimeBasic: 3
     forceSpendBasic: 1
     workCostBasic: 1
     experienceMultBasic: 0.1
@@ -4568,7 +4660,6 @@ MonoBehaviour:
     forceProd: 1
     forceCur: 100000
     forceReg: 0
-    forceTime: 5
     forceSpend: 1
     workCost: 1
     expCur: 0
@@ -4579,6 +4670,7 @@ MonoBehaviour:
     completedObjects: 0
   contractData: {fileID: 0}
   contractManager: {fileID: 0}
+  researchSystem: {fileID: 0}
   playerController: {fileID: 0}
   objectScheme: {fileID: 0}
   objectCreator: {fileID: 0}
@@ -4602,10 +4694,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5c2aee18320254b488ad4bfab686b124, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  allResearches:
-  - {fileID: 11400000, guid: fe6fa87a0a836c04197af9b8736b0f1d, type: 2}
   activeResearches: []
-  researchButtons: []
   availableResearchSlots: 1
 --- !u!1 &1974531488
 GameObject:
@@ -4690,7 +4779,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1974531491}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 165229962}
+        m_TargetAssemblyTypeName: MetaUI, Assembly-CSharp
+        m_MethodName: SelectResearch
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 1
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1974531491
 MonoBehaviour:
   m_ObjectHideFlags: 0

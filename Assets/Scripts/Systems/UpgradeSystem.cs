@@ -44,7 +44,7 @@ public class UpgradeSystem : MonoBehaviour
         OnForceProductionUpgraded(forceProductionUpgradeCost, playerData.expCur, playerData.workCost, (playerData.workCost + playerData.upgradeLevels["ForceProduction"] + 1), playerData.forceProd, playerData.forceProdBasic + playerData.upgradeLevels["ForceProduction"] + 1);//доработать для отображение затрат энергии на работу
         
         if(playerData.forceReg == 0)
-            OnForceGenerationUpgraded(forceGenerationUpgradeCost, playerData.expCur, 0, playerData.forceReg);
+            OnForceGenerationUpgraded(forceGenerationUpgradeCost, playerData.expCur, 0, playerData.forceRegBasic);
         else
             OnForceGenerationUpgraded(forceGenerationUpgradeCost, playerData.expCur, playerData.forceReg, playerData.forceRegBasic * (float)Math.Pow(0.9f, playerData.upgradeLevels["ForceGeneration"] + 1));
         

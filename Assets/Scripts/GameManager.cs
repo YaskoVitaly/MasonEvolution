@@ -24,6 +24,9 @@ public class GameManager : MonoBehaviour
     private ContractManager contractManager;
 
     [SerializeField]
+    private ResearchSystem researchSystem;
+
+    [SerializeField]
     private PlayerController playerController;
     
     [SerializeField]
@@ -70,7 +73,7 @@ public class GameManager : MonoBehaviour
     private void MetaInit()
     {
         metaUI = FindObjectOfType<MetaUI>();
-        metaUI.Init(globalData.money, globalData.totalExperience);
+        metaUI.Init(globalData);
 
         if (contractManager == null)
         {
@@ -81,6 +84,16 @@ public class GameManager : MonoBehaviour
         else
         {
             contractManager.Init(metaUI, globalData);
+        }
+
+        if(researchSystem == null)
+        {
+            researchSystem = gameObject.AddComponent<ResearchSystem>();
+            researchSystem.Init(metaUI, globalData);
+        }
+        else
+        {
+            researchSystem.Init(metaUI, globalData);
         }
     }
 
