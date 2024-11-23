@@ -35,7 +35,7 @@ public class MetaUI : MonoBehaviour
     {
 
         moneyText.text = "Money: " + money;
-        experienceText.text = "Exp: " + exp;
+        experienceText.text = "Exp: " + exp.ToString("0,0");
         Debug.Log("Money: " + money + "; " + "Exp: " + exp);
     }
 

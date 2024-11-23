@@ -216,7 +216,7 @@ public class PlayerController : MonoBehaviour
             {
                 Work();
             }
-            yield return new WaitForSeconds(playerData.forceTime);
+            yield return new WaitForSeconds(playerData.forceReg);
         }
     }
     public void Work()

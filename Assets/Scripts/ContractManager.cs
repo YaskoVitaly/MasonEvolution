@@ -23,7 +23,7 @@ public class ContractManager : MonoBehaviour
         if(!isGenerated)
         {
             globalData = _globalData;
-            InvokeRepeating(nameof(AddRandomContract), 0f, globalData.newContractTime);
+            InvokeRepeating(nameof(AddRandomContract), globalData.newContractTime, globalData.newContractTime);
             CreateContractButton(globalData.possibleContracts[0]);
             isGenerated = true;
         }
@@ -47,7 +47,7 @@ public class ContractManager : MonoBehaviour
 
         ContractData newContract = new ContractData();
         newContract = globalData.possibleContracts[UnityEngine.Random.Range(0, globalData.possibleContracts.Count)];
-        Debug.Log("Random contract generated: " + newContract.count);
+        Debug.Log("Random contract generated: " + newContract.title);
         globalData.activeContracts.Add(newContract);
         if(metaUI != null)
         {

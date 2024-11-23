@@ -793,7 +793,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 168590695}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1935655771}
+        m_TargetAssemblyTypeName: ResearchSystem, Assembly-CSharp
+        m_MethodName: StartResearch
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &168590695
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4523,33 +4535,11 @@ MonoBehaviour:
     money: 0
     newContractTime: 600
     maxContracts: 3
-    contractsQueue: 0
     activeContracts: []
     possibleContracts:
-    - title: Common production
-      description: Create 10 stone blocks
-      quark: {fileID: 7913515013568206170, guid: 88d3d984ebfa580488e4fb4ac137b978, type: 3}
-      count: 10
-      sizeX: 4
-      sizeY: 2
-      sizeZ: 8
-      reward: 10
-    - title: Common production
-      description: Create 20 stone blocks
-      quark: {fileID: 7913515013568206170, guid: 88d3d984ebfa580488e4fb4ac137b978, type: 3}
-      count: 20
-      sizeX: 4
-      sizeY: 2
-      sizeZ: 8
-      reward: 20
-    - title: Common production
-      description: Create 50 stone blocks
-      quark: {fileID: 7913515013568206170, guid: 88d3d984ebfa580488e4fb4ac137b978, type: 3}
-      count: 50
-      sizeX: 4
-      sizeY: 2
-      sizeZ: 8
-      reward: 50
+    - {fileID: 11400000, guid: 87c2ef4fe0f84c041af5ccbaddbb8f14, type: 2}
+    - {fileID: 11400000, guid: 86ad4d7b5a0b2f04a83c6e3ad91d865a, type: 2}
+    - {fileID: 11400000, guid: 296f712b45af5b64eadcadea36b7e613, type: 2}
     energyLimitResearchLevel: 0
     energyRegenResearchLevel: 0
     energySpendResearchLevel: 0
@@ -4560,6 +4550,17 @@ MonoBehaviour:
     productionCountResearchLevel: 0
     experienceMultResearchLevel: 0
   playerData:
+    energyMaxBasic: 10
+    energyRegBasic: 1
+    energySpendBasic: 1
+    forceProdBasic: 1
+    forceRegBasic: 0
+    forceTimeBasic: 3
+    forceSpendBasic: 1
+    workCostBasic: 1
+    experienceMultBasic: 0.1
+    productionTimeBasic: 10
+    productionCountBasic: 1
     energyMax: 10
     energyCur: 10
     energyReg: 1
@@ -4576,24 +4577,7 @@ MonoBehaviour:
     productionCount: 1
     expTotal: 0
     completedObjects: 0
-    energyLimitUpgradeLevel: 0
-    energyRegenerationUpgradeLevel: 0
-    energySpendUpgradeLevel: 0
-    forceProductionUpgradeLevel: 0
-    forceGenerationUpgradeLevel: 0
-    forceSpendUpgradeLevel: 0
-    productionTimeUpgradeLevel: 0
-    productionCountUpgradeLevel: 0
-    expIncomeUpgradeLevel: 0
-  contractData:
-    title: 
-    description: 
-    quark: {fileID: 0}
-    count: 0
-    sizeX: 0
-    sizeY: 0
-    sizeZ: 0
-    reward: 0
+  contractData: {fileID: 0}
   contractManager: {fileID: 0}
   playerController: {fileID: 0}
   objectScheme: {fileID: 0}
@@ -4618,15 +4602,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5c2aee18320254b488ad4bfab686b124, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  basicResearches:
-  - name: Energy limit
-    description: Encreases the base level of energy limit upgrade
-    level: 1
-    maxLevel: 10
-    costCurrency: 10
-    costExperience: 10
-    time: 60
-    isCompleted: 0
+  allResearches:
+  - {fileID: 11400000, guid: fe6fa87a0a836c04197af9b8736b0f1d, type: 2}
+  activeResearches: []
+  researchButtons: []
   availableResearchSlots: 1
 --- !u!1 &1974531488
 GameObject:

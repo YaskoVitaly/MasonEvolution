@@ -1,0 +1,56 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b9de4b8b3d52d524c873bd8696c13554, type: 3}
+  m_Name: EnergyLimitResearchData
+  m_EditorClassIdentifier: 
+  ResearchName: EnergyLimit
+  Levels:
+  - Level: 1
+    CostCurrency: 10
+    CostExperience: 10
+    TimeRequired: 60
+  - Level: 2
+    CostCurrency: 20
+    CostExperience: 50
+    TimeRequired: 120
+  - Level: 0
+    CostCurrency: 0
+    CostExperience: 0
+    TimeRequired: 0
+  - Level: 0
+    CostCurrency: 0
+    CostExperience: 0
+    TimeRequired: 0
+  - Level: 0
+    CostCurrency: 0
+    CostExperience: 0
+    TimeRequired: 0
+  - Level: 0
+    CostCurrency: 0
+    CostExperience: 0
+    TimeRequired: 0
+  - Level: 0
+    CostCurrency: 0
+    CostExperience: 0
+    TimeRequired: 0
+  - Level: 0
+    CostCurrency: 0
+    CostExperience: 0
+    TimeRequired: 0
+  - Level: 0
+    CostCurrency: 0
+    CostExperience: 0
+    TimeRequired: 0
+  - Level: 0
+    CostCurrency: 0
+    CostExperience: 0
+    TimeRequired: 0

@@ -2,10 +2,12 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static ResearchData;
 
-[Serializable]
-public class ContractData
+[CreateAssetMenu(fileName = "ContractData", menuName = "Contract/ContractData", order = 2)]
+public class ContractData : ScriptableObject
 {
+    public string type;
     public string title;
     public string description;
     public GameObject quark;

@@ -247,7 +247,7 @@ public class CoreUI : MonoBehaviour
     private void ForceProductionUpgradePriceChange(int count, float exp, float workCostCur, float workCostNext, float forceProdCur, float forceProdNext)
     {
         forceProductionUpgradePriceText.text = "Exp: " + count;
-        forceProductionUpgradeDescriptionText.text = workCostCur.ToString("0") + " => " + workCostNext.ToString("0");
+        forceProductionUpgradeDescriptionText.text = forceProdCur.ToString("0") + " => " + forceProdNext.ToString("0");
         ExperinceChange(exp);
     }
     private void ForceGenerationUpgradePriceChange(int count, float exp, float forceGenCur, float forceGenNext)

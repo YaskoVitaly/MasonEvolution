@@ -11,7 +11,6 @@ public class PlayerData
     public float energySpendBasic;
     public float forceProdBasic;
     public float forceRegBasic;
-    public float forceTimeBasic;
     public float forceSpendBasic;
     public float workCostBasic;
     public float experienceMultBasic;
@@ -26,7 +25,6 @@ public class PlayerData
     public float forceProd;
     public float forceCur;
     public float forceReg;
-    public float forceTime;
     public float forceSpend;
     public float workCost;
     public float expCur;
@@ -36,16 +34,8 @@ public class PlayerData
 
     public float expTotal;
     public int completedObjects;
-
-    public int energyLimitUpgradeLevel;
-    public int energyRegenerationUpgradeLevel;
-    public int energySpendUpgradeLevel;
-    public int forceProductionUpgradeLevel;
-    public int forceGenerationUpgradeLevel;
-    public int forceSpendUpgradeLevel;
-    public int productionTimeUpgradeLevel;
-    public int productionCountUpgradeLevel;
-    public int expIncomeUpgradeLevel;
+    
+    public Dictionary<string, int> upgradeLevels = new Dictionary<string, int>();
 
     public PlayerData()
     {
@@ -54,37 +44,36 @@ public class PlayerData
         energySpendBasic = 1;
         forceProdBasic = 1;
         forceRegBasic = 5;
-        forceTimeBasic = 3;
         forceSpendBasic = 1;
         workCostBasic = 1;
         experienceMultBasic = 0.1f;
         productionTimeBasic = 10;
         productionCountBasic = 1;
 
-        energyLimitUpgradeLevel = 0;
-        energyRegenerationUpgradeLevel = 0;
-        energySpendUpgradeLevel = 0;
-        forceProductionUpgradeLevel = 0;
-        forceGenerationUpgradeLevel = 0;
-        forceSpendUpgradeLevel = 0;
-        productionTimeUpgradeLevel = 0;
-        productionCountUpgradeLevel = 0;
-        expIncomeUpgradeLevel = 0;
+        upgradeLevels["EnergyLimit"] = 0;
+        upgradeLevels["EnergyRegeneration"] = 0;
+        upgradeLevels["EnergySpend"] = 0;
+        upgradeLevels["ForceProduction"] = 0;
+        upgradeLevels["ForceGeneration"] = 0;
+        upgradeLevels["ForceSpend"] = 0;
+        upgradeLevels["ProductionSpeed"] = 0;
+        upgradeLevels["ProductionCount"] = 0;
+        upgradeLevels["ExperienceMult"] = 0;
+        
 
-        energyMax = energyMaxBasic * (energyLimitUpgradeLevel + 1);
+        energyMax = energyMaxBasic * (upgradeLevels["EnergyLimit"] + 1);
         energyCur = energyMax;
-        energyReg = energyRegBasic += energyRegenerationUpgradeLevel;
-        energySpend = energySpendBasic - energySpendUpgradeLevel / 10; //Проверить надо
-        forceProd = forceProdBasic += forceProductionUpgradeLevel;
+        energyReg = energyRegBasic += upgradeLevels["EnergyRegeneration"];
+        energySpend = energySpendBasic - upgradeLevels["EnergySpend"] / 10; //Проверить надо
+        forceProd = forceProdBasic += upgradeLevels["ForceProduction"];
         forceCur = 0;
-        forceReg = forceGenerationUpgradeLevel;
-        forceTime = forceTimeBasic * (1 - energyRegenerationUpgradeLevel / 10); //Проверить надо
-        forceSpend = forceSpendBasic - forceSpendUpgradeLevel / 10; //Проверить надо
+        forceReg = upgradeLevels["ForceGeneration"];
+        forceSpend = forceSpendBasic - upgradeLevels["ForceSpend"] / 10; //Проверить надо
         workCost = workCostBasic;
         expCur = 0;
         experienceMult = experienceMultBasic; //нужно доработать
         productionTime = productionTimeBasic; //нужно доработать
-        productionCount = productionCountBasic + productionCountUpgradeLevel;
+        productionCount = productionCountBasic + upgradeLevels["ProductionCount"];
         expTotal = 0;
         completedObjects = 0;
     }
