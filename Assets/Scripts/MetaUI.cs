@@ -8,11 +8,15 @@ using UnityEngine.UI;
 public class MetaUI : MonoBehaviour
 {
     public Action<int> OnContractSelected;
-    public Action<int> OnResearchSelected;
+    public Action<string> OnResearchSelected;
 
     public GlobalData globalData;
+    public ResearchSystem researchSystem;
 
     public GameObject researchPanel;
+
+    public Image researchFrame;
+
     public Button researchOpenButton;
 
     public Button energyLimitResearchButton;
@@ -31,25 +35,78 @@ public class MetaUI : MonoBehaviour
     public TextMeshProUGUI experienceText;
 
     public List<GameObject> contractButtons;
-    public List<Button> researchButtons;
     
-    public void Init(GlobalData _globalData)
+    public void Init(GlobalData _globalData, ResearchSystem _researchSystem)
     {
         globalData = _globalData;
+        researchSystem = _researchSystem;
         moneyText.text = "Money: " + globalData.money;
         experienceText.text = "Exp: " + globalData.totalExperience.ToString("0,0");
+        researchSystem.OnResearchUpdated += UpdateBasicResearchButton;
+        researchSystem.OnResearchStarted += UpdateResearchFrame;
+        researchSystem.OnResearchProcessed += UpdateResearchFrame;
+    }
 
-        /*ƒоработать активацию/деактивацию кнопок в зависимости от ресурсов и стоимости исследовани€
-        CheckResearchButtonPrice(globalData.money, globalData.totalExperience, energyLimitResearchButton, upgradeSystem.energyMaxUpgradeCost);
-        CheckResearchButtonPrice(globalData.money, globalData.totalExperience, energyRegenResearchButton, upgradeSystem.energyRegUpgradeCost);
-        CheckResearchButtonPrice(globalData.money, globalData.totalExperience, energySpendResearchButton, upgradeSystem.energySpendUpgradeCost);
-        CheckResearchButtonPrice(globalData.money, globalData.totalExperience, forceProductionResearchButton, upgradeSystem.forceProductionUpgradeCost);
-        CheckResearchButtonPrice(globalData.money, globalData.totalExperience, forceGenerationResearchButton, upgradeSystem.forceGenerationUpgradeCost);
-        CheckResearchButtonPrice(globalData.money, globalData.totalExperience, forceSpendResearchButton, upgradeSystem.forceSpendUpgradeCost);
-        CheckResearchButtonPrice(globalData.money, globalData.totalExperience, productionTimeResearchButton, upgradeSystem.productionTimeUpgradeCost);
-        CheckResearchButtonPrice(globalData.money, globalData.totalExperience, productionCountResearchButton, upgradeSystem.productionCountUpgradeCost);
-        CheckResearchButtonPrice(globalData.money, globalData.totalExperience, experienceIncomeResearchButton, upgradeSystem.expIncomeUpgradeCost);
-        */
+    public void Unsubscribe()
+    {
+        researchSystem.OnResearchUpdated -= UpdateBasicResearchButton;
+        researchSystem.OnResearchStarted -= UpdateResearchFrame;
+        researchSystem.OnResearchProcessed -= UpdateResearchFrame;
+    }
+
+    private void CheckResearchButtonPrice(Button button, float expCost, float moneyCost)
+    {
+        if(globalData.money >= moneyCost && globalData.totalExperience >= expCost)
+        {
+            button.interactable = true;
+        }
+        else
+        {
+            button.interactable = false;
+        }
+    }
+
+    private void UpdateResearchFrame(ResearchData rd, float currentTime)
+    {
+        researchFrame.fillAmount = currentTime / rd.levels[rd.currentLevel].timeRequired;
+    }
+
+    private void UpdateBasicResearchButton(ResearchData research)
+    {
+        switch (research.researchName)
+        {
+            case "EnergyLimit":
+                CheckResearchButtonPrice(energyLimitResearchButton, research.levels[research.currentLevel].costExperience, research.levels[research.currentLevel].costCurrency);
+                Debug.Log(energyLimitResearchButton);
+                Debug.Log(research.levels[research.currentLevel].costExperience + " =? " + globalData.totalExperience);
+                Debug.Log(research.levels[research.currentLevel].costCurrency + " =? " + globalData.money);
+
+                break;
+            case "EnergyRegeneration":
+                CheckResearchButtonPrice(energyRegenResearchButton, research.levels[research.currentLevel].costExperience, research.levels[research.currentLevel].costCurrency);
+                break;
+            case "EnergySpend":
+                CheckResearchButtonPrice(energySpendResearchButton, research.levels[research.currentLevel].costExperience, research.levels[research.currentLevel].costCurrency);
+                break;
+            case "ForceProduction":
+                CheckResearchButtonPrice(forceProductionResearchButton, research.levels[research.currentLevel].costExperience, research.levels[research.currentLevel].costCurrency);
+                break;
+            case "ForceGeneration":
+                CheckResearchButtonPrice(forceGenerationResearchButton, research.levels[research.currentLevel].costExperience, research.levels[research.currentLevel].costCurrency);
+                break;
+            case "ForceSpend":
+                CheckResearchButtonPrice(forceSpendResearchButton, research.levels[research.currentLevel].costExperience, research.levels[research.currentLevel].costCurrency);
+                break;
+            case "ProductionSpeed":
+                CheckResearchButtonPrice(productionTimeResearchButton, research.levels[research.currentLevel].costExperience, research.levels[research.currentLevel].costCurrency);
+                break;
+            case "ProductionCount":
+                CheckResearchButtonPrice(productionCountResearchButton, research.levels[research.currentLevel].costExperience, research.levels[research.currentLevel].costCurrency);
+                break;
+            case "ExperienceMult":
+                CheckResearchButtonPrice(experienceIncomeResearchButton, research.levels[research.currentLevel].costExperience, research.levels[research.currentLevel].costCurrency);
+                break;
+        }
     }
 
     public void SelectContract(int index)
@@ -57,30 +114,23 @@ public class MetaUI : MonoBehaviour
         OnContractSelected(index);
     }
 
-    public void SelectResearch(int index)
+    public void SelectResearch(string researchName)
     {
-        OnResearchSelected(index);
+        if(researchSystem.availableResearchSlots > 0)
+        {
+            researchSystem.StartResearch(researchName);
+        }
     }
-    private void CheckResearchButtonPrice(float valueMoney, float valueExp, Button button, int upgradePriceMoney, float upgradePriceExp)
-    {
-        if (valueMoney < upgradePriceMoney || valueExp < upgradePriceExp)
-            button.interactable = false;
-        else
-            button.interactable = true;
-
-    }
+    
     public void OpenResearchPanel()
     {
         if (!researchPanel.activeSelf)
         {
             researchPanel.SetActive(true);
-            researchOpenButton.image.sprite = Resources.Load<Sprite>("Sprites/UI/Free Flat Arrow 1 N Icon");
-
         }
         else
         {
             researchPanel.SetActive(false);
-            researchOpenButton.image.sprite = Resources.Load<Sprite>("Sprites/UI/Free Flat Arrow 1 S Icon");
         }
     }
 

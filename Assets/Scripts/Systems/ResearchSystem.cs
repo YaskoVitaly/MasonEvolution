@@ -6,44 +6,47 @@ using UnityEngine.UI;
 
 public class ResearchSystem : MonoBehaviour
 {
-    [Serializable]
-    public class ActiveResearch
-    {
-        public ResearchData research;
-        public int currentLevel;
-        public bool isCompleted;
-    }
+    public Action<ResearchData, float> OnResearchStarted;
+    public Action<ResearchData> OnResearchUpdated;
+    public Action<ResearchData, float> OnResearchProcessed;
 
-    private MetaUI metaUI;
     private GlobalData globalData;
+    private MetaUI metaUI;
 
+    public List<ResearchData> activeResearches = new List<ResearchData>();
 
-    public List<ActiveResearch> activeResearches = new List<ActiveResearch>();
+    private float researchTimer;
+    public int availableResearchSlots;
 
-    public int availableResearchSlots = 1;
-
-    public void Init(MetaUI _metaUI, GlobalData _globalData)
+    public void Init(GlobalData _globalData, MetaUI _metaUI)
     {
-        metaUI = _metaUI;
         globalData = _globalData;
+        metaUI = _metaUI;
 
+        availableResearchSlots = globalData.activeResearchSlots;
 
         if (activeResearches.Count == 0)
         {
-            foreach (var researchData in globalData.allResearches)
+            foreach (ResearchData researchData in globalData.allResearches)
             {
                 Debug.Log("research" + researchData.name);
-                activeResearches.Add(new ActiveResearch
-                {
-                    research = researchData,
-                    currentLevel = 0,
-                    isCompleted = false
-                });
+                activeResearches.Add(researchData);
             }
         }
-        metaUI.OnResearchSelected += StartResearch;
     }
-    public void StartResearch(int researchIndex)
+
+    public void ResearchesUIUpdate()
+    {
+        if(metaUI != null)
+        {
+            foreach (ResearchData researchData in activeResearches)
+            {
+                OnResearchUpdated(researchData);
+            }
+        }
+    }
+
+    public void StartResearch(string researchName)
     {
         if (availableResearchSlots <= 0)
         {
@@ -51,48 +54,65 @@ public class ResearchSystem : MonoBehaviour
         }
         else
         {
-            ActiveResearch research = activeResearches[researchIndex];
-
-            if (research.isCompleted || research.currentLevel >= research.research.levels.Count)
+            foreach(ResearchData rd in activeResearches)
             {
-                Debug.Log("Research is already at max level or completed!");
-            }
-            else
-            {
-                ResearchData.ResearchLevel levelData = research.research.levels[research.currentLevel];
-                if (globalData.money >= levelData.costCurrency && globalData.totalExperience >= levelData.costExperience)
+                if(rd.researchName == researchName)
                 {
-                    globalData.money -= levelData.costCurrency;
-                    globalData.totalExperience -= levelData.costExperience;
+                    if (rd.isCompleted || rd.currentLevel >= rd.levels.Count)
+                    {
+                        Debug.Log("Research is already at max level or completed!");
+                    }
+                    else
+                    {
+                        ResearchData.ResearchLevel levelData = rd.levels[rd.currentLevel];
+                        if (globalData.money >= levelData.costCurrency && globalData.totalExperience >= levelData.costExperience)
+                        {
+                            globalData.money -= levelData.costCurrency;
+                            globalData.totalExperience -= levelData.costExperience;
 
-                    availableResearchSlots--;
-                    StartCoroutine(ResearchProcess(research));
-                }
-                else
-                {
-                    Debug.Log("Not enough resources!");
+                            availableResearchSlots--;
+                            researchTimer = 0;
+                            if(metaUI != null)
+                            {
+                                OnResearchStarted(rd, researchTimer);
+                                OnResearchUpdated(rd);
+                            }
+                            StartCoroutine(ResearchProcess(rd));
+                        }
+                        else
+                        {
+                            Debug.Log("Not enough resources!");
+                        }
+                    }
                 }
             }
-
-            
         }
     }
-    private IEnumerator ResearchProcess(ActiveResearch research)
+    private IEnumerator ResearchProcess(ResearchData research)
     {
-        ResearchData.ResearchLevel levelData = research.research.levels[research.currentLevel];
-        Debug.Log($"Research '{research.research.researchName}' started...");
-        yield return new WaitForSeconds(levelData.timeRequired);
-
+        while (researchTimer < research.levels[research.currentLevel].timeRequired)
+        {
+            ResearchData.ResearchLevel levelData = research.levels[research.currentLevel];
+            //Debug.Log($"Research '{research.researchName}' started...");
+            researchTimer++;
+            if(metaUI != null)
+            {
+                OnResearchProcessed(research, researchTimer);
+            }
+            yield return new WaitForSeconds(1);
+        }
         research.currentLevel++;
-        globalData.researchLevels[research.research.researchName] = research.currentLevel;
+        globalData.researchLevels[research.researchName] = research.currentLevel;
 
-        if (research.currentLevel >= research.research.levels.Count)
+        if (research.currentLevel >= research.levels.Count)
         {
             research.isCompleted = true;
         }
-
+        if(metaUI != null)
+        {
+            OnResearchUpdated(research);
+        }
         availableResearchSlots++;
-
-        Debug.Log($"Research '{research.research.researchName}' completed! New Level: {research.currentLevel}");
+        Debug.Log($"Research '{research.researchName}' completed! New Level: {research.currentLevel}");
     }
 }

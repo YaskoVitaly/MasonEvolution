@@ -14,6 +14,8 @@ public class GlobalData
     public List<ContractData> possibleContracts = new List<ContractData>();
     public List<ResearchData> allResearches = new List<ResearchData>();
 
+    public int activeResearchSlots;
+
 
     /*
     public int energyLimitResearchLevel;
@@ -36,6 +38,7 @@ public class GlobalData
         money = 0;
         newContractTime = 600;
         maxContracts = 3;
+        activeResearchSlots = 1;
 
         researchLevels["EnergyLimit"] = 0;
         researchLevels["EnergyRegeneration"] = 0;

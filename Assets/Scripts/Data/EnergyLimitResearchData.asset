@@ -13,6 +13,8 @@ MonoBehaviour:
   m_Name: EnergyLimitResearchData
   m_EditorClassIdentifier: 
   researchName: EnergyLimit
+  currentLevel: 0
+  isCompleted: 0
   levels:
   - level: 1
     costCurrency: 10

@@ -15,5 +15,8 @@ public class ResearchData : ScriptableObject
     }
 
     public string researchName;
+    public int currentLevel;
+    public bool isCompleted;
     public List<ResearchLevel> levels = new List<ResearchLevel>();
+
 }

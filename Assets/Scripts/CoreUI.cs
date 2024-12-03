@@ -9,6 +9,7 @@ public class CoreUI : MonoBehaviour
 {
     public Action<int> OnQuarkGenerated;
     public Action<int, int, float, List<Quark>> OnProductionFinished;
+    public Action<float> OnMetaLoaded;
 
     private ObjectCreator objectCreator;
     private PlayerController playerController;
@@ -314,5 +315,10 @@ public class CoreUI : MonoBehaviour
             timerText.text = timer.ToString("0.00");
             yield return new WaitForEndOfFrame();
         }
+    }
+
+    public void LoadMeta()
+    {
+        OnMetaLoaded(playerData.expTotal/100);
     }
 }

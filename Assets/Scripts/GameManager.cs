@@ -60,21 +60,34 @@ public class GameManager : MonoBehaviour
         {
             Instance = this;
             DontDestroyOnLoad(gameObject);
-            SceneManager.activeSceneChanged += SceneCheck;
             Debug.Log("InstanceCreate");
         }
         else
         {
+            Destroy(this);
             Destroy(gameObject);
             Debug.Log("Gameobject destoed " + gameObject.name);
+        }
+    }
+    private void Start()
+    {
+        SceneManager.activeSceneChanged += SceneCheck;
+        if (SceneManager.GetActiveScene().name == "CoreGamePlayScene")
+        {
+            CoreInit();
+            Debug.LogWarning("This scene is a CoreGamePlayScene" + gameObject.name);
+
+        }
+        else if (SceneManager.GetActiveScene().name == "MetaGamePlayScene")
+        {
+            MetaInit();
+            Debug.LogWarning("This scene is a MetaGamePlayScene" + gameObject.name);
         }
     }
 
     private void MetaInit()
     {
         metaUI = FindObjectOfType<MetaUI>();
-        metaUI.Init(globalData);
-
         if (contractManager == null)
         {
             contractManager = gameObject.AddComponent<ContractManager>();
@@ -86,15 +99,19 @@ public class GameManager : MonoBehaviour
             contractManager.Init(metaUI, globalData);
         }
 
-        if(researchSystem == null)
+        if (researchSystem == null)
         {
             researchSystem = gameObject.AddComponent<ResearchSystem>();
-            researchSystem.Init(metaUI, globalData);
+            researchSystem.Init(globalData, metaUI);
         }
         else
         {
-            researchSystem.Init(metaUI, globalData);
+            researchSystem.Init(globalData, metaUI);
         }
+
+        metaUI.Init(globalData, researchSystem);
+        researchSystem.ResearchesUIUpdate();
+
     }
 
     private void CoreInit()
@@ -120,6 +137,7 @@ public class GameManager : MonoBehaviour
         cameraController.Init(Camera.main, new Vector3(productSizeX/2 * quark.size, productSizeY/2 * quark.size, productSizeZ/2 * quark.size));//Откорректировать фокус камеры. Добавить управление камерой (вращение вокруг объекта, приближение/отдаление).
 
         playerController.OnContractCompleated += LoadMetaScene;
+        coreUI.OnMetaLoaded += LoadMetaScene;
         
         Debug.Log("CoreInit");
     }
@@ -210,8 +228,8 @@ public class GameManager : MonoBehaviour
     }
     public void LoadCoreScene(ContractData currentContract)
     {
-        Destroy(metaUI);
-
+        metaUI.Unsubscribe();
+        Destroy(metaUI.gameObject);
         contractData = currentContract;
         SceneManager.LoadScene("CoreGamePlayScene");
     }
