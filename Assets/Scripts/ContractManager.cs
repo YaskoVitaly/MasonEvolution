@@ -24,7 +24,10 @@ public class ContractManager : MonoBehaviour
         {
             globalData = _globalData;
             InvokeRepeating(nameof(AddRandomContract), globalData.newContractTime, globalData.newContractTime);
-            CreateContractButton(globalData.possibleContracts[0]);
+            if(globalData.activeContracts.Count < globalData.maxContracts)
+            {
+                CreateContractButton(globalData.possibleContracts[0]);
+            }
             isGenerated = true;
         }
         else

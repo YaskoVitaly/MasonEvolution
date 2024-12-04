@@ -71,6 +71,7 @@ public class GameManager : MonoBehaviour
     }
     private void Start()
     {
+        LoadData();
         SceneManager.activeSceneChanged += SceneCheck;
         if (SceneManager.GetActiveScene().name == "CoreGamePlayScene")
         {
@@ -111,7 +112,6 @@ public class GameManager : MonoBehaviour
 
         metaUI.Init(globalData, researchSystem);
         researchSystem.ResearchesUIUpdate();
-
     }
 
     private void CoreInit()
@@ -207,27 +207,28 @@ public class GameManager : MonoBehaviour
 
     public void SaveData()
     {
-        string json = JsonUtility.ToJson(playerData);
-        File.WriteAllText(Application.persistentDataPath + "/playerData.json", json);
+        string json = JsonUtility.ToJson(globalData);
+        File.WriteAllText(Application.persistentDataPath + "/globalData.json", json);
     }
 
     public void LoadData()
     {
-        string path = Application.persistentDataPath + "/playerData.json";
+        string path = Application.persistentDataPath + "/globalData.json";
         if (File.Exists(path))
         {
             string json = File.ReadAllText(path);
-            playerData = JsonUtility.FromJson<PlayerData>(json);
-            Debug.Log("PlayerData loaded");
+            globalData = JsonUtility.FromJson<GlobalData>(json);
+            Debug.Log("GlobalData loaded");
         }
-        else
+        else if (globalData == null)
         {
-            playerData = new PlayerData();
-            Debug.Log("PlayerData new");
+            globalData = new GlobalData();
+            Debug.Log("GlobalData new");
         }
     }
     public void LoadCoreScene(ContractData currentContract)
     {
+        SaveData();
         metaUI.Unsubscribe();
         Destroy(metaUI.gameObject);
         contractData = currentContract;
@@ -273,5 +274,9 @@ public class GameManager : MonoBehaviour
             MetaInit();
             Debug.LogWarning("This scene is a MetaGamePlayScene" + gameObject.name);
         }
+    }
+    public void ApplicationQuit()
+    {
+        SaveData();
     }
 }

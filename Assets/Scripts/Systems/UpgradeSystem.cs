@@ -17,10 +17,10 @@ public class UpgradeSystem : MonoBehaviour
 
     public int energyMaxUpgradeCost = 2;
     public int energyRegUpgradeCost = 1;
-    public int energySpendUpgradeCost = 4;
+    public int energySpendUpgradeCost = 5;
     public int forceProductionUpgradeCost = 2;
     public int forceGenerationUpgradeCost = 3;
-    public int forceSpendUpgradeCost = 4;
+    public int forceSpendUpgradeCost = 5;
     public int productionTimeUpgradeCost = 3;
     public int productionCountUpgradeCost = 3;
     public int expIncomeUpgradeCost = 4;
@@ -130,9 +130,9 @@ public class UpgradeSystem : MonoBehaviour
             }
             else
             {
-                playerData.upgradeLevels["ForceGeneration"]++;
                 playerData.forceReg = playerData.forceRegBasic * (float)Math.Pow(0.9f, playerData.upgradeLevels["ForceGeneration"]);
-                OnForceGenerationUpgraded(forceGenerationUpgradeCost, playerData.expCur, playerData.forceReg, playerData.forceRegBasic * (float)Math.Pow(0.9f, playerData.upgradeLevels["ForceGeneration"] + 1));
+                playerData.upgradeLevels["ForceGeneration"]++;
+                OnForceGenerationUpgraded(forceGenerationUpgradeCost, playerData.expCur, playerData.forceReg, playerData.forceRegBasic * (float)Math.Pow(0.9f, playerData.upgradeLevels["ForceGeneration"]));
             }
         }
     }

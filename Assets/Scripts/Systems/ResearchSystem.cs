@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 public class ResearchSystem : MonoBehaviour
 {
-    public Action<ResearchData, float> OnResearchStarted;
+    public Action OnResearchStarted;
     public Action<ResearchData> OnResearchUpdated;
     public Action<ResearchData, float> OnResearchProcessed;
 
@@ -30,6 +30,10 @@ public class ResearchSystem : MonoBehaviour
             foreach (ResearchData researchData in globalData.allResearches)
             {
                 Debug.Log("research" + researchData.name);
+                if(globalData.researchLevels.ContainsKey(researchData.researchName))
+                {
+                    researchData.currentLevel = globalData.researchLevels[researchData.researchName];
+                }
                 activeResearches.Add(researchData);
             }
         }
@@ -74,7 +78,7 @@ public class ResearchSystem : MonoBehaviour
                             researchTimer = 0;
                             if(metaUI != null)
                             {
-                                OnResearchStarted(rd, researchTimer);
+                                OnResearchStarted();
                                 OnResearchUpdated(rd);
                             }
                             StartCoroutine(ResearchProcess(rd));

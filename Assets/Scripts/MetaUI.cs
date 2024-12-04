@@ -29,6 +29,7 @@ public class MetaUI : MonoBehaviour
     public Button productionCountResearchButton;
     public Button experienceIncomeResearchButton;
 
+
     public GameObject contractButtonPrefab;
     public Transform contractPanel;
     public TextMeshProUGUI moneyText;
@@ -41,22 +42,36 @@ public class MetaUI : MonoBehaviour
         globalData = _globalData;
         researchSystem = _researchSystem;
         moneyText.text = "Money: " + globalData.money;
-        experienceText.text = "Exp: " + globalData.totalExperience.ToString("0,0");
-        researchSystem.OnResearchUpdated += UpdateBasicResearchButton;
-        researchSystem.OnResearchStarted += UpdateResearchFrame;
+        experienceText.text = "Exp: " + globalData.totalExperience.ToString("0");
+        researchSystem.OnResearchUpdated += UpdateBasicResearchButtons;
+        researchSystem.OnResearchStarted += UpdateResources;
         researchSystem.OnResearchProcessed += UpdateResearchFrame;
     }
 
     public void Unsubscribe()
     {
-        researchSystem.OnResearchUpdated -= UpdateBasicResearchButton;
-        researchSystem.OnResearchStarted -= UpdateResearchFrame;
+        researchSystem.OnResearchUpdated -= UpdateBasicResearchButtons;
+        researchSystem.OnResearchStarted -= UpdateResources;
         researchSystem.OnResearchProcessed -= UpdateResearchFrame;
     }
 
-    private void CheckResearchButtonPrice(Button button, float expCost, float moneyCost)
+    private void UpdateResources()
     {
-        if(globalData.money >= moneyCost && globalData.totalExperience >= expCost)
+        moneyText.text = "Money: " + globalData.money;
+        experienceText.text = "Exp: " + globalData.totalExperience.ToString("0");
+    }
+
+    private void UpdateResearchButton(Button button, ResearchData research)
+    {
+        ResearchButton researchButton = button.GetComponent<ResearchButton>();
+        researchButton.title.text = research.researchName + " \nresearch";
+        researchButton.description.text = "Level: " + research.currentLevel.ToString();
+        researchButton.priceMoney.text = "Money: " +  research.levels[research.currentLevel].costCurrency.ToString();
+        researchButton.priceExp.text = "Exp: " + research.levels[research.currentLevel].costExperience.ToString();
+        researchButton.time.text = "Time: " + research.levels[research.currentLevel].timeRequired / 60;
+
+
+        if (globalData.money >= research.levels[research.currentLevel].costCurrency && globalData.totalExperience >= research.levels[research.currentLevel].costExperience)
         {
             button.interactable = true;
         }
@@ -71,40 +86,36 @@ public class MetaUI : MonoBehaviour
         researchFrame.fillAmount = currentTime / rd.levels[rd.currentLevel].timeRequired;
     }
 
-    private void UpdateBasicResearchButton(ResearchData research)
+    private void UpdateBasicResearchButtons(ResearchData research)
     {
         switch (research.researchName)
         {
             case "EnergyLimit":
-                CheckResearchButtonPrice(energyLimitResearchButton, research.levels[research.currentLevel].costExperience, research.levels[research.currentLevel].costCurrency);
-                Debug.Log(energyLimitResearchButton);
-                Debug.Log(research.levels[research.currentLevel].costExperience + " =? " + globalData.totalExperience);
-                Debug.Log(research.levels[research.currentLevel].costCurrency + " =? " + globalData.money);
-
+                UpdateResearchButton(energyLimitResearchButton, research);
                 break;
             case "EnergyRegeneration":
-                CheckResearchButtonPrice(energyRegenResearchButton, research.levels[research.currentLevel].costExperience, research.levels[research.currentLevel].costCurrency);
+                UpdateResearchButton(energyRegenResearchButton, research);
                 break;
             case "EnergySpend":
-                CheckResearchButtonPrice(energySpendResearchButton, research.levels[research.currentLevel].costExperience, research.levels[research.currentLevel].costCurrency);
+                UpdateResearchButton(energySpendResearchButton, research);
                 break;
             case "ForceProduction":
-                CheckResearchButtonPrice(forceProductionResearchButton, research.levels[research.currentLevel].costExperience, research.levels[research.currentLevel].costCurrency);
+                UpdateResearchButton(forceProductionResearchButton, research);
                 break;
             case "ForceGeneration":
-                CheckResearchButtonPrice(forceGenerationResearchButton, research.levels[research.currentLevel].costExperience, research.levels[research.currentLevel].costCurrency);
+                UpdateResearchButton(forceGenerationResearchButton, research);
                 break;
             case "ForceSpend":
-                CheckResearchButtonPrice(forceSpendResearchButton, research.levels[research.currentLevel].costExperience, research.levels[research.currentLevel].costCurrency);
+                UpdateResearchButton(forceSpendResearchButton, research);
                 break;
             case "ProductionSpeed":
-                CheckResearchButtonPrice(productionTimeResearchButton, research.levels[research.currentLevel].costExperience, research.levels[research.currentLevel].costCurrency);
+                UpdateResearchButton(productionTimeResearchButton, research);
                 break;
             case "ProductionCount":
-                CheckResearchButtonPrice(productionCountResearchButton, research.levels[research.currentLevel].costExperience, research.levels[research.currentLevel].costCurrency);
+                UpdateResearchButton(productionCountResearchButton, research);
                 break;
             case "ExperienceMult":
-                CheckResearchButtonPrice(experienceIncomeResearchButton, research.levels[research.currentLevel].costExperience, research.levels[research.currentLevel].costCurrency);
+                UpdateResearchButton(experienceIncomeResearchButton, research);
                 break;
         }
     }
@@ -133,5 +144,4 @@ public class MetaUI : MonoBehaviour
             researchPanel.SetActive(false);
         }
     }
-
 }

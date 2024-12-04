@@ -43,7 +43,7 @@ public class PlayerData
         energyRegBasic = 1;
         energySpendBasic = 1;
         forceProdBasic = 1;
-        forceRegBasic = 5;
+        forceRegBasic = 3;
         forceSpendBasic = 1;
         workCostBasic = 1;
         experienceMultBasic = 0.1f;
