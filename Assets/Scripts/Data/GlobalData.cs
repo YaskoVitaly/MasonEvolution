@@ -16,6 +16,9 @@ public class GlobalData
 
     public int activeResearchSlots;
 
+    public ResearchData activeResearch;
+    public float activeResearchTime;
+
 
     /*
     public int energyLimitResearchLevel;

@@ -90,28 +90,18 @@ public class GameManager : MonoBehaviour
     {
         metaUI = FindObjectOfType<MetaUI>();
         if (contractManager == null)
-        {
             contractManager = gameObject.AddComponent<ContractManager>();
-            contractManager.OnContractSelected += LoadCoreScene;
-            contractManager.Init(metaUI, globalData);
-        }
-        else
-        {
-            contractManager.Init(metaUI, globalData);
-        }
 
         if (researchSystem == null)
-        {
             researchSystem = gameObject.AddComponent<ResearchSystem>();
-            researchSystem.Init(globalData, metaUI);
-        }
-        else
-        {
-            researchSystem.Init(globalData, metaUI);
-        }
 
         metaUI.Init(globalData, researchSystem);
-        researchSystem.ResearchesUIUpdate();
+
+        contractManager.OnContractSelected += LoadCoreScene;
+        contractManager.Init(metaUI, globalData);
+        researchSystem.Init(globalData, metaUI);
+
+        //researchSystem.ResearchesUpdate();
     }
 
     private void CoreInit()
@@ -218,7 +208,7 @@ public class GameManager : MonoBehaviour
         {
             string json = File.ReadAllText(path);
             globalData = JsonUtility.FromJson<GlobalData>(json);
-            Debug.Log("GlobalData loaded");
+            Debug.Log("GlobalData loaded: " + path);
         }
         else if (globalData == null)
         {
@@ -278,5 +268,6 @@ public class GameManager : MonoBehaviour
     public void ApplicationQuit()
     {
         SaveData();
+        Application.Quit();
     }
 }

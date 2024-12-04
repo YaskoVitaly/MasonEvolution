@@ -84,6 +84,10 @@ public class MetaUI : MonoBehaviour
     private void UpdateResearchFrame(ResearchData rd, float currentTime)
     {
         researchFrame.fillAmount = currentTime / rd.levels[rd.currentLevel].timeRequired;
+        if(currentTime >= rd.levels[rd.currentLevel].timeRequired)
+        {
+            researchFrame.fillAmount = 0;
+        }
     }
 
     private void UpdateBasicResearchButtons(ResearchData research)

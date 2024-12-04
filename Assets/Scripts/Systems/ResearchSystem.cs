@@ -37,9 +37,10 @@ public class ResearchSystem : MonoBehaviour
                 activeResearches.Add(researchData);
             }
         }
+        ResearchesUpdate();
     }
 
-    public void ResearchesUIUpdate()
+    public void ResearchesUpdate()
     {
         if(metaUI != null)
         {
@@ -47,11 +48,18 @@ public class ResearchSystem : MonoBehaviour
             {
                 OnResearchUpdated(researchData);
             }
+            if (globalData.activeResearch != null)
+            {
+                availableResearchSlots--;
+                researchTimer = globalData.activeResearchTime;
+                StartCoroutine(ResearchProcess(globalData.activeResearch));
+            }
         }
     }
 
     public void StartResearch(string researchName)
     {
+        
         if (availableResearchSlots <= 0)
         {
             Debug.Log("No available slots for research!");
@@ -81,6 +89,7 @@ public class ResearchSystem : MonoBehaviour
                                 OnResearchStarted();
                                 OnResearchUpdated(rd);
                             }
+                            globalData.activeResearch = rd;
                             StartCoroutine(ResearchProcess(rd));
                         }
                         else
@@ -99,6 +108,7 @@ public class ResearchSystem : MonoBehaviour
             ResearchData.ResearchLevel levelData = research.levels[research.currentLevel];
             //Debug.Log($"Research '{research.researchName}' started...");
             researchTimer++;
+            globalData.activeResearchTime = researchTimer;
             if(metaUI != null)
             {
                 OnResearchProcessed(research, researchTimer);
@@ -107,6 +117,7 @@ public class ResearchSystem : MonoBehaviour
         }
         research.currentLevel++;
         globalData.researchLevels[research.researchName] = research.currentLevel;
+        globalData.activeResearch = null;
 
         if (research.currentLevel >= research.levels.Count)
         {
@@ -116,6 +127,7 @@ public class ResearchSystem : MonoBehaviour
         {
             OnResearchUpdated(research);
         }
+        
         availableResearchSlots++;
         Debug.Log($"Research '{research.researchName}' completed! New Level: {research.currentLevel}");
     }
