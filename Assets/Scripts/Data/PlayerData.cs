@@ -34,6 +34,7 @@ public class PlayerData
 
     public float expTotal;
     public int completedObjects;
+    public ContractData currentContract;
     
     public Dictionary<string, int> upgradeLevels = new Dictionary<string, int>();
 
@@ -43,7 +44,7 @@ public class PlayerData
         energyRegBasic = 1;
         energySpendBasic = 1;
         forceProdBasic = 1;
-        forceRegBasic = 3;
+        forceRegBasic = 2;
         forceSpendBasic = 1;
         workCostBasic = 1;
         experienceMultBasic = 0.1f;

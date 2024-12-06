@@ -6,10 +6,19 @@ using UnityEngine;
 [Serializable]
 public class GlobalData
 {
+    [Serializable]
+    public class KeyValue
+    {
+        public string key;
+        public int value;
+    }
+    public List<KeyValue> DataList = new List<KeyValue>();
+
     public float totalExperience;
     public int money;
     public float newContractTime;
     public int maxContracts;
+    public ContractData currentContract;
     public List<ContractData> activeContracts = new List<ContractData>();
     public List<ContractData> possibleContracts = new List<ContractData>();
     public List<ResearchData> allResearches = new List<ResearchData>();
@@ -19,21 +28,7 @@ public class GlobalData
     public ResearchData activeResearch;
     public float activeResearchTime;
 
-
-    /*
-    public int energyLimitResearchLevel;
-    public int energyRegenResearchLevel;
-    public int energySpendResearchLevel;
-    public int forceProductionResearchLevel;
-    public int forceAutogenResearchLevel;
-    public int forceSpendResearchLevel;
-    public int productionSpeedResearchLevel;
-    public int productionCountResearchLevel;
-    public int experienceMultResearchLevel;
-    */
-
-    public Dictionary<string, int> resources = new Dictionary<string, int>();
-    public Dictionary<string, int> researchLevels = new Dictionary<string, int>();
+    public Dictionary<string, int> researchLevels = new Dictionary<string, int>();//Переработать в список исследований. Словарь не сохраняется.
     
     public GlobalData()
     {
@@ -52,5 +47,22 @@ public class GlobalData
         researchLevels["ProductionSpeed"] = 0;
         researchLevels["ProductionCount"] = 0;
         researchLevels["ExperienceMult"] = 0;
+    }
+
+    public void ConvertDictionary()
+    {
+        DataList.Clear();
+        foreach (var pair in researchLevels)
+        {
+            DataList.Add(new KeyValue { key = pair.Key, value = pair.Value });
+        }
+    }
+
+    public void GetDictionary()
+    {
+        foreach (var kvp in DataList)
+        {
+            researchLevels[kvp.key] = kvp.value;
+        }
     }
 }

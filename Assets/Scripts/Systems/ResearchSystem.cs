@@ -29,14 +29,24 @@ public class ResearchSystem : MonoBehaviour
         {
             foreach (ResearchData researchData in globalData.allResearches)
             {
-                Debug.Log("research" + researchData.name);
-                if(globalData.researchLevels.ContainsKey(researchData.researchName))
+                activeResearches.Add(researchData);
+
+
+                if (globalData.researchLevels.ContainsKey(researchData.researchName))
                 {
                     researchData.currentLevel = globalData.researchLevels[researchData.researchName];
+                    Debug.Log(researchData.currentLevel);
+                    activeResearches.Add(researchData);
                 }
-                activeResearches.Add(researchData);
+
             }
+
+            ResearchesUpdate();
         }
+    }
+    public void UpdateMetaUI(MetaUI _metaUI)
+    {
+        metaUI = _metaUI;
         ResearchesUpdate();
     }
 
@@ -116,6 +126,7 @@ public class ResearchSystem : MonoBehaviour
             yield return new WaitForSeconds(1);
         }
         research.currentLevel++;
+                
         globalData.researchLevels[research.researchName] = research.currentLevel;
         globalData.activeResearch = null;
 

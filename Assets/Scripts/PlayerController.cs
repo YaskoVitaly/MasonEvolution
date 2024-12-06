@@ -14,7 +14,6 @@ public class PlayerController : MonoBehaviour
     public Action<float> OnContractCompleated;
 
     public PlayerData playerData;
-    public ContractData contractData;
     public ObjectScheme objectScheme;
 
     public int currentQuark = 0;
@@ -25,11 +24,10 @@ public class PlayerController : MonoBehaviour
     private Coroutine creator;
     private List<Quark> productionQuarks;
     
-    public void Init(PlayerData _playerData, ObjectCreator _objectCreator, ObjectScheme _objectScheme, ContractData _contractData)
+    public void Init(PlayerData _playerData, ObjectCreator _objectCreator, ObjectScheme _objectScheme)
     {
         playerData = _playerData;
         objectScheme = _objectScheme;
-        contractData = _contractData;
         _objectCreator.OnQuarkGenerated += ProductionCompleate;
         _objectCreator.OnSchemeUpdated += Launcher;
 
@@ -76,7 +74,7 @@ public class PlayerController : MonoBehaviour
     }
     private void ProductCompleate()
     {
-        if (completedObjects < contractData.count-1)
+        if (completedObjects < playerData.currentContract.count-1)
         {
             ExperinceChange(TotalCost(objectScheme.quarksList) * playerData.experienceMult);
             completedObjects++;

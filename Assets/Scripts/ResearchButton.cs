@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class ResearchButton : MonoBehaviour
 {
+    public ResearchData researchData;
     public TextMeshProUGUI title;
     public TextMeshProUGUI description;
     public TextMeshProUGUI priceMoney;

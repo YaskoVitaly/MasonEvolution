@@ -12,6 +12,7 @@ public class MetaUI : MonoBehaviour
 
     public GlobalData globalData;
     public ResearchSystem researchSystem;
+    public ContractManager contractManager;
 
     public GameObject researchPanel;
 
@@ -19,6 +20,7 @@ public class MetaUI : MonoBehaviour
 
     public Button researchOpenButton;
 
+    /*
     public Button energyLimitResearchButton;
     public Button energyRegenResearchButton;
     public Button energySpendResearchButton;
@@ -28,24 +30,29 @@ public class MetaUI : MonoBehaviour
     public Button productionTimeResearchButton;
     public Button productionCountResearchButton;
     public Button experienceIncomeResearchButton;
-
+    */
 
     public GameObject contractButtonPrefab;
     public Transform contractPanel;
+    public TextMeshProUGUI newContractTimeText;
     public TextMeshProUGUI moneyText;
     public TextMeshProUGUI experienceText;
 
     public List<GameObject> contractButtons;
-    
-    public void Init(GlobalData _globalData, ResearchSystem _researchSystem)
+    public List<Button> researchButtons;
+
+
+    public void Init(GlobalData _globalData, ResearchSystem _researchSystem, ContractManager _contractManager)
     {
         globalData = _globalData;
         researchSystem = _researchSystem;
+        contractManager = _contractManager;
         moneyText.text = "Money: " + globalData.money;
         experienceText.text = "Exp: " + globalData.totalExperience.ToString("0");
         researchSystem.OnResearchUpdated += UpdateBasicResearchButtons;
         researchSystem.OnResearchStarted += UpdateResources;
         researchSystem.OnResearchProcessed += UpdateResearchFrame;
+        contractManager.OnContractTimerUpdated += UpdateContractTimer;
     }
 
     public void Unsubscribe()
@@ -55,7 +62,7 @@ public class MetaUI : MonoBehaviour
         researchSystem.OnResearchProcessed -= UpdateResearchFrame;
     }
 
-    private void UpdateResources()
+    private void UpdateResources()//Добавить проверку на активность кнопок в соответствии с свободными слотами и наличием ресурсов
     {
         moneyText.text = "Money: " + globalData.money;
         experienceText.text = "Exp: " + globalData.totalExperience.ToString("0");
@@ -64,12 +71,12 @@ public class MetaUI : MonoBehaviour
     private void UpdateResearchButton(Button button, ResearchData research)
     {
         ResearchButton researchButton = button.GetComponent<ResearchButton>();
+        researchButton.researchData = research;
         researchButton.title.text = research.researchName + " \nresearch";
         researchButton.description.text = "Level: " + research.currentLevel.ToString();
         researchButton.priceMoney.text = "Money: " +  research.levels[research.currentLevel].costCurrency.ToString();
         researchButton.priceExp.text = "Exp: " + research.levels[research.currentLevel].costExperience.ToString();
         researchButton.time.text = "Time: " + research.levels[research.currentLevel].timeRequired / 60;
-
 
         if (globalData.money >= research.levels[research.currentLevel].costCurrency && globalData.totalExperience >= research.levels[research.currentLevel].costExperience)
         {
@@ -79,6 +86,19 @@ public class MetaUI : MonoBehaviour
         {
             button.interactable = false;
         }
+    }
+
+    private void UpdateContractTimer(float time)
+    {
+        if (time >= 0)
+        {
+            newContractTimeText.text = "New contract in: " + (globalData.newContractTime - time).ToString("0") + " sec.";
+        }
+        else
+        {
+            newContractTimeText.text = "The order board is full!";
+        }
+
     }
 
     private void UpdateResearchFrame(ResearchData rd, float currentTime)
@@ -92,6 +112,15 @@ public class MetaUI : MonoBehaviour
 
     private void UpdateBasicResearchButtons(ResearchData research)
     {
+        foreach(Button button in researchButtons)
+        {
+            if(button.GetComponent<ResearchButton>().researchData.researchName == research.researchName)
+            {
+                UpdateResearchButton(button, research);
+            }
+            
+        }
+        /*
         switch (research.researchName)
         {
             case "EnergyLimit":
@@ -122,6 +151,7 @@ public class MetaUI : MonoBehaviour
                 UpdateResearchButton(experienceIncomeResearchButton, research);
                 break;
         }
+        */
     }
 
     public void SelectContract(int index)

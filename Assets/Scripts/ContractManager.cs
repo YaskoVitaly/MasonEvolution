@@ -8,36 +8,39 @@ using UnityEngine.UIElements;
 
 public class ContractManager : MonoBehaviour
 {
-
     private MetaUI metaUI;
     private GlobalData globalData;
     private ContractData currentContract;
-    private bool isGenerated = false;
 
-    public Action<ContractData> OnContractSelected;
+    public Action OnContractSelected;
+    public Action<float> OnContractTimerUpdated;
+
+    private float contractTimer;
+
 
     public void Init(MetaUI _metaUI, GlobalData _globalData)
     {
         metaUI = _metaUI;
-        
-        if(!isGenerated)
+        globalData = _globalData;
+        contractTimer = 0;
+        //InvokeRepeating(nameof(AddRandomContract), globalData.newContractTime, globalData.newContractTime);
+        StartCoroutine(ContractTimer());
+        if (globalData.activeContracts.Count == 0)
         {
-            globalData = _globalData;
-            InvokeRepeating(nameof(AddRandomContract), globalData.newContractTime, globalData.newContractTime);
-            if(globalData.activeContracts.Count == 0)
-            {
-                ContractData contractData = globalData.possibleContracts[0];
-                globalData.activeContracts.Add(contractData);
-                CreateContractButton(contractData);
-            }
-            isGenerated = true;
+            ContractData contractData = globalData.possibleContracts[0];
+            globalData.activeContracts.Add(contractData);
+            CreateContractButton(contractData);
         }
         else
         {
             GenerateContractButtons();
         }
     }
-
+    public void UpdateMetaUI(MetaUI _metaUI)
+    {
+        metaUI = _metaUI;
+        GenerateContractButtons();
+    }
     public void GenerateContractButtons()
     {
         foreach (ContractData cd in globalData.activeContracts)
@@ -58,6 +61,30 @@ public class ContractManager : MonoBehaviour
         {
             CreateContractButton(newContract);
         }
+        contractTimer = 0;
+    }
+    private IEnumerator ContractTimer()
+    {
+        while (true)
+        {
+            if (globalData.activeContracts.Count < globalData.maxContracts)
+            {
+                if (contractTimer < globalData.newContractTime)
+                {
+                    contractTimer++;
+                    OnContractTimerUpdated(contractTimer);
+                }
+                else
+                {
+                    AddRandomContract();
+                }
+            }
+            else
+            {
+                OnContractTimerUpdated(-1);
+            }
+            yield return new WaitForSeconds(1);
+        }
     }
     
     private void CreateContractButton(ContractData contractData)
@@ -76,6 +103,7 @@ public class ContractManager : MonoBehaviour
     {
         Destroy(buttonObject);
         globalData.activeContracts.Remove(contractData);
-        OnContractSelected(contractData);
+        globalData.currentContract = contractData;
+        OnContractSelected();
     }
 }

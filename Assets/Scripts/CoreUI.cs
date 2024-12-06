@@ -180,7 +180,7 @@ public class CoreUI : MonoBehaviour
     }
     private void FinishedObjectsChange(int value)
     {
-        finishedObjectsText.text = "Finished objects: " + value.ToString();
+        finishedObjectsText.text = "Finished objects: " + value.ToString() +" / "+ playerData.currentContract.count;
     }
     private void QuarkCounterChange(int count)
     {

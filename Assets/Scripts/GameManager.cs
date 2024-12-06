@@ -54,6 +54,8 @@ public class GameManager : MonoBehaviour
     public int productSizeY;
     public int productSizeZ;
 
+    private bool isFirstStart = true;
+
     private void Awake()
     {
         if (Instance == null)
@@ -71,6 +73,9 @@ public class GameManager : MonoBehaviour
     }
     private void Start()
     {
+        if(!isFirstStart)
+            isFirstStart = true;
+
         LoadData();
         SceneManager.activeSceneChanged += SceneCheck;
         if (SceneManager.GetActiveScene().name == "CoreGamePlayScene")
@@ -89,26 +94,31 @@ public class GameManager : MonoBehaviour
     private void MetaInit()
     {
         metaUI = FindObjectOfType<MetaUI>();
-        if (contractManager == null)
-            contractManager = gameObject.AddComponent<ContractManager>();
+        if (isFirstStart)
+        {
+            if (contractManager == null)
+                contractManager = gameObject.AddComponent<ContractManager>();
 
-        if (researchSystem == null)
-            researchSystem = gameObject.AddComponent<ResearchSystem>();
+            if (researchSystem == null)
+                researchSystem = gameObject.AddComponent<ResearchSystem>();
 
-        metaUI.Init(globalData, researchSystem);
-
-        contractManager.OnContractSelected += LoadCoreScene;
-        contractManager.Init(metaUI, globalData);
-        researchSystem.Init(globalData, metaUI);
-
-        //researchSystem.ResearchesUpdate();
+            contractManager.OnContractSelected += LoadCoreScene;
+            metaUI.Init(globalData, researchSystem, contractManager);
+            contractManager.Init(metaUI, globalData);
+            researchSystem.Init(globalData, metaUI);
+            isFirstStart = false;
+        }
+        else
+        {
+            metaUI.Init(globalData, researchSystem, contractManager);
+            contractManager.UpdateMetaUI(metaUI);
+            researchSystem.UpdateMetaUI(metaUI);
+        }
     }
 
     private void CoreInit()
     {
         Quark quark = quarkPrefab.GetComponent<Quark>();
-
-        //LoadData();
 
         PlayerDataInit();
 
@@ -121,7 +131,7 @@ public class GameManager : MonoBehaviour
 
         coreUI.Init(playerController, playerData, objectCreator, upgradeSystem);
         objectScheme.Init(quarkPrefab, productSizeX, productSizeY, productSizeZ); //переработать схему. Должны быть схемы на выбор.
-        playerController.Init(playerData, objectCreator, objectScheme, contractData);
+        playerController.Init(playerData, objectCreator, objectScheme);
         objectCreator.Init(playerController, objectScheme, coreUI, quarkPrefab);
         upgradeSystem.Init(playerData, objectCreator, coreUI);
         cameraController.Init(Camera.main, new Vector3(productSizeX/2 * quark.size, productSizeY/2 * quark.size, productSizeZ/2 * quark.size));//Откорректировать фокус камеры. Добавить управление камерой (вращение вокруг объекта, приближение/отдаление).
@@ -140,6 +150,7 @@ public class GameManager : MonoBehaviour
         playerData.expCur = 0;
         playerData.expTotal = 0;
         playerData.completedObjects = 0;
+        playerData.currentContract = globalData.currentContract;
 
         playerData.upgradeLevels["EnergyLimit"] = globalData.researchLevels["EnergyLimit"];
         playerData.upgradeLevels["EnergyRegeneration"] = globalData.researchLevels["EnergyRegeneration"];
@@ -197,6 +208,7 @@ public class GameManager : MonoBehaviour
 
     public void SaveData()
     {
+        globalData.ConvertDictionary();
         string json = JsonUtility.ToJson(globalData);
         File.WriteAllText(Application.persistentDataPath + "/globalData.json", json);
     }
@@ -208,28 +220,34 @@ public class GameManager : MonoBehaviour
         {
             string json = File.ReadAllText(path);
             globalData = JsonUtility.FromJson<GlobalData>(json);
+            globalData.GetDictionary();
             Debug.Log("GlobalData loaded: " + path);
         }
         else if (globalData == null)
         {
             globalData = new GlobalData();
+            globalData.GetDictionary();
             Debug.Log("GlobalData new");
         }
     }
-    public void LoadCoreScene(ContractData currentContract)
+    public void LoadCoreScene()
     {
         SaveData();
         metaUI.Unsubscribe();
         Destroy(metaUI.gameObject);
-        contractData = currentContract;
         SceneManager.LoadScene("CoreGamePlayScene");
     }
 
     public void LoadMetaScene(float exp)
     {
-
         globalData.totalExperience += exp;
-        globalData.money += contractData.reward;
+        globalData.money += globalData.currentContract.reward;
+        globalData.currentContract = null;
+
+        SaveData();//Сделать окно награды за контракт, блокирующее интерфейс меты.
+
+        playerController.OnContractCompleated -= LoadMetaScene;
+        coreUI.OnMetaLoaded -= LoadMetaScene;
 
         Destroy(playerController);
         Destroy(objectScheme);
@@ -237,17 +255,6 @@ public class GameManager : MonoBehaviour
         Destroy(cameraController);
         Destroy(upgradeSystem);
         Destroy(coreUI);
-
-
-
-        /*
-        playerController = null;
-        objectScheme = null;
-        objectCreator = null;
-        cameraController = null;
-        upgradeSystem = null;
-        coreUI = null;
-        */
 
         SceneManager.LoadScene("MetaGamePlayScene");
     }
