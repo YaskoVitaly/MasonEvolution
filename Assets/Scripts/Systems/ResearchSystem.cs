@@ -61,8 +61,30 @@ public class ResearchSystem : MonoBehaviour
             if (globalData.activeResearch != null)
             {
                 availableResearchSlots--;
-                researchTimer = globalData.activeResearchTime;
-                StartCoroutine(ResearchProcess(globalData.activeResearch));
+                ResearchData.ResearchLevel currentResearch = globalData.activeResearch.levels[globalData.activeResearch.currentLevel];
+                if (globalData.activeResearchTime + globalData.timePeriod < currentResearch.timeRequired)
+                {
+                    globalData.activeResearchTime += globalData.timePeriod;
+                    researchTimer = globalData.activeResearchTime;
+                    StartCoroutine(ResearchProcess(globalData.activeResearch));
+                }
+                else
+                {
+                    globalData.activeResearch.currentLevel++;
+                    globalData.researchLevels[globalData.activeResearch.researchName] = globalData.activeResearch.currentLevel;
+
+                    if (globalData.activeResearch.currentLevel >= globalData.activeResearch.levels.Count)
+                    {
+                        globalData.activeResearch.isCompleted = true;
+                    }
+                    if (metaUI != null)
+                    {
+                        OnResearchUpdated(globalData.activeResearch);
+                    }
+                    globalData.activeResearch = null;
+                    availableResearchSlots++;
+                    Debug.Log($"Research '{globalData.activeResearch.researchName}' completed! New Level: {globalData.activeResearch.currentLevel}");
+                }
             }
         }
     }

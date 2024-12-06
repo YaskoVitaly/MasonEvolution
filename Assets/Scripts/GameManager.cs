@@ -209,8 +209,12 @@ public class GameManager : MonoBehaviour
     public void SaveData()
     {
         globalData.ConvertDictionary();
+        globalData.globalTime = DateTime.Now.ToString();
         string json = JsonUtility.ToJson(globalData);
         File.WriteAllText(Application.persistentDataPath + "/globalData.json", json);
+        Debug.Log("GlobalData saved");
+        Debug.Log("GlobalTime: " + globalData.globalTime);
+
     }
 
     public void LoadData()
@@ -221,7 +225,11 @@ public class GameManager : MonoBehaviour
             string json = File.ReadAllText(path);
             globalData = JsonUtility.FromJson<GlobalData>(json);
             globalData.GetDictionary();
+            TimeSpan timeSpan = DateTime.Now - DateTime.Parse(globalData.globalTime);
+            globalData.timePeriod = timeSpan.Days * (3600*24) + timeSpan.Hours * 3600 + timeSpan.Minutes * 60 + timeSpan.Seconds;
             Debug.Log("GlobalData loaded: " + path);
+            Debug.Log("Time period: " + globalData.timePeriod);
+
         }
         else if (globalData == null)
         {

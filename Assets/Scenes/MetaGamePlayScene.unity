@@ -651,9 +651,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   globalData:
     DataList: []
+    timePeriod: 0
     totalExperience: 0
     money: 0
-    newContractTime: 600
+    contractCooldown: 600
+    nextContractTime: 0
     maxContracts: 3
     currentContract: {fileID: 0}
     activeContracts: []
@@ -8642,9 +8644,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   globalData:
     DataList: []
+    timePeriod: 0
     totalExperience: 0
     money: 0
-    newContractTime: 600
+    contractCooldown: 600
+    nextContractTime: 0
     maxContracts: 3
     currentContract: {fileID: 0}
     activeContracts: []

@@ -14,9 +14,13 @@ public class GlobalData
     }
     public List<KeyValue> DataList = new List<KeyValue>();
 
+    public string globalTime;
+    public float timePeriod;
+
     public float totalExperience;
     public int money;
-    public float newContractTime;
+    public float contractCooldown;
+    public float nextContractTime;
     public int maxContracts;
     public ContractData currentContract;
     public List<ContractData> activeContracts = new List<ContractData>();
@@ -34,7 +38,8 @@ public class GlobalData
     {
         totalExperience = 0;
         money = 0;
-        newContractTime = 600;
+        contractCooldown = 600;
+        nextContractTime = 0;
         maxContracts = 3;
         activeResearchSlots = 1;
 

@@ -90,9 +90,13 @@ public class MetaUI : MonoBehaviour
 
     private void UpdateContractTimer(float time)
     {
-        if (time >= 0)
+        if (time >= 0 && time < globalData.contractCooldown)
         {
-            newContractTimeText.text = "New contract in: " + (globalData.newContractTime - time).ToString("0") + " sec.";
+            newContractTimeText.text = "New contract in: " + (globalData.contractCooldown - time).ToString("0") + " sec.";
+        }
+        else if (time > globalData.contractCooldown)
+        {
+            newContractTimeText.text = "New contract in: " + 0 + " sec.";
         }
         else
         {

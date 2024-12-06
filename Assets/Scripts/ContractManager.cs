@@ -15,16 +15,17 @@ public class ContractManager : MonoBehaviour
     public Action OnContractSelected;
     public Action<float> OnContractTimerUpdated;
 
-    private float contractTimer;
-
-
     public void Init(MetaUI _metaUI, GlobalData _globalData)
     {
         metaUI = _metaUI;
         globalData = _globalData;
-        contractTimer = 0;
+        if(globalData.timePeriod > 0)
+        {
+            globalData.nextContractTime += globalData.timePeriod;
+        }
         //InvokeRepeating(nameof(AddRandomContract), globalData.newContractTime, globalData.newContractTime);
         StartCoroutine(ContractTimer());
+        Debug.Log(globalData.activeContracts.Count);
         if (globalData.activeContracts.Count == 0)
         {
             ContractData contractData = globalData.possibleContracts[0];
@@ -51,17 +52,22 @@ public class ContractManager : MonoBehaviour
 
     public void AddRandomContract()
     {
-        if (globalData.activeContracts.Count >= globalData.maxContracts) return;
-
-        ContractData newContract = new ContractData();
-        newContract = globalData.possibleContracts[UnityEngine.Random.Range(0, globalData.possibleContracts.Count)];
-        Debug.Log("Random contract generated: " + newContract.title);
-        globalData.activeContracts.Add(newContract);
-        if(metaUI != null)
+        if (globalData.activeContracts.Count >= globalData.maxContracts)
         {
-            CreateContractButton(newContract);
+            Debug.Log("Full contract panel");
         }
-        contractTimer = 0;
+        else
+        {
+            ContractData newContract = new ContractData();
+            newContract = globalData.possibleContracts[UnityEngine.Random.Range(0, globalData.possibleContracts.Count)];
+            Debug.Log("Random contract generated: " + newContract.title);
+            globalData.activeContracts.Add(newContract);
+            if (metaUI != null)
+            {
+                CreateContractButton(newContract);
+            }
+            globalData.nextContractTime -= globalData.contractCooldown;
+        }
     }
     private IEnumerator ContractTimer()
     {
@@ -69,10 +75,10 @@ public class ContractManager : MonoBehaviour
         {
             if (globalData.activeContracts.Count < globalData.maxContracts)
             {
-                if (contractTimer < globalData.newContractTime)
+                if (globalData.nextContractTime < globalData.contractCooldown)
                 {
-                    contractTimer++;
-                    OnContractTimerUpdated(contractTimer);
+                    globalData.nextContractTime += Time.deltaTime;
+                    OnContractTimerUpdated(globalData.nextContractTime);
                 }
                 else
                 {
@@ -81,9 +87,10 @@ public class ContractManager : MonoBehaviour
             }
             else
             {
+                globalData.nextContractTime = 0;
                 OnContractTimerUpdated(-1);
             }
-            yield return new WaitForSeconds(1);
+            yield return new WaitForSeconds(Time.deltaTime);
         }
     }
     
