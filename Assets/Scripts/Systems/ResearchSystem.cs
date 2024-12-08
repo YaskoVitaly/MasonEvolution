@@ -31,16 +31,12 @@ public class ResearchSystem : MonoBehaviour
             {
                 activeResearches.Add(researchData);
 
-
                 if (globalData.researchLevels.ContainsKey(researchData.researchName))
                 {
                     researchData.currentLevel = globalData.researchLevels[researchData.researchName];
-                    Debug.Log(researchData.currentLevel);
                     activeResearches.Add(researchData);
                 }
-
             }
-
             ResearchesUpdate();
         }
     }

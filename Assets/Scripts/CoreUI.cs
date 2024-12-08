@@ -9,7 +9,7 @@ public class CoreUI : MonoBehaviour
 {
     public Action<int> OnQuarkGenerated;
     public Action<int, int, float, List<Quark>> OnProductionFinished;
-    public Action<float> OnMetaLoaded;
+    public Action<float, bool> OnMetaLoaded;
 
     private ObjectCreator objectCreator;
     private PlayerController playerController;
@@ -319,6 +319,6 @@ public class CoreUI : MonoBehaviour
 
     public void LoadMeta()
     {
-        OnMetaLoaded(playerData.expTotal/100);
+        OnMetaLoaded(playerData.expTotal/100, false);
     }
 }

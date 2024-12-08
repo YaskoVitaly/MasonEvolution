@@ -11,7 +11,7 @@ public class PlayerController : MonoBehaviour
     public Action<float, float> OnEnergyChanged;
     public Action<float> OnWorked;
     public Action<float> OnExperienceChanged;
-    public Action<float> OnContractCompleated;
+    public Action<float, bool> OnContractCompleated;
 
     public PlayerData playerData;
     public ObjectScheme objectScheme;
@@ -91,7 +91,7 @@ public class PlayerController : MonoBehaviour
             Debug.Log("Object compleated");
             isProduction = false;
             OnObjectCompleted(completedObjects);
-            OnContractCompleated(playerData.expCur/100);
+            OnContractCompleated(playerData.expCur/100, true);
         }
         
     }

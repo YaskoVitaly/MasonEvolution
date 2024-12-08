@@ -23,6 +23,7 @@ public class GlobalData
     public float nextContractTime;
     public int maxContracts;
     public ContractData currentContract;
+    public PlayerData playerData;
     public List<ContractData> activeContracts = new List<ContractData>();
     public List<ContractData> possibleContracts = new List<ContractData>();
     public List<ResearchData> allResearches = new List<ResearchData>();

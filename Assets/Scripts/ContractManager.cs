@@ -12,8 +12,10 @@ public class ContractManager : MonoBehaviour
     private GlobalData globalData;
     private ContractData currentContract;
 
-    public Action OnContractSelected;
+
+    public Action<ContractData> OnContractGenerated;
     public Action<float> OnContractTimerUpdated;
+
 
     public void Init(MetaUI _metaUI, GlobalData _globalData)
     {
@@ -23,14 +25,16 @@ public class ContractManager : MonoBehaviour
         {
             globalData.nextContractTime += globalData.timePeriod;
         }
-        //InvokeRepeating(nameof(AddRandomContract), globalData.newContractTime, globalData.newContractTime);
+
         StartCoroutine(ContractTimer());
         Debug.Log(globalData.activeContracts.Count);
+
         if (globalData.activeContracts.Count == 0)
         {
             ContractData contractData = globalData.possibleContracts[0];
             globalData.activeContracts.Add(contractData);
-            CreateContractButton(contractData);
+            OnContractGenerated(contractData);
+            //CreateContractButton(contractData);
         }
         else
         {
@@ -46,7 +50,8 @@ public class ContractManager : MonoBehaviour
     {
         foreach (ContractData cd in globalData.activeContracts)
         {
-            CreateContractButton(cd);
+            OnContractGenerated(cd);
+            //CreateContractButton(cd);
         }
     }
 
@@ -64,7 +69,8 @@ public class ContractManager : MonoBehaviour
             globalData.activeContracts.Add(newContract);
             if (metaUI != null)
             {
-                CreateContractButton(newContract);
+                OnContractGenerated(newContract);
+                //CreateContractButton(newContract);
             }
             globalData.nextContractTime -= globalData.contractCooldown;
         }
@@ -78,7 +84,10 @@ public class ContractManager : MonoBehaviour
                 if (globalData.nextContractTime < globalData.contractCooldown)
                 {
                     globalData.nextContractTime += Time.deltaTime;
-                    OnContractTimerUpdated(globalData.nextContractTime);
+                    if(metaUI != null)
+                    {
+                        OnContractTimerUpdated(globalData.nextContractTime);
+                    }
                 }
                 else
                 {
@@ -88,12 +97,16 @@ public class ContractManager : MonoBehaviour
             else
             {
                 globalData.nextContractTime = 0;
-                OnContractTimerUpdated(-1);
+                if(metaUI != null)
+                {
+                    OnContractTimerUpdated(-1);
+                }
             }
             yield return new WaitForSeconds(Time.deltaTime);
         }
     }
     
+    /*
     private void CreateContractButton(ContractData contractData)
     {
         GameObject buttonObject = Instantiate(metaUI.contractButtonPrefab, metaUI.contractPanel);
@@ -105,12 +118,17 @@ public class ContractManager : MonoBehaviour
         contractButton.Init(localContract);
         button.onClick.AddListener(() => SelectContract(localContract, buttonObject));
     }
-
+    
     public void SelectContract(ContractData contractData, GameObject buttonObject)
     {
+        OnContractSelected(contractData);
+        Debug.Log("Button pressed");
+
+        
         Destroy(buttonObject);
         globalData.activeContracts.Remove(contractData);
         globalData.currentContract = contractData;
-        OnContractSelected();
+        
     }
+    */
 }

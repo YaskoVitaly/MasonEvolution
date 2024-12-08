@@ -4,12 +4,14 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using static TMPro.SpriteAssetUtilities.TexturePacker_JsonArray;
 
 public class MetaUI : MonoBehaviour
 {
     public Action<int> OnContractSelected;
     public Action<string> OnResearchSelected;
 
+    public GameObject ContractInfoWindow;
     public GlobalData globalData;
     public ResearchSystem researchSystem;
     public ContractManager contractManager;
@@ -32,8 +34,15 @@ public class MetaUI : MonoBehaviour
     public Button experienceIncomeResearchButton;
     */
 
+    public RectTransform bottomPanel;
+    public RectTransform contractPanel;
+    public RectTransform activeContractPanel;
+
+    public GameObject contractInfoPanel;
+
+
     public GameObject contractButtonPrefab;
-    public Transform contractPanel;
+    //public Transform contractPanel;
     public TextMeshProUGUI newContractTimeText;
     public TextMeshProUGUI moneyText;
     public TextMeshProUGUI experienceText;
@@ -53,6 +62,7 @@ public class MetaUI : MonoBehaviour
         researchSystem.OnResearchStarted += UpdateResources;
         researchSystem.OnResearchProcessed += UpdateResearchFrame;
         contractManager.OnContractTimerUpdated += UpdateContractTimer;
+        contractManager.OnContractGenerated += CreateContractButton;
     }
 
     public void Unsubscribe()
@@ -60,6 +70,8 @@ public class MetaUI : MonoBehaviour
         researchSystem.OnResearchUpdated -= UpdateBasicResearchButtons;
         researchSystem.OnResearchStarted -= UpdateResources;
         researchSystem.OnResearchProcessed -= UpdateResearchFrame;
+        contractManager.OnContractTimerUpdated -= UpdateContractTimer;
+        contractManager.OnContractGenerated -= CreateContractButton;
     }
 
     private void UpdateResources()//Добавить проверку на активность кнопок в соответствии с свободными слотами и наличием ресурсов
@@ -181,5 +193,23 @@ public class MetaUI : MonoBehaviour
         {
             researchPanel.SetActive(false);
         }
+    }
+    public void OpenContractInfo(ContractData cd)
+    {
+        contractInfoPanel.SetActive(true);
+        ContractInfo contractInfo = contractInfoPanel.GetComponent<ContractInfo>();
+        
+        contractInfo.Init(cd, this);
+        contractInfoPanel.SetActive(true);
+    }
+    private void CreateContractButton(ContractData contractData)
+    {
+        GameObject buttonObject = Instantiate(contractButtonPrefab, contractPanel);
+        //Debug.Log(contractPanel.transform.position);
+        contractButtons.Add(buttonObject);
+        //ContractButton contractButton = buttonObject.GetComponent<ContractButton>();
+        Button button = buttonObject.GetComponent<Button>();
+        //contractButton.Init(localContract);
+        button.onClick.AddListener(() => OpenContractInfo(contractData));
     }
 }

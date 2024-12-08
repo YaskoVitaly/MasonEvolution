@@ -102,7 +102,8 @@ public class GameManager : MonoBehaviour
             if (researchSystem == null)
                 researchSystem = gameObject.AddComponent<ResearchSystem>();
 
-            contractManager.OnContractSelected += LoadCoreScene;
+            metaUI.contractInfoPanel.GetComponent<ContractInfo>().OnContractStarted += LoadCoreScene;
+            //contractManager.OnContractSelected += LoadCoreScene;
             metaUI.Init(globalData, researchSystem, contractManager);
             contractManager.Init(metaUI, globalData);
             researchSystem.Init(globalData, metaUI);
@@ -119,9 +120,17 @@ public class GameManager : MonoBehaviour
     private void CoreInit()
     {
         Quark quark = quarkPrefab.GetComponent<Quark>();
-
         PlayerDataInit();
-
+        /*
+        if (globalData.playerData == null)
+        {
+            PlayerDataInit();
+        }
+        else
+        {
+            playerData = globalData.playerData;
+        }
+        */
         playerController = gameObject.AddComponent<PlayerController>();
         objectScheme = gameObject.AddComponent<ObjectScheme>();
         objectCreator = gameObject.AddComponent<ObjectCreator>();
@@ -141,7 +150,7 @@ public class GameManager : MonoBehaviour
         
         Debug.Log("CoreInit");
     }
-
+    
     private void PlayerDataInit()
     {
         playerData = new PlayerData();
@@ -238,20 +247,28 @@ public class GameManager : MonoBehaviour
             Debug.Log("GlobalData new");
         }
     }
-    public void LoadCoreScene()
+    public void LoadCoreScene(ContractData cd)
     {
+        globalData.currentContract = cd;
         SaveData();
         metaUI.Unsubscribe();
+        metaUI.contractInfoPanel.GetComponent<ContractInfo>().OnContractStarted -= LoadCoreScene;
         Destroy(metaUI.gameObject);
         SceneManager.LoadScene("CoreGamePlayScene");
     }
 
-    public void LoadMetaScene(float exp)
+    public void LoadMetaScene(float exp, bool isCompleted)
     {
-        globalData.totalExperience += exp;
-        globalData.money += globalData.currentContract.reward;
-        globalData.currentContract = null;
-
+        if(isCompleted)
+        {
+            globalData.totalExperience += exp;
+            globalData.money += globalData.currentContract.reward;
+            globalData.currentContract = null;
+        }
+        else
+        {
+            globalData.playerData = playerData;
+        }
         SaveData();//Сделать окно награды за контракт, блокирующее интерфейс меты.
 
         playerController.OnContractCompleated -= LoadMetaScene;
