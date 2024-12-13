@@ -34,51 +34,56 @@ public class ContractManager : MonoBehaviour
             ContractData contractData = globalData.possibleContracts[0];
             globalData.activeContracts.Add(contractData);
             OnContractGenerated(contractData);
-            //CreateContractButton(contractData);
         }
-        else
+        else if (metaUI.contractButtons.Count < globalData.activeContracts.Count)
         {
+            Debug.Log("You have " +  globalData.activeContracts.Count + " contracts");
             GenerateContractButtons();
         }
     }
     public void UpdateMetaUI(MetaUI _metaUI)
     {
         metaUI = _metaUI;
-        GenerateContractButtons();
+        if(metaUI.contractButtons.Count < globalData.activeContracts.Count)
+        {
+            GenerateContractButtons();
+        }
     }
     public void GenerateContractButtons()
     {
         foreach (ContractData cd in globalData.activeContracts)
         {
+            Debug.Log("ContractGenerated");
             OnContractGenerated(cd);
-            //CreateContractButton(cd);
         }
     }
 
     public void AddRandomContract()
     {
-        if (globalData.activeContracts.Count >= globalData.maxContracts)
-        {
-            Debug.Log("Full contract panel");
-        }
-        else
+        if (globalData.activeContracts.Count < globalData.maxContracts)
         {
             ContractData newContract = new ContractData();
             newContract = globalData.possibleContracts[UnityEngine.Random.Range(0, globalData.possibleContracts.Count)];
+            Debug.Log("Active contacts: " + globalData.activeContracts.Count);
+
             Debug.Log("Random contract generated: " + newContract.title);
             globalData.activeContracts.Add(newContract);
             if (metaUI != null)
             {
                 OnContractGenerated(newContract);
-                //CreateContractButton(newContract);
             }
             globalData.nextContractTime -= globalData.contractCooldown;
         }
+        else
+        {
+            Debug.Log("Full contract panel");
+        }
     }
-    private IEnumerator ContractTimer()
+    private IEnumerator ContractTimer()//Пофиксить генерацию лишнего контракта.
     {
         while (true)
         {
+            yield return new WaitForEndOfFrame();
             if (globalData.activeContracts.Count < globalData.maxContracts)
             {
                 if (globalData.nextContractTime < globalData.contractCooldown)
@@ -102,7 +107,7 @@ public class ContractManager : MonoBehaviour
                     OnContractTimerUpdated(-1);
                 }
             }
-            yield return new WaitForSeconds(Time.deltaTime);
+            
         }
     }
     

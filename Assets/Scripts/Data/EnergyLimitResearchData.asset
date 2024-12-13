@@ -17,22 +17,22 @@ MonoBehaviour:
   isCompleted: 0
   levels:
   - level: 1
-    costCurrency: 10
-    costExperience: 10
-    timeRequired: 60
+    costCurrency: 5
+    costExperience: 5
+    timeRequired: 10
   - level: 2
-    costCurrency: 20
-    costExperience: 30
-    timeRequired: 300
+    costCurrency: 10
+    costExperience: 20
+    timeRequired: 60
   - level: 3
-    costCurrency: 50
-    costExperience: 90
-    timeRequired: 600
+    costCurrency: 30
+    costExperience: 60
+    timeRequired: 300
   - level: 4
     costCurrency: 100
     costExperience: 300
-    timeRequired: 900
+    timeRequired: 600
   - level: 5
     costCurrency: 300
     costExperience: 1000
-    timeRequired: 1800
+    timeRequired: 1200

@@ -39,6 +39,7 @@ public class MetaUI : MonoBehaviour
     public RectTransform activeContractPanel;
 
     public GameObject contractInfoPanel;
+    public ContractInfo contractInfo;
 
 
     public GameObject contractButtonPrefab;
@@ -63,6 +64,12 @@ public class MetaUI : MonoBehaviour
         researchSystem.OnResearchProcessed += UpdateResearchFrame;
         contractManager.OnContractTimerUpdated += UpdateContractTimer;
         contractManager.OnContractGenerated += CreateContractButton;
+        contractInfo = contractInfoPanel.GetComponent<ContractInfo>();
+        contractInfo.OnNextContractSelected += UpdateContractInfo;
+        contractInfo.OnPreviousContractSelected += UpdateContractInfo;
+        contractInfo.OnContractDeleted += DeleteContract;
+
+
     }
 
     public void Unsubscribe()
@@ -72,6 +79,11 @@ public class MetaUI : MonoBehaviour
         researchSystem.OnResearchProcessed -= UpdateResearchFrame;
         contractManager.OnContractTimerUpdated -= UpdateContractTimer;
         contractManager.OnContractGenerated -= CreateContractButton;
+        contractInfo.OnNextContractSelected -= UpdateContractInfo;
+        contractInfo.OnPreviousContractSelected -= UpdateContractInfo;
+        contractInfo.OnContractDeleted -= DeleteContract;
+
+
     }
 
     private void UpdateResources()//Добавить проверку на активность кнопок в соответствии с свободными слотами и наличием ресурсов
@@ -198,18 +210,61 @@ public class MetaUI : MonoBehaviour
     {
         contractInfoPanel.SetActive(true);
         ContractInfo contractInfo = contractInfoPanel.GetComponent<ContractInfo>();
-        
         contractInfo.Init(cd, this);
-        contractInfoPanel.SetActive(true);
+    }
+    public void UpdateContractInfo(ContractData cd, bool flag)
+    {
+        int curCdIndex = globalData.activeContracts.IndexOf(cd);
+        ContractData nextCD = null;
+        if (flag && globalData.activeContracts.Count > curCdIndex+1)
+        {
+            nextCD = globalData.activeContracts[curCdIndex+1];
+        }
+        else if(globalData.activeContracts.Count == 1)
+        {
+            nextCD = cd;
+        }
+        else if(!flag && curCdIndex > 0)
+        {
+            nextCD = globalData.activeContracts[curCdIndex - 1];
+        }
+        else
+        {
+            nextCD = globalData.activeContracts[0];
+        }
+        contractInfo.UpdateData(nextCD);
+    }
+    public void DeleteContract(ContractData cd)//Поправить метод!
+    {
+        GameObject tempButton = null;
+        foreach (GameObject b in contractButtons)
+        {
+            if (b.GetComponent<ContractButton>().contractData == cd)
+            {
+                tempButton = b;
+            }
+        }
+        Destroy(tempButton);
+        contractButtons.Remove(tempButton);
+        globalData.activeContracts.Remove(cd);
+
+        if (globalData.activeContracts.Count == 0)
+        {
+            contractInfoPanel.SetActive(false);
+        }
+        else
+        {
+            UpdateContractInfo(cd, true);
+        }
     }
     private void CreateContractButton(ContractData contractData)
     {
         GameObject buttonObject = Instantiate(contractButtonPrefab, contractPanel);
         //Debug.Log(contractPanel.transform.position);
         contractButtons.Add(buttonObject);
-        //ContractButton contractButton = buttonObject.GetComponent<ContractButton>();
+        ContractButton contractButton = buttonObject.GetComponent<ContractButton>();
         Button button = buttonObject.GetComponent<Button>();
-        //contractButton.Init(localContract);
+        contractButton.Init(contractData);
         button.onClick.AddListener(() => OpenContractInfo(contractData));
     }
 }

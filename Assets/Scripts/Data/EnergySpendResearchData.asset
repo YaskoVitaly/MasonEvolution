@@ -13,6 +13,8 @@ MonoBehaviour:
   m_Name: EnergySpendResearchData
   m_EditorClassIdentifier: 
   researchName: EnergySpend
+  currentLevel: 0
+  isCompleted: 0
   levels:
   - level: 1
     costCurrency: 20
@@ -25,12 +27,12 @@ MonoBehaviour:
   - level: 3
     costCurrency: 150
     costExperience: 1000
-    timeRequired: 7200
+    timeRequired: 3600
   - level: 4
     costCurrency: 1000
     costExperience: 5000
-    timeRequired: 18000
+    timeRequired: 7200
   - level: 5
     costCurrency: 5000
     costExperience: 20000
-    timeRequired: 36000
+    timeRequired: 14400

@@ -250,6 +250,7 @@ public class GameManager : MonoBehaviour
     public void LoadCoreScene(ContractData cd)
     {
         globalData.currentContract = cd;
+        globalData.activeContracts.Remove(cd);
         SaveData();
         metaUI.Unsubscribe();
         metaUI.contractInfoPanel.GetComponent<ContractInfo>().OnContractStarted -= LoadCoreScene;

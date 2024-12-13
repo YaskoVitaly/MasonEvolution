@@ -8,6 +8,9 @@ using UnityEngine.UI;
 public class ContractInfo : MonoBehaviour
 {
     public Action<ContractData> OnContractStarted;
+    public Action<ContractData> OnContractDeleted;
+    public Action<ContractData, bool> OnNextContractSelected;
+    public Action<ContractData, bool> OnPreviousContractSelected;
 
     private MetaUI metaUI;
     public TextMeshProUGUI titleText;
@@ -27,11 +30,28 @@ public class ContractInfo : MonoBehaviour
         rewardText.text = cd.reward.ToString();
         startContractButton.onClick.AddListener(() => StartContract(cd));
         deleteContractButton.onClick.AddListener(() => DeleteContract(cd));
-        nextContractButton.onClick.AddListener(() => NextContract(cd));
-        prevContractButton.onClick.AddListener(() => PrevContract(cd));
+        nextContractButton.onClick.AddListener(() => NextContract(cd, true));
+        prevContractButton.onClick.AddListener(() => PrevContract(cd, false));
         cancelButton.onClick.AddListener(Cancel);
-
     }
+
+    public void UpdateData(ContractData cd)
+    {
+        startContractButton.onClick.RemoveAllListeners();
+        deleteContractButton.onClick.RemoveAllListeners();
+        prevContractButton.onClick.RemoveAllListeners();
+        nextContractButton.onClick.RemoveAllListeners();
+
+        titleText.text = cd.title;
+        descriptionText.text = cd.description;
+        rewardText.text = cd.reward.ToString();
+
+        startContractButton.onClick.AddListener(() => StartContract(cd));
+        deleteContractButton.onClick.AddListener(() => DeleteContract(cd));
+        nextContractButton.onClick.AddListener(() => NextContract(cd, true));
+        prevContractButton.onClick.AddListener(() => PrevContract(cd, false));
+    }
+
     void Start()
     {
         
@@ -47,17 +67,17 @@ public class ContractInfo : MonoBehaviour
         OnContractStarted(cd);
         Destroy(gameObject);
     }
-    private void NextContract(ContractData cd)
+    private void NextContract(ContractData cd, bool flag)
     {
-
+        OnNextContractSelected(cd, true);
     }
-    private void PrevContract(ContractData cd)
+    private void PrevContract(ContractData cd, bool flag)
     {
-
+        OnNextContractSelected(cd, false);
     }
     private void DeleteContract(ContractData cd)
     {
-
+        OnContractDeleted(cd);
     }
     private void Cancel()
     {

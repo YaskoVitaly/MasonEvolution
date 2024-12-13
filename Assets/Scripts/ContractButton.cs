@@ -5,8 +5,10 @@ using UnityEngine;
 
 public class ContractButton : MonoBehaviour
 {
+    public ContractData contractData;
     public void Init(ContractData cd)
     {
+        contractData = cd;
         TextMeshProUGUI[] textList = GetComponentsInChildren<TextMeshProUGUI>();
         for (int i = 0; i < textList.Length; i++)
         {
