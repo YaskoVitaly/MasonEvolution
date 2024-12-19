@@ -44,6 +44,7 @@ public class PlayerData
     public float expTotal;
     public int completedObjects;
     public ContractData currentContract;
+    public bool isContinuedContract = false;
     
     public Dictionary<string, int> upgradeLevels = new Dictionary<string, int>();
     

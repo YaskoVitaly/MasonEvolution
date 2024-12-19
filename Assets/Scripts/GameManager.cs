@@ -131,6 +131,7 @@ public class GameManager : MonoBehaviour
         else
         {
             globalData.playerData.currentContract = globalData.currentContract;
+            globalData.playerData.isContinuedContract = true;
         }
         
         playerController = gameObject.AddComponent<PlayerController>();

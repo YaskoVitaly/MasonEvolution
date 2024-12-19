@@ -99,7 +99,7 @@ public class CoreUI : MonoBehaviour
         experienceText.text = "EXP: " + _playerData.expCur.ToString();
         quarkCounterText.text = "Quark count: " + playerController.currentQuark;
 
-        FinishedObjectsChange(0);
+        FinishedObjectsChange(playerData.completedObjects);
         StartCoroutine(PlayTimer());
         ExperinceChange(0);
         Debug.Log("CoreUI initialized");
