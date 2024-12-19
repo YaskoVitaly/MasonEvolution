@@ -52,16 +52,6 @@ public class ContractInfo : MonoBehaviour
         prevContractButton.onClick.AddListener(() => PrevContract(cd, false));
     }
 
-    void Start()
-    {
-        
-    }
-
-    void Update()
-    {
-        
-    }
-
     private void StartContract(ContractData cd)
     {
         OnContractStarted(cd);

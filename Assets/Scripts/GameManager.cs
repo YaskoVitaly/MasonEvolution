@@ -14,8 +14,8 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     private GlobalData globalData;
 
-    [SerializeField]
-    private PlayerData playerData;
+    //[SerializeField]
+    //private PlayerData playerData;
 
     [SerializeField]
     private ContractData contractData;
@@ -103,7 +103,7 @@ public class GameManager : MonoBehaviour
                 researchSystem = gameObject.AddComponent<ResearchSystem>();
 
             metaUI.contractInfoPanel.GetComponent<ContractInfo>().OnContractStarted += LoadCoreScene;
-            //contractManager.OnContractSelected += LoadCoreScene;
+            metaUI.OnContractContinued += LoadCoreScene;
             metaUI.Init(globalData, researchSystem, contractManager);
             contractManager.Init(metaUI, globalData);
             researchSystem.Init(globalData, metaUI);
@@ -111,6 +111,8 @@ public class GameManager : MonoBehaviour
         }
         else
         {
+            metaUI.contractInfoPanel.GetComponent<ContractInfo>().OnContractStarted += LoadCoreScene;
+            metaUI.OnContractContinued += LoadCoreScene;
             metaUI.Init(globalData, researchSystem, contractManager);
             contractManager.UpdateMetaUI(metaUI);
             researchSystem.UpdateMetaUI(metaUI);
@@ -120,17 +122,17 @@ public class GameManager : MonoBehaviour
     private void CoreInit()
     {
         Quark quark = quarkPrefab.GetComponent<Quark>();
-        PlayerDataInit();
-        /*
+        //PlayerDataInit();
+        
         if (globalData.playerData == null)
         {
             PlayerDataInit();
         }
         else
         {
-            playerData = globalData.playerData;
+            globalData.playerData.currentContract = globalData.currentContract;
         }
-        */
+        
         playerController = gameObject.AddComponent<PlayerController>();
         objectScheme = gameObject.AddComponent<ObjectScheme>();
         objectCreator = gameObject.AddComponent<ObjectCreator>();
@@ -138,11 +140,11 @@ public class GameManager : MonoBehaviour
         upgradeSystem = gameObject.AddComponent<UpgradeSystem>();
         coreUI = FindObjectOfType<CoreUI>();
 
-        coreUI.Init(playerController, playerData, objectCreator, upgradeSystem);
+        coreUI.Init(playerController, globalData.playerData, objectCreator, upgradeSystem);
         objectScheme.Init(quarkPrefab, productSizeX, productSizeY, productSizeZ); //переработать схему. Должны быть схемы на выбор.
-        playerController.Init(playerData, objectCreator, objectScheme);
+        playerController.Init(globalData.playerData, objectCreator, objectScheme);
         objectCreator.Init(playerController, objectScheme, coreUI, quarkPrefab);
-        upgradeSystem.Init(playerData, objectCreator, coreUI);
+        upgradeSystem.Init(globalData.playerData, objectCreator, coreUI);
         cameraController.Init(Camera.main, new Vector3(productSizeX/2 * quark.size, productSizeY/2 * quark.size, productSizeZ/2 * quark.size));//Откорректировать фокус камеры. Добавить управление камерой (вращение вокруг объекта, приближение/отдаление).
 
         playerController.OnContractCompleated += LoadMetaScene;
@@ -153,66 +155,66 @@ public class GameManager : MonoBehaviour
     
     private void PlayerDataInit()
     {
-        playerData = new PlayerData();
+        globalData.playerData = new PlayerData();
 
-        playerData.forceCur = 0;
-        playerData.expCur = 0;
-        playerData.expTotal = 0;
-        playerData.completedObjects = 0;
-        playerData.currentContract = globalData.currentContract;
+        globalData.playerData.forceCur = 0;
+        globalData.playerData.expCur = 0;
+        globalData.playerData.expTotal = 0;
+        globalData.playerData.completedObjects = 0;
+        globalData.playerData.currentContract = globalData.currentContract;
 
-        playerData.upgradeLevels["EnergyLimit"] = globalData.researchLevels["EnergyLimit"];
-        playerData.upgradeLevels["EnergyRegeneration"] = globalData.researchLevels["EnergyRegeneration"];
-        playerData.upgradeLevels["EnergySpend"] = globalData.researchLevels["EnergySpend"];
-        playerData.upgradeLevels["ForceProduction"] = globalData.researchLevels["ForceProduction"];
-        playerData.upgradeLevels["ForceGeneration"] = globalData.researchLevels["ForceGeneration"];
-        playerData.upgradeLevels["ForceSpend"] = globalData.researchLevels["ForceSpend"];
-        playerData.upgradeLevels["ProductionSpeed"] = globalData.researchLevels["ProductionSpeed"];
-        playerData.upgradeLevels["ProductionCount"] = globalData.researchLevels["ProductionCount"];
-        playerData.upgradeLevels["ExperienceMult"] = globalData.researchLevels["ExperienceMult"];
+        globalData.playerData.upgradeLevels["EnergyLimit"] = globalData.researchLevels["EnergyLimit"];
+        globalData.playerData.upgradeLevels["EnergyRegeneration"] = globalData.researchLevels["EnergyRegeneration"];
+        globalData.playerData.upgradeLevels["EnergySpend"] = globalData.researchLevels["EnergySpend"];
+        globalData.playerData.upgradeLevels["ForceProduction"] = globalData.researchLevels["ForceProduction"];
+        globalData.playerData.upgradeLevels["ForceGeneration"] = globalData.researchLevels["ForceGeneration"];
+        globalData.playerData.upgradeLevels["ForceSpend"] = globalData.researchLevels["ForceSpend"];
+        globalData.playerData.upgradeLevels["ProductionSpeed"] = globalData.researchLevels["ProductionSpeed"];
+        globalData.playerData.upgradeLevels["ProductionCount"] = globalData.researchLevels["ProductionCount"];
+        globalData.playerData.upgradeLevels["ExperienceMult"] = globalData.researchLevels["ExperienceMult"];
 
-        playerData.energyMax = playerData.energyMaxBasic * (playerData.upgradeLevels["EnergyLimit"] + 1);
-        playerData.energyCur = playerData.energyMax;
-        playerData.energyReg = playerData.energyRegBasic + playerData.upgradeLevels["EnergyRegeneration"];
+        globalData.playerData.energyMax = globalData.playerData.energyMaxBasic * (globalData.playerData.upgradeLevels["EnergyLimit"] + 1);
+        globalData.playerData.energyCur = globalData.playerData.energyMax;
+        globalData.playerData.energyReg = globalData.playerData.energyRegBasic + globalData.playerData.upgradeLevels["EnergyRegeneration"];
 
-        if(playerData.upgradeLevels["EnergySpend"] > 0)
-            playerData.energySpend = playerData.energySpendBasic * (float)Math.Pow(0.9f, playerData.upgradeLevels["EnergySpend"]);
+        if(globalData.playerData.upgradeLevels["EnergySpend"] > 0)
+            globalData.playerData.energySpend = globalData.playerData.energySpendBasic * (float)Math.Pow(0.9f, globalData.playerData.upgradeLevels["EnergySpend"]);
         else 
-            playerData.energySpend = playerData.energySpendBasic;
+            globalData.playerData.energySpend = globalData.playerData.energySpendBasic;
         
-        if(playerData.upgradeLevels["ForceProduction"] > 0)
+        if(globalData.playerData.upgradeLevels["ForceProduction"] > 0)
         {
-            playerData.forceProd = playerData.forceProdBasic + playerData.upgradeLevels["ForceProduction"];
-            playerData.workCost = (playerData.workCostBasic * playerData.forceProd) * playerData.energySpend;
+            globalData.playerData.forceProd = globalData.playerData.forceProdBasic + globalData.playerData.upgradeLevels["ForceProduction"];
+            globalData.playerData.workCost = (globalData.playerData.workCostBasic * globalData.playerData.forceProd) * globalData.playerData.energySpend;
         }
         
 
 
-        if (playerData.upgradeLevels["ForceGeneration"] == 0)
-            playerData.forceReg = 0;
-        else if (playerData.upgradeLevels["ForceGeneration"] == 1)
-            playerData.forceReg = playerData.forceRegBasic;
+        if (globalData.playerData.upgradeLevels["ForceGeneration"] == 0)
+            globalData.playerData.forceReg = 0;
+        else if (globalData.playerData.upgradeLevels["ForceGeneration"] == 1)
+            globalData.playerData.forceReg = globalData.playerData.forceRegBasic;
         else
-            playerData.forceReg = playerData.forceRegBasic * (float)Math.Pow(0.9f, playerData.upgradeLevels["ForceGeneration"]);
+            globalData.playerData.forceReg = globalData.playerData.forceRegBasic * (float)Math.Pow(0.9f, globalData.playerData.upgradeLevels["ForceGeneration"]);
 
-        if (playerData.upgradeLevels["ForceSpend"] > 0)
-            playerData.forceSpend = playerData.forceSpendBasic * (float)Math.Pow(0.9f, playerData.upgradeLevels["ForceSpend"]);
+        if (globalData.playerData.upgradeLevels["ForceSpend"] > 0)
+            globalData.playerData.forceSpend = globalData.playerData.forceSpendBasic * (float)Math.Pow(0.9f, globalData.playerData.upgradeLevels["ForceSpend"]);
         else
-            playerData.forceSpend = playerData.forceSpendBasic;
+            globalData.playerData.forceSpend = globalData.playerData.forceSpendBasic;
 
         
 
-        if (playerData.upgradeLevels["ProductionSpeed"] > 0)
-            playerData.productionTime = playerData.productionTimeBasic * (float)Math.Pow(0.9f, playerData.upgradeLevels["ProductionSpeed"]);
+        if (globalData.playerData.upgradeLevels["ProductionSpeed"] > 0)
+            globalData.playerData.productionTime = globalData.playerData.productionTimeBasic * (float)Math.Pow(0.9f, globalData.playerData.upgradeLevels["ProductionSpeed"]);
         else
-            playerData.productionTime = playerData.productionTimeBasic;
+            globalData.playerData.productionTime = globalData.playerData.productionTimeBasic;
 
-        playerData.productionCount = playerData.productionCountBasic + playerData.upgradeLevels["ProductionCount"];
+        globalData.playerData.productionCount = globalData.playerData.productionCountBasic + globalData.playerData.upgradeLevels["ProductionCount"];
 
-        if (playerData.upgradeLevels["ExperienceMult"] > 0)
-            playerData.experienceMult = playerData.experienceMultBasic * (float)Math.Pow(1.2f, playerData.upgradeLevels["ExperienceMult"]);
+        if (globalData.playerData.upgradeLevels["ExperienceMult"] > 0)
+            globalData.playerData.experienceMult = globalData.playerData.experienceMultBasic * (float)Math.Pow(1.2f, globalData.playerData.upgradeLevels["ExperienceMult"]);
         else
-            playerData.experienceMult = playerData.experienceMultBasic;
+            globalData.playerData.experienceMult = globalData.playerData.experienceMultBasic;
     }
 
     public void SaveData()
@@ -249,13 +251,26 @@ public class GameManager : MonoBehaviour
     }
     public void LoadCoreScene(ContractData cd)
     {
-        globalData.currentContract = cd;
-        globalData.activeContracts.Remove(cd);
-        SaveData();
-        metaUI.Unsubscribe();
-        metaUI.contractInfoPanel.GetComponent<ContractInfo>().OnContractStarted -= LoadCoreScene;
-        Destroy(metaUI.gameObject);
-        SceneManager.LoadScene("CoreGamePlayScene");
+        if(globalData.currentContract == null)
+        {
+            globalData.currentContract = cd;
+            globalData.activeContracts.Remove(cd);
+            SaveData();
+            metaUI.Unsubscribe();
+            metaUI.contractInfoPanel.GetComponent<ContractInfo>().OnContractStarted -= LoadCoreScene;
+            metaUI.OnContractContinued -= LoadCoreScene;
+            Destroy(metaUI.gameObject);
+            SceneManager.LoadScene("CoreGamePlayScene");
+        }
+        else
+        {
+            metaUI.Unsubscribe();
+            metaUI.contractInfoPanel.GetComponent<ContractInfo>().OnContractStarted -= LoadCoreScene;
+            metaUI.OnContractContinued -= LoadCoreScene;
+            Destroy(metaUI.gameObject);
+            SceneManager.LoadScene("CoreGamePlayScene");
+        }
+        
     }
 
     public void LoadMetaScene(float exp, bool isCompleted)
@@ -266,10 +281,8 @@ public class GameManager : MonoBehaviour
             globalData.money += globalData.currentContract.reward;
             globalData.currentContract = null;
         }
-        else
-        {
-            globalData.playerData = playerData;
-        }
+        
+        
         SaveData();//Сделать окно награды за контракт, блокирующее интерфейс меты.
 
         playerController.OnContractCompleated -= LoadMetaScene;
@@ -297,10 +310,5 @@ public class GameManager : MonoBehaviour
             MetaInit();
             Debug.LogWarning("This scene is a MetaGamePlayScene" + gameObject.name);
         }
-    }
-    public void ApplicationQuit()
-    {
-        SaveData();
-        Application.Quit();
     }
 }

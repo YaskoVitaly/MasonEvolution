@@ -37,6 +37,7 @@ public class PlayerData
     public ContractData currentContract;
     
     public Dictionary<string, int> upgradeLevels = new Dictionary<string, int>();
+    
 
     public PlayerData()
     {

@@ -10,6 +10,7 @@ public class MetaUI : MonoBehaviour
 {
     public Action<int> OnContractSelected;
     public Action<string> OnResearchSelected;
+    public Action<ContractData> OnContractContinued;
 
     public GameObject ContractInfoWindow;
     public GlobalData globalData;
@@ -21,18 +22,7 @@ public class MetaUI : MonoBehaviour
     public Image researchFrame;
 
     public Button researchOpenButton;
-
-    /*
-    public Button energyLimitResearchButton;
-    public Button energyRegenResearchButton;
-    public Button energySpendResearchButton;
-    public Button forceProductionResearchButton;
-    public Button forceGenerationResearchButton;
-    public Button forceSpendResearchButton;
-    public Button productionTimeResearchButton;
-    public Button productionCountResearchButton;
-    public Button experienceIncomeResearchButton;
-    */
+    
 
     public RectTransform bottomPanel;
     public RectTransform contractPanel;
@@ -43,12 +33,14 @@ public class MetaUI : MonoBehaviour
 
 
     public GameObject contractButtonPrefab;
-    //public Transform contractPanel;
+    public GameObject activeContractButtonPrefab;
+
     public TextMeshProUGUI newContractTimeText;
     public TextMeshProUGUI moneyText;
     public TextMeshProUGUI experienceText;
 
     public List<GameObject> contractButtons;
+
     public List<Button> researchButtons;
 
 
@@ -69,7 +61,10 @@ public class MetaUI : MonoBehaviour
         contractInfo.OnPreviousContractSelected += UpdateContractInfo;
         contractInfo.OnContractDeleted += DeleteContract;
 
-
+        if(globalData.currentContract != null)
+        {
+            CreateActiveContractButton();
+        }
     }
 
     public void Unsubscribe()
@@ -148,38 +143,6 @@ public class MetaUI : MonoBehaviour
             }
             
         }
-        /*
-        switch (research.researchName)
-        {
-            case "EnergyLimit":
-                UpdateResearchButton(energyLimitResearchButton, research);
-                break;
-            case "EnergyRegeneration":
-                UpdateResearchButton(energyRegenResearchButton, research);
-                break;
-            case "EnergySpend":
-                UpdateResearchButton(energySpendResearchButton, research);
-                break;
-            case "ForceProduction":
-                UpdateResearchButton(forceProductionResearchButton, research);
-                break;
-            case "ForceGeneration":
-                UpdateResearchButton(forceGenerationResearchButton, research);
-                break;
-            case "ForceSpend":
-                UpdateResearchButton(forceSpendResearchButton, research);
-                break;
-            case "ProductionSpeed":
-                UpdateResearchButton(productionTimeResearchButton, research);
-                break;
-            case "ProductionCount":
-                UpdateResearchButton(productionCountResearchButton, research);
-                break;
-            case "ExperienceMult":
-                UpdateResearchButton(experienceIncomeResearchButton, research);
-                break;
-        }
-        */
     }
 
     public void SelectContract(int index)
@@ -208,9 +171,17 @@ public class MetaUI : MonoBehaviour
     }
     public void OpenContractInfo(ContractData cd)
     {
-        contractInfoPanel.SetActive(true);
-        ContractInfo contractInfo = contractInfoPanel.GetComponent<ContractInfo>();
-        contractInfo.Init(cd, this);
+        if(globalData.currentContract == null)
+        {
+            contractInfoPanel.SetActive(true);
+            ContractInfo contractInfo = contractInfoPanel.GetComponent<ContractInfo>();
+            contractInfo.Init(cd, this);
+        }
+        else
+        {
+            Debug.LogWarning("Finish your current contract first");
+        }
+
     }
     public void UpdateContractInfo(ContractData cd, bool flag)
     {
@@ -266,5 +237,22 @@ public class MetaUI : MonoBehaviour
         Button button = buttonObject.GetComponent<Button>();
         contractButton.Init(contractData);
         button.onClick.AddListener(() => OpenContractInfo(contractData));
+    }
+    private void CreateActiveContractButton()
+    {
+        Debug.LogWarning("Create active contract button");
+
+        GameObject buttonObject = Instantiate(activeContractButtonPrefab, activeContractPanel);
+        //Debug.Log(contractPanel.transform.position);
+        //contractButtons.Add(buttonObject);
+        ContractButton contractButton = buttonObject.GetComponent<ContractButton>();
+        Button button = buttonObject.GetComponent<Button>();
+        contractButton.Init(globalData.currentContract);
+        button.onClick.AddListener(() => ContractContinue());
+    }
+    private void ContractContinue()
+    {
+        Debug.Log(globalData.currentContract.title);
+        OnContractContinued(globalData.currentContract);
     }
 }

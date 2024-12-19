@@ -88,7 +88,7 @@ public class UpgradeSystem : MonoBehaviour
             playerData.upgradeLevels["EnergySpend"]++;
             energySpendUpgradeCost *= 2;
             playerData.energySpend = playerData.energySpendBasic * (float)Math.Pow(0.95f, playerData.upgradeLevels["EnergySpend"]);
-            OnEnergySpendUpgraded(energySpendUpgradeCost, playerData.expCur, playerData.energySpend, playerData.energySpendBasic * (float)Math.Pow(0.9f, playerData.upgradeLevels["EnergySpend"] + 1));
+            OnEnergySpendUpgraded(energySpendUpgradeCost, playerData.expCur, playerData.energySpend, playerData.energySpendBasic * (float)Math.Pow(0.95f, playerData.upgradeLevels["EnergySpend"] + 1));
         }
     }
     public void UpgradeForceProduction()

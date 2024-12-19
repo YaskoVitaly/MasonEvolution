@@ -25,7 +25,6 @@ public class ObjectScheme : MonoBehaviour
         sizeY = _sizeY;
         sizeZ = _sizeZ;
         quark = _quark;
-        //quarks = new Quark[sizeX, sizeY, sizeZ];
         quarksList = new List<Quark>();
         QuarkGen();
         Debug.Log("ObjectScheme init");

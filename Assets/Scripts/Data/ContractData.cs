@@ -5,6 +5,7 @@ using UnityEngine;
 using static ResearchData;
 
 [CreateAssetMenu(fileName = "ContractData", menuName = "Contract/ContractData", order = 2)]
+[Serializable]
 public class ContractData : ScriptableObject
 {
     public string type;
