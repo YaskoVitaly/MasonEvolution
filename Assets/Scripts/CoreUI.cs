@@ -156,18 +156,18 @@ public class CoreUI : MonoBehaviour
         }
     }
     #region Text Changers
-    private void ExperinceChange(float value)
+    private void ExperinceChange(float value)//Сделать через событие/я, спрятать текущую стоимость улучшений!
     {
         experienceText.text = "Exp: " + value.ToString("0.0");
-        CheckUpgradeButtonPrice(playerData.expCur, energyLimitUpgradeButton, upgradeSystem.energyMaxUpgradeCost);
-        CheckUpgradeButtonPrice(playerData.expCur, energyRegenUpgradeButton, upgradeSystem.energyRegUpgradeCost);
-        CheckUpgradeButtonPrice(playerData.expCur, energySpendUpgradeButton, upgradeSystem.energySpendUpgradeCost);
-        CheckUpgradeButtonPrice(playerData.expCur, forceProductionUpgradeButton, upgradeSystem.forceProductionUpgradeCost);
-        CheckUpgradeButtonPrice(playerData.expCur, forceGenerationUpgradeButton, upgradeSystem.forceGenerationUpgradeCost);
-        CheckUpgradeButtonPrice(playerData.expCur, forceSpendUpgradeButton, upgradeSystem.forceSpendUpgradeCost);
-        CheckUpgradeButtonPrice(playerData.expCur, productionTimeUpgradeButton, upgradeSystem.productionTimeUpgradeCost);
-        CheckUpgradeButtonPrice(playerData.expCur, productionCountUpgradeButton, upgradeSystem.productionCountUpgradeCost);
-        CheckUpgradeButtonPrice(playerData.expCur, experienceIncomeUpgradeButton, upgradeSystem.expIncomeUpgradeCost);
+        CheckUpgradeButtonPrice(playerData.expCur, energyLimitUpgradeButton, upgradeSystem.currentEnergyMaxUpgradeCost);
+        CheckUpgradeButtonPrice(playerData.expCur, energyRegenUpgradeButton, upgradeSystem.currentEnergyRegUpgradeCost);
+        CheckUpgradeButtonPrice(playerData.expCur, energySpendUpgradeButton, upgradeSystem.currentEnergySpendUpgradeCost);
+        CheckUpgradeButtonPrice(playerData.expCur, forceProductionUpgradeButton, upgradeSystem.currentForceProductionUpgradeCost);
+        CheckUpgradeButtonPrice(playerData.expCur, forceGenerationUpgradeButton, upgradeSystem.currentForceGenerationUpgradeCost);
+        CheckUpgradeButtonPrice(playerData.expCur, forceSpendUpgradeButton, upgradeSystem.currentForceSpendUpgradeCost);
+        CheckUpgradeButtonPrice(playerData.expCur, productionTimeUpgradeButton, upgradeSystem.currentProductionTimeUpgradeCost);
+        CheckUpgradeButtonPrice(playerData.expCur, productionCountUpgradeButton, upgradeSystem.currentProductionCountUpgradeCost);
+        CheckUpgradeButtonPrice(playerData.expCur, experienceIncomeUpgradeButton, upgradeSystem.currentExpIncomeUpgradeCost);
     }
     private void EnergyChange(float energyCur, float energyMax)
     {
@@ -241,7 +241,7 @@ public class CoreUI : MonoBehaviour
     private void EnegrySpendUpgradePriceChange(int count, float exp, float energySpendCur, float energySpendNext)
     {
         energySpendUpgradePriceText.text = "Exp: " + count;
-        energySpendUpgradeDescriptionText.text = energySpendCur.ToString("0.0") + " => " + energySpendNext.ToString("0.0");
+        energySpendUpgradeDescriptionText.text = energySpendCur.ToString("0.00") + " => " + energySpendNext.ToString("0.00");
 
         ExperinceChange(exp);
     }
@@ -260,7 +260,7 @@ public class CoreUI : MonoBehaviour
     private void ForceSpendUpgradePriceChange(int count, float exp, float forceSpendCur, float forceSpendNext)
     {
         forceSpendUpgradePriceText.text = "Exp: " + count;
-        forceSpendUpgradeDescriptionText.text = forceSpendCur.ToString("0.0") + " => " + forceSpendNext.ToString("0.0");
+        forceSpendUpgradeDescriptionText.text = forceSpendCur.ToString("0.00") + " => " + forceSpendNext.ToString("0.00");
         ExperinceChange(exp);
     }
     private void ProductionTimeUpgradePriceChange(int count, float exp, float prodTimeCur, float prodTimeNext)

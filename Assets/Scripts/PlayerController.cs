@@ -17,7 +17,7 @@ public class PlayerController : MonoBehaviour
     public ObjectScheme objectScheme;
 
     public int currentQuark = 0;
-    public int completedObjects = 0;
+    //public int completedObjects = 0;
 
     private bool isProduction = false;
 
@@ -74,23 +74,23 @@ public class PlayerController : MonoBehaviour
     }
     private void ProductCompleate()
     {
-        if (completedObjects < playerData.currentContract.count-1)
+        if (playerData.completedObjects < playerData.currentContract.count-1)
         {
             ExperinceChange(TotalCost(objectScheme.quarksList) * playerData.experienceMult);
-            completedObjects++;
+            playerData.completedObjects++;
             currentQuark = 0;
             Debug.Log("Object compleated");
             isProduction = false;
-            OnObjectCompleted(completedObjects);
+            OnObjectCompleted(playerData.completedObjects);
         }
         else
         {
             ExperinceChange(TotalCost(objectScheme.quarksList) * playerData.experienceMult);
-            completedObjects++;
+            playerData.completedObjects++;
             currentQuark = 0;
             Debug.Log("Object compleated");
             isProduction = false;
-            OnObjectCompleted(completedObjects);
+            OnObjectCompleted(playerData.completedObjects);
             OnContractCompleated(playerData.expCur/100, true);
         }
         

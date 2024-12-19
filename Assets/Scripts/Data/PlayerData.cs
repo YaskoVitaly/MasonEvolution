@@ -2,10 +2,19 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static ResearchData;
 
 [Serializable]
 public class PlayerData
 {
+    [Serializable]
+    public class KeyValue
+    {
+        public string key;
+        public int value;
+    }
+    public List<KeyValue> upgradeDataList = new List<KeyValue>();
+
     public float energyMaxBasic;
     public float energyRegBasic;
     public float energySpendBasic;
@@ -78,5 +87,21 @@ public class PlayerData
         productionCount = productionCountBasic + upgradeLevels["ProductionCount"];
         expTotal = 0;
         completedObjects = 0;
+    }
+    public void ConvertDictionary()
+    {
+        upgradeDataList.Clear();
+        foreach (var pair in upgradeLevels)
+        {
+            upgradeDataList.Add(new KeyValue { key = pair.Key, value = pair.Value });
+        }
+    }
+
+    public void GetDictionary()
+    {
+        foreach (var kvp in upgradeDataList)
+        {
+            upgradeLevels[kvp.key] = kvp.value;
+        }
     }
 }

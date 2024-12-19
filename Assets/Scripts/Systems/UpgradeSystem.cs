@@ -15,158 +15,180 @@ public class UpgradeSystem : MonoBehaviour
     public Action<int, float, float, float> OnProductionCountUpgraded;
     public Action<int, float, float, float> OnExperienceIncomeUpgraded;
 
-    public int energyMaxUpgradeCost = 2;
-    public int energyRegUpgradeCost = 1;
-    public int energySpendUpgradeCost = 5;
-    public int forceProductionUpgradeCost = 2;
-    public int forceGenerationUpgradeCost = 2;
-    public int forceSpendUpgradeCost = 5;
-    public int productionTimeUpgradeCost = 3;
-    public int productionCountUpgradeCost = 3;
-    public int expIncomeUpgradeCost = 4;
-    
+    public int basicEnergyMaxUpgradeCost = 2;
+    public int basicEnergyRegUpgradeCost = 1;
+    public int basicEnergySpendUpgradeCost = 5;
+    public int basicForceProductionUpgradeCost = 2;
+    public int basicForceGenerationUpgradeCost = 2;
+    public int basicForceSpendUpgradeCost = 5;
+    public int basicProductionTimeUpgradeCost = 3;
+    public int basicProductionCountUpgradeCost = 3;
+    public int basicExpIncomeUpgradeCost = 4;
+
+    public int currentEnergyMaxUpgradeCost;
+    public int currentEnergyRegUpgradeCost;
+    public int currentEnergySpendUpgradeCost;
+    public int currentForceProductionUpgradeCost;
+    public int currentForceGenerationUpgradeCost;
+    public int currentForceSpendUpgradeCost;
+    public int currentProductionTimeUpgradeCost;
+    public int currentProductionCountUpgradeCost;
+    public int currentExpIncomeUpgradeCost;
     
 
     private PlayerData playerData;
+    private GlobalData globalData;
     private ObjectCreator objectCreator;
     private CoreUI coreUI;
 
-    public void Init(PlayerData _playerData, ObjectCreator _objectCreator, CoreUI _coreUI)
+    public void Init(GlobalData _globalData, ObjectCreator _objectCreator, CoreUI _coreUI)
     {
-        playerData = _playerData;
+        globalData = _globalData;
+        playerData = globalData.playerData;
         objectCreator = _objectCreator;
         coreUI = _coreUI;
 
-        OnEnergyLimitUpgraded(energyMaxUpgradeCost, playerData.expCur, playerData.energyMax, playerData.energyMaxBasic * ((playerData.upgradeLevels["EnergyLimit"] + 1) * 2));
-        OnEnergyRegenUpgraded(energyRegUpgradeCost, playerData.expCur, playerData.energyReg, playerData.energyRegBasic + playerData.upgradeLevels["EnergyRegeneration"] + 1);
-        OnEnergySpendUpgraded(energySpendUpgradeCost, playerData.expCur, playerData.energySpend, playerData.energySpendBasic * (float)Math.Pow(0.95f, playerData.upgradeLevels["EnergySpend"] + 1));
+        currentEnergyMaxUpgradeCost = basicEnergyMaxUpgradeCost;
+        currentEnergyRegUpgradeCost = basicEnergyRegUpgradeCost;
+        currentEnergySpendUpgradeCost = basicEnergySpendUpgradeCost;
+        currentForceProductionUpgradeCost = basicForceProductionUpgradeCost;
+        currentForceGenerationUpgradeCost = basicForceGenerationUpgradeCost;
+        currentForceSpendUpgradeCost = basicForceSpendUpgradeCost;
+        currentProductionTimeUpgradeCost = basicProductionTimeUpgradeCost;
+        currentProductionCountUpgradeCost = basicProductionCountUpgradeCost;
+        currentExpIncomeUpgradeCost = basicExpIncomeUpgradeCost;
 
-        OnForceProductionUpgraded(forceProductionUpgradeCost, playerData.expCur, playerData.workCost, (playerData.workCost + playerData.upgradeLevels["ForceProduction"] + 1), playerData.forceProd, playerData.forceProdBasic + playerData.upgradeLevels["ForceProduction"] + 1);//доработать для отображение затрат энергии на работу
+        OnEnergyLimitUpgraded(currentEnergyMaxUpgradeCost, playerData.expCur, playerData.energyMax, playerData.energyMaxBasic * ((playerData.upgradeLevels["EnergyLimit"] + 1) * 2));
+        OnEnergyRegenUpgraded(currentEnergyRegUpgradeCost, playerData.expCur, playerData.energyReg, playerData.energyRegBasic + playerData.upgradeLevels["EnergyRegeneration"] + 1);
+        OnEnergySpendUpgraded(currentEnergySpendUpgradeCost, playerData.expCur, playerData.energySpend, playerData.energySpendBasic * (float)Math.Pow(0.95f, playerData.upgradeLevels["EnergySpend"] + 1));
+
+        OnForceProductionUpgraded(currentForceProductionUpgradeCost, playerData.expCur, playerData.workCost, (playerData.workCost + playerData.upgradeLevels["ForceProduction"] + 1), playerData.forceProd, playerData.forceProdBasic + playerData.upgradeLevels["ForceProduction"] + 1);//доработать для отображение затрат энергии на работу
         
         if(playerData.forceReg == 0)
-            OnForceGenerationUpgraded(forceGenerationUpgradeCost, playerData.expCur, 0, playerData.forceRegBasic);
+            OnForceGenerationUpgraded(currentForceGenerationUpgradeCost, playerData.expCur, 0, playerData.forceRegBasic);
         else
-            OnForceGenerationUpgraded(forceGenerationUpgradeCost, playerData.expCur, playerData.forceReg, playerData.forceRegBasic * (float)Math.Pow(0.8f, playerData.upgradeLevels["ForceGeneration"] + 1));
+            OnForceGenerationUpgraded(currentForceGenerationUpgradeCost, playerData.expCur, playerData.forceReg, playerData.forceRegBasic * (float)Math.Pow(0.8f, playerData.upgradeLevels["ForceGeneration"] + 1));
         
-        OnForceSpendUpgraded(forceSpendUpgradeCost, playerData.expCur, playerData.forceSpend, playerData.forceSpendBasic * (float)Math.Pow(0.95f, playerData.upgradeLevels["ForceSpend"] + 1));
+        OnForceSpendUpgraded(currentForceSpendUpgradeCost, playerData.expCur, playerData.forceSpend, playerData.forceSpendBasic * (float)Math.Pow(0.95f, playerData.upgradeLevels["ForceSpend"] + 1));
 
 
-        OnProductionTimeUpgraded(productionTimeUpgradeCost, playerData.expCur, playerData.productionTime, playerData.productionTimeBasic * (float)Math.Pow(0.88f, playerData.upgradeLevels["ProductionSpeed"] + 1));
-        OnProductionCountUpgraded(productionCountUpgradeCost, playerData.expCur, playerData.productionCount, playerData.productionCountBasic + playerData.upgradeLevels["ProductionCount"] + 1);
-        OnExperienceIncomeUpgraded(expIncomeUpgradeCost, playerData.expCur, playerData.experienceMult * 10, playerData.experienceMultBasic * (float)Math.Pow(1.2f, playerData.upgradeLevels["ExperienceMult"] + 1)*10);
+        OnProductionTimeUpgraded(currentProductionTimeUpgradeCost, playerData.expCur, playerData.productionTime, playerData.productionTimeBasic * (float)Math.Pow(0.88f, playerData.upgradeLevels["ProductionSpeed"] + 1));
+        OnProductionCountUpgraded(currentProductionCountUpgradeCost, playerData.expCur, playerData.productionCount, playerData.productionCountBasic + playerData.upgradeLevels["ProductionCount"] + 1);
+        OnExperienceIncomeUpgraded(currentExpIncomeUpgradeCost, playerData.expCur, playerData.experienceMult * 10, playerData.experienceMultBasic * (float)Math.Pow(1.2f, playerData.upgradeLevels["ExperienceMult"] + 1)*10);
         Debug.Log("UpgradeSystem init");
     }
     
     #region Upgrades
     public void UpgradeMaxEnergy()
     {
-        if (playerData.expCur >= energyMaxUpgradeCost)
+        if (playerData.expCur >= currentEnergyMaxUpgradeCost)
         {
-            playerData.expCur -= energyMaxUpgradeCost;
+            playerData.expCur -= currentEnergyMaxUpgradeCost;
             playerData.upgradeLevels["EnergyLimit"]++;
-            energyMaxUpgradeCost *= 2;
+            currentEnergyMaxUpgradeCost = (int)Mathf.Pow(basicEnergyMaxUpgradeCost, (playerData.upgradeLevels["EnergyLimit"] - globalData.researchLevels["EnergyLimit"]) + 1);
             playerData.energyMax = playerData.energyMaxBasic * (playerData.upgradeLevels["EnergyLimit"] * 2);
-            OnEnergyLimitUpgraded(energyMaxUpgradeCost, playerData.expCur, playerData.energyMax, playerData.energyMaxBasic * ((playerData.upgradeLevels["EnergyLimit"] + 1) * 2));
+            OnEnergyLimitUpgraded(currentEnergyMaxUpgradeCost, playerData.expCur, playerData.energyMax, playerData.energyMaxBasic * ((playerData.upgradeLevels["EnergyLimit"] + 1) * 2));
         }
     }
     public void UpgradeEnergyRegen()
     {
-        if (playerData.expCur >= energyRegUpgradeCost)
+        if (playerData.expCur >= currentEnergyRegUpgradeCost)
         {
-            playerData.expCur -= energyRegUpgradeCost;
+            playerData.expCur -= currentEnergyRegUpgradeCost;
             playerData.upgradeLevels["EnergyRegeneration"]++;
-            energyRegUpgradeCost *= 2;
+            currentEnergyRegUpgradeCost = (int)Mathf.Pow(basicEnergyRegUpgradeCost, (playerData.upgradeLevels["EnergyRegeneration"] - globalData.researchLevels["EnergyRegeneration"]) + 1);
             playerData.energyReg = playerData.energyRegBasic + playerData.upgradeLevels["EnergyRegeneration"];
-            OnEnergyRegenUpgraded(energyRegUpgradeCost, playerData.expCur, playerData.energyReg, playerData.energyRegBasic + playerData.upgradeLevels["EnergyRegeneration"] + 1);
+            OnEnergyRegenUpgraded(currentEnergyRegUpgradeCost, playerData.expCur, playerData.energyReg, playerData.energyRegBasic + playerData.upgradeLevels["EnergyRegeneration"] + 1);
         }
     }
     public void UpgradeEnergySpend()
     {
-        if (playerData.expCur >= energySpendUpgradeCost)
+        if (playerData.expCur >= currentEnergySpendUpgradeCost)
         {
-            playerData.expCur -= energySpendUpgradeCost;
+            playerData.expCur -= currentEnergySpendUpgradeCost;
             playerData.upgradeLevels["EnergySpend"]++;
-            energySpendUpgradeCost *= 2;
+            currentEnergySpendUpgradeCost = (int)Mathf.Pow(basicEnergySpendUpgradeCost, (playerData.upgradeLevels["EnergySpend"] - globalData.researchLevels["EnergySpend"]) + 1);
             playerData.energySpend = playerData.energySpendBasic * (float)Math.Pow(0.95f, playerData.upgradeLevels["EnergySpend"]);
-            OnEnergySpendUpgraded(energySpendUpgradeCost, playerData.expCur, playerData.energySpend, playerData.energySpendBasic * (float)Math.Pow(0.95f, playerData.upgradeLevels["EnergySpend"] + 1));
+            OnEnergySpendUpgraded(currentEnergySpendUpgradeCost, playerData.expCur, playerData.energySpend, playerData.energySpendBasic * (float)Math.Pow(0.95f, playerData.upgradeLevels["EnergySpend"] + 1));
         }
     }
     public void UpgradeForceProduction()
     {
-        if(playerData.expCur >= forceProductionUpgradeCost)
+        if(playerData.expCur >= currentForceProductionUpgradeCost)
         {
-            playerData.expCur -= forceProductionUpgradeCost;
+            playerData.expCur -= currentForceProductionUpgradeCost;
             playerData.upgradeLevels["ForceProduction"]++;
-            forceProductionUpgradeCost *= 2;
+            currentForceProductionUpgradeCost = (int)Mathf.Pow(basicForceProductionUpgradeCost, (playerData.upgradeLevels["ForceProduction"] - globalData.researchLevels["ForceProduction"]) + 1);
             playerData.workCost++;
             playerData.forceProd++;
             playerData.workCost = (playerData.workCostBasic + playerData.upgradeLevels["ForceProduction"]) * playerData.energySpend;
             playerData.forceProd = playerData.forceProdBasic + playerData.upgradeLevels["ForceProduction"];
-            OnForceProductionUpgraded(forceProductionUpgradeCost, playerData.expCur, playerData.workCost, (playerData.workCostBasic + playerData.upgradeLevels["ForceProduction"] + 1) * playerData.energySpend, playerData.forceProd, playerData.forceProdBasic + playerData.upgradeLevels["ForceProduction"] + 1);
+            OnForceProductionUpgraded(currentForceProductionUpgradeCost, playerData.expCur, playerData.workCost, (playerData.workCostBasic + playerData.upgradeLevels["ForceProduction"] + 1) * playerData.energySpend, playerData.forceProd, playerData.forceProdBasic + playerData.upgradeLevels["ForceProduction"] + 1);
         }
     }
     public void UpgradeForceSpend()
     {
-        if (playerData.expCur >= forceSpendUpgradeCost)
+        if (playerData.expCur >= currentForceSpendUpgradeCost)
         {
-            playerData.expCur -= forceSpendUpgradeCost;
+            playerData.expCur -= currentForceSpendUpgradeCost;
             playerData.upgradeLevels["ForceSpend"]++;
-            forceSpendUpgradeCost *= 2;
-            playerData.forceSpend = playerData.forceSpendBasic * (float)Math.Pow(0.9f, playerData.upgradeLevels["ForceSpend"]);
-            OnForceSpendUpgraded(forceSpendUpgradeCost, playerData.expCur, playerData.forceSpend, (float)Math.Pow(0.95f, playerData.upgradeLevels["ForceSpend"] + 1));
+            currentForceSpendUpgradeCost = (int)Mathf.Pow(basicForceSpendUpgradeCost, (playerData.upgradeLevels["ForceSpend"] - globalData.researchLevels["ForceSpend"]) + 1);
+            playerData.forceSpend = playerData.forceSpendBasic * (float)Math.Pow(0.95f, playerData.upgradeLevels["ForceSpend"]);
+            OnForceSpendUpgraded(currentForceSpendUpgradeCost, playerData.expCur, playerData.forceSpend, (float)Math.Pow(0.95f, playerData.upgradeLevels["ForceSpend"] + 1));
         }
     }
     public void UpgradeForceAutoGeneration()
     {
-        if(playerData.expCur >= forceGenerationUpgradeCost)
+        if(playerData.expCur >= currentForceGenerationUpgradeCost)
         {
-            playerData.expCur -= forceGenerationUpgradeCost;
-            forceGenerationUpgradeCost *= 2;
+            playerData.expCur -= currentForceGenerationUpgradeCost;
             if(playerData.upgradeLevels["ForceGeneration"] == 0)
             {
                 playerData.forceReg = playerData.forceRegBasic;
                 playerData.upgradeLevels["ForceGeneration"]++;
-                OnForceGenerationUpgraded(forceGenerationUpgradeCost, playerData.expCur, playerData.forceReg, playerData.forceRegBasic * (float)Math.Pow(0.8f, playerData.upgradeLevels["ForceGeneration"]));
+                currentForceGenerationUpgradeCost = (int)Mathf.Pow(basicForceGenerationUpgradeCost, (playerData.upgradeLevels["ForceGeneration"] - globalData.researchLevels["ForceGeneration"]) + 1);
+                OnForceGenerationUpgraded(currentForceGenerationUpgradeCost, playerData.expCur, playerData.forceReg, playerData.forceRegBasic * (float)Math.Pow(0.8f, playerData.upgradeLevels["ForceGeneration"]));
             }
             else
             {
                 playerData.forceReg = playerData.forceRegBasic * (float)Math.Pow(0.8f, playerData.upgradeLevels["ForceGeneration"]);
                 playerData.upgradeLevels["ForceGeneration"]++;
-                OnForceGenerationUpgraded(forceGenerationUpgradeCost, playerData.expCur, playerData.forceReg, playerData.forceRegBasic * (float)Math.Pow(0.8f, playerData.upgradeLevels["ForceGeneration"]));
+                currentForceGenerationUpgradeCost = (int)Mathf.Pow(basicForceGenerationUpgradeCost, (playerData.upgradeLevels["ForceGeneration"] - globalData.researchLevels["ForceGeneration"]) + 1);
+                OnForceGenerationUpgraded(currentForceGenerationUpgradeCost, playerData.expCur, playerData.forceReg, playerData.forceRegBasic * (float)Math.Pow(0.8f, playerData.upgradeLevels["ForceGeneration"]));
             }
         }
     }
     public void UpgradeProductionTime()
     {
-        if(playerData.expCur >= productionTimeUpgradeCost)
+        if(playerData.expCur >= currentProductionTimeUpgradeCost)
         {
-            playerData.expCur -= productionTimeUpgradeCost;
+            playerData.expCur -= currentProductionTimeUpgradeCost;
             playerData.upgradeLevels["ProductionSpeed"]++;
-            productionTimeUpgradeCost *= 2;
+            currentProductionTimeUpgradeCost = (int)Mathf.Pow(basicProductionTimeUpgradeCost, (playerData.upgradeLevels["ProductionSpeed"] - globalData.researchLevels["ProductionSpeed"]) + 1);
             playerData.productionTime = playerData.productionTimeBasic * (float)Math.Pow(0.88f, playerData.upgradeLevels["ProductionSpeed"]);
-            OnProductionTimeUpgraded(productionTimeUpgradeCost, playerData.expCur, playerData.productionTime, playerData.productionTimeBasic * (float)Math.Pow(0.88f, playerData.upgradeLevels["ProductionSpeed"] + 1));
+            OnProductionTimeUpgraded(currentProductionTimeUpgradeCost, playerData.expCur, playerData.productionTime, playerData.productionTimeBasic * (float)Math.Pow(0.88f, playerData.upgradeLevels["ProductionSpeed"] + 1));
         }
     }
     public void UpgradeProductionCount()
     {
-        if (playerData.expCur >= productionCountUpgradeCost)
+        if (playerData.expCur >= currentProductionCountUpgradeCost)
         {
-            playerData.expCur -= productionCountUpgradeCost;
+            playerData.expCur -= currentProductionCountUpgradeCost;
             playerData.upgradeLevels["ProductionCount"]++;
-            productionCountUpgradeCost *= 2;
+            currentProductionCountUpgradeCost = (int)Mathf.Pow(basicProductionCountUpgradeCost, (playerData.upgradeLevels["ProductionCount"] - globalData.researchLevels["ProductionCount"]) + 1);
             playerData.productionCount = playerData.productionCountBasic + playerData.upgradeLevels["ProductionCount"];
-            OnProductionCountUpgraded(productionCountUpgradeCost, playerData.expCur, playerData.productionCount, playerData.productionCountBasic + playerData.upgradeLevels["ProductionCount"] + 1);
+            OnProductionCountUpgraded(currentProductionCountUpgradeCost, playerData.expCur, playerData.productionCount, playerData.productionCountBasic + playerData.upgradeLevels["ProductionCount"] + 1);
         }
     }
     public void UpgradeExpirienceIncome()
     {
-        if(playerData.expCur >= expIncomeUpgradeCost)
+        if(playerData.expCur >= currentExpIncomeUpgradeCost)
         {
-            playerData.expCur -= expIncomeUpgradeCost;
+            playerData.expCur -= currentExpIncomeUpgradeCost;
             playerData.upgradeLevels["ExperienceMult"]++;
-            expIncomeUpgradeCost *= 2;
+            currentExpIncomeUpgradeCost = (int)Mathf.Pow(basicExpIncomeUpgradeCost, (playerData.upgradeLevels["ExperienceMult"] - globalData.researchLevels["ExperienceMult"]) + 1);
             playerData.experienceMult = playerData.experienceMultBasic * (float)Math.Pow(1.2f, playerData.upgradeLevels["ExperienceMult"]);
-            OnExperienceIncomeUpgraded(expIncomeUpgradeCost, playerData.expCur, playerData.experienceMult * 10, playerData.experienceMultBasic * (float)Math.Pow(1.2f, playerData.upgradeLevels["ExperienceMult"] + 1)*10);
+            OnExperienceIncomeUpgraded(currentExpIncomeUpgradeCost, playerData.expCur, playerData.experienceMult * 10, playerData.experienceMultBasic * (float)Math.Pow(1.2f, playerData.upgradeLevels["ExperienceMult"] + 1)*10);
         }
     }
     #endregion

@@ -144,7 +144,7 @@ public class GameManager : MonoBehaviour
         objectScheme.Init(quarkPrefab, productSizeX, productSizeY, productSizeZ); //переработать схему. Должны быть схемы на выбор.
         playerController.Init(globalData.playerData, objectCreator, objectScheme);
         objectCreator.Init(playerController, objectScheme, coreUI, quarkPrefab);
-        upgradeSystem.Init(globalData.playerData, objectCreator, coreUI);
+        upgradeSystem.Init(globalData, objectCreator, coreUI);
         cameraController.Init(Camera.main, new Vector3(productSizeX/2 * quark.size, productSizeY/2 * quark.size, productSizeZ/2 * quark.size));//Откорректировать фокус камеры. Добавить управление камерой (вращение вокруг объекта, приближение/отдаление).
 
         playerController.OnContractCompleated += LoadMetaScene;
@@ -220,6 +220,7 @@ public class GameManager : MonoBehaviour
     public void SaveData()
     {
         globalData.ConvertDictionary();
+        globalData.playerData.ConvertDictionary();
         globalData.globalTime = DateTime.Now.ToString();
         string json = JsonUtility.ToJson(globalData);
         File.WriteAllText(Application.persistentDataPath + "/globalData.json", json);
@@ -236,6 +237,7 @@ public class GameManager : MonoBehaviour
             string json = File.ReadAllText(path);
             globalData = JsonUtility.FromJson<GlobalData>(json);
             globalData.GetDictionary();
+            globalData.playerData.GetDictionary();
             TimeSpan timeSpan = DateTime.Now - DateTime.Parse(globalData.globalTime);
             globalData.timePeriod = timeSpan.Days * (3600*24) + timeSpan.Hours * 3600 + timeSpan.Minutes * 60 + timeSpan.Seconds;
             Debug.Log("GlobalData loaded: " + path);
@@ -246,6 +248,7 @@ public class GameManager : MonoBehaviour
         {
             globalData = new GlobalData();
             globalData.GetDictionary();
+            globalData.playerData.GetDictionary();
             Debug.Log("GlobalData new");
         }
     }

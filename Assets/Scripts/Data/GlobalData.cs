@@ -12,7 +12,7 @@ public class GlobalData
         public string key;
         public int value;
     }
-    public List<KeyValue> DataList = new List<KeyValue>();
+    public List<KeyValue> researchDataList = new List<KeyValue>();
 
     public string globalTime;
     public float timePeriod;
@@ -58,16 +58,16 @@ public class GlobalData
 
     public void ConvertDictionary()
     {
-        DataList.Clear();
+        researchDataList.Clear();
         foreach (var pair in researchLevels)
         {
-            DataList.Add(new KeyValue { key = pair.Key, value = pair.Value });
+            researchDataList.Add(new KeyValue { key = pair.Key, value = pair.Value });
         }
     }
 
     public void GetDictionary()
     {
-        foreach (var kvp in DataList)
+        foreach (var kvp in researchDataList)
         {
             researchLevels[kvp.key] = kvp.value;
         }
