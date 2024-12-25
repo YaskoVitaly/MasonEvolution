@@ -9,14 +9,19 @@ public class ObjectCreator : MonoBehaviour
     public Action<float, List<Quark>> OnQuarkGenerated;
 
     private ObjectScheme objectScheme;
-    private GameObject quark;
     
-    public void Init(PlayerController playerController, ObjectScheme _objectScheme, CoreUI coreUI, GameObject _quark)
+    public void Init(PlayerController playerController, ObjectScheme _objectScheme, CoreUI coreUI, PlayerData _playerData)
     {
         objectScheme = _objectScheme;
-        quark = _quark;
         coreUI.OnProductionFinished += QuarkGeneration;
         playerController.OnObjectCompleted += SchemeUpdate;
+        if(_playerData.currentQuark > 0)
+        {
+            for(int i = 0; i < _playerData.currentQuark; i++)
+            {
+                objectScheme.quarksList[i].GetComponent<MeshRenderer>().enabled = true;
+            }
+        }
         Debug.Log("ObjectCreator init");
     }
     

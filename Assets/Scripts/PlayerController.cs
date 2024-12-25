@@ -15,19 +15,20 @@ public class PlayerController : MonoBehaviour
 
     public PlayerData playerData;
     public ObjectScheme objectScheme;
+    private GameObject quarkPrefab;
 
-    public int currentQuark = 0;
+    //public int currentQuark = 0;
     //public int completedObjects = 0;
 
     private bool isProduction = false;
 
     private Coroutine creator;
-    private List<Quark> productionQuarks;
     
-    public void Init(PlayerData _playerData, ObjectCreator _objectCreator, ObjectScheme _objectScheme)
+    public void Init(PlayerData _playerData, ObjectCreator _objectCreator, ObjectScheme _objectScheme, GameObject _quarkPrefab)
     {
         playerData = _playerData;
         objectScheme = _objectScheme;
+        quarkPrefab = _quarkPrefab;
         _objectCreator.OnQuarkGenerated += ProductionCompleate;
         _objectCreator.OnSchemeUpdated += Launcher;
 
@@ -52,9 +53,9 @@ public class PlayerController : MonoBehaviour
             StopCoroutine(creator);
         }
         Debug.Log("Launcher");
-        Debug.Log("Current quark: " + currentQuark + "; Object quark count: " + objectScheme.quarksList.Count + "; Production: " + isProduction);
+        Debug.Log("Current quark: " + playerData.currentQuark + "; Object quark count: " + objectScheme.quarksList.Count + "; Production: " + isProduction);
 
-        creator = StartCoroutine(ObjectCreator(objectScheme.CurrentQuarks(playerData.productionCount, currentQuark)));
+        creator = StartCoroutine(ObjectCreator(objectScheme.CurrentQuarks(playerData.productionCount, playerData.currentQuark)));
     }
     public void ProductionCompleate(float exp, List<Quark> purchasedQuarks)//переписать под список кварков
     {
@@ -62,7 +63,7 @@ public class PlayerController : MonoBehaviour
         {
             Debug.Log("Production compleate");
             ExperinceChange(exp);
-            currentQuark += purchasedQuarks.Count;
+            playerData.currentQuark += purchasedQuarks.Count;
             isProduction = false;
             Launcher();
         }
@@ -78,7 +79,7 @@ public class PlayerController : MonoBehaviour
         {
             ExperinceChange(TotalCost(objectScheme.quarksList) * playerData.experienceMult);
             playerData.completedObjects++;
-            currentQuark = 0;
+            playerData.currentQuark = 0;
             Debug.Log("Object compleated");
             isProduction = false;
             OnObjectCompleted(playerData.completedObjects);
@@ -87,7 +88,7 @@ public class PlayerController : MonoBehaviour
         {
             ExperinceChange(TotalCost(objectScheme.quarksList) * playerData.experienceMult);
             playerData.completedObjects++;
-            currentQuark = 0;
+            playerData.currentQuark = 0;
             Debug.Log("Object compleated");
             isProduction = false;
             OnObjectCompleted(playerData.completedObjects);
@@ -139,7 +140,7 @@ public class PlayerController : MonoBehaviour
             OnWorked(playerData.forceCur);
             isProduction = true;
 
-            OnProductionStarted(playerData.productionTime, currentQuark, totalCost * playerData.experienceMult, playerData.expCur, purchasedQuarks);
+            OnProductionStarted(playerData.productionTime, playerData.currentQuark, totalCost * playerData.experienceMult, playerData.expCur, purchasedQuarks);
             Debug.Log("Current force: " + playerData.forceCur + " Total cost: " + totalCost * playerData.forceSpend + " - After deducting" + "; Production time: " + playerData.productionTime);
             /*
             if (playerData.forceCur < 100)
@@ -169,7 +170,7 @@ public class PlayerController : MonoBehaviour
     }
     private IEnumerator ObjectCreator(List<Quark> currentQuarks)
     {
-        while (currentQuark <= objectScheme.quarksList.Count && !isProduction)
+        while (playerData.currentQuark <= objectScheme.quarksList.Count && !isProduction)
         {
             if(currentQuarks.Count > 0 && playerData.forceCur >= currentQuarks[0].cost)
             {
@@ -178,7 +179,7 @@ public class PlayerController : MonoBehaviour
                 Debug.Log("Total cost: " + totalCost);
                 if (playerData.forceCur >= totalCost * playerData.forceSpend)
                 {
-                    if (purchasedQuarks != null && currentQuark <= objectScheme.quarksList.Count)
+                    if (purchasedQuarks != null && playerData.currentQuark <= objectScheme.quarksList.Count)
                     {
                         ObjectCreate(purchasedQuarks);
                     }

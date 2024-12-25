@@ -43,6 +43,7 @@ public class PlayerData
 
     public float expTotal;
     public int completedObjects;
+    public int currentQuark;
     public ContractData currentContract;
     public bool isContinuedContract = false;
     

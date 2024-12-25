@@ -97,7 +97,7 @@ public class CoreUI : MonoBehaviour
         timer = 0;
         forceCountText.text = "Force: 0";
         experienceText.text = "EXP: " + _playerData.expCur.ToString();
-        quarkCounterText.text = "Quark count: " + playerController.currentQuark;
+        quarkCounterText.text = "Quark count: " + playerData.currentQuark;
 
         FinishedObjectsChange(playerData.completedObjects);
         StartCoroutine(PlayTimer());

@@ -1,7 +1,9 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[Serializable]
 public class Quark : MonoBehaviour
 {
     public int cost;
@@ -13,6 +15,9 @@ public class Quark : MonoBehaviour
 
     public void Init(Vector3 pos, int material)
     {
+        posX = pos.x;
+        posY = pos.y;
+        posZ = pos.z;
         gameObject.transform.position = pos;
         gameObject.transform.localScale = Vector3.one * size;
         GetComponent<MeshRenderer>().enabled = false;

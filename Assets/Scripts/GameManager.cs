@@ -143,8 +143,8 @@ public class GameManager : MonoBehaviour
 
         coreUI.Init(playerController, globalData.playerData, objectCreator, upgradeSystem);
         objectScheme.Init(quarkPrefab, productSizeX, productSizeY, productSizeZ); //переработать схему. Должны быть схемы на выбор.
-        playerController.Init(globalData.playerData, objectCreator, objectScheme);
-        objectCreator.Init(playerController, objectScheme, coreUI, quarkPrefab);
+        playerController.Init(globalData.playerData, objectCreator, objectScheme, quarkPrefab);
+        objectCreator.Init(playerController, objectScheme, coreUI, globalData.playerData);
         upgradeSystem.Init(globalData, objectCreator, coreUI);
         cameraController.Init(Camera.main, new Vector3(productSizeX/2 * quark.size, productSizeY/2 * quark.size, productSizeZ/2 * quark.size));//Откорректировать фокус камеры. Добавить управление камерой (вращение вокруг объекта, приближение/отдаление).
 
