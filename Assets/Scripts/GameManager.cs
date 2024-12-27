@@ -290,6 +290,10 @@ public class GameManager : MonoBehaviour
             globalData.currentContract = null;
             globalData.playerData.isContinuedContract = false;
         }
+        else
+        {
+            globalData.playerData.isContinuedContract = true;
+        }
         SaveData();
 
         playerController.OnContractCompleated -= LoadMetaScene;
