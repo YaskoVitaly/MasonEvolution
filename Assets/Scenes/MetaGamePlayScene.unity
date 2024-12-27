@@ -684,7 +684,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ContractInfoWindow: {fileID: 0}
   globalData:
-    researchDataList: []
+    DataList: []
     globalTime: 
     timePeriod: 0
     totalExperience: 0
@@ -694,7 +694,6 @@ MonoBehaviour:
     maxContracts: 3
     currentContract: {fileID: 0}
     playerData:
-      upgradeDataList: []
       energyMaxBasic: 10
       energyRegBasic: 1
       energySpendBasic: 1
@@ -720,9 +719,7 @@ MonoBehaviour:
       productionCount: 1
       expTotal: 0
       completedObjects: 0
-      currentQuark: 0
       currentContract: {fileID: 0}
-      isContinuedContract: 0
     activeContracts: []
     possibleContracts: []
     allResearches: []
@@ -9316,7 +9313,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   globalData:
-    researchDataList: []
+    DataList: []
     globalTime: 
     timePeriod: 0
     totalExperience: 0
@@ -9326,7 +9323,6 @@ MonoBehaviour:
     maxContracts: 3
     currentContract: {fileID: 0}
     playerData:
-      upgradeDataList: []
       energyMaxBasic: 10
       energyRegBasic: 1
       energySpendBasic: 1
@@ -9352,9 +9348,7 @@ MonoBehaviour:
       productionCount: 1
       expTotal: 0
       completedObjects: 0
-      currentQuark: 0
       currentContract: {fileID: 0}
-      isContinuedContract: 0
     activeContracts: []
     possibleContracts:
     - {fileID: 11400000, guid: 87c2ef4fe0f84c041af5ccbaddbb8f14, type: 2}

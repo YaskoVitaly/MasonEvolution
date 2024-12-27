@@ -124,8 +124,9 @@ public class GameManager : MonoBehaviour
         Quark quark = quarkPrefab.GetComponent<Quark>();
         //PlayerDataInit();
         
-        if (globalData.playerData == null)
+        if (!globalData.playerData.isContinuedContract)
         {
+            Debug.LogWarning("new player data");
             PlayerDataInit();
         }
         else
@@ -221,7 +222,10 @@ public class GameManager : MonoBehaviour
     public void SaveData()
     {
         globalData.ConvertDictionary();
-        globalData.playerData.ConvertDictionary();
+        if(globalData.playerData != null)
+        {
+            globalData.playerData.ConvertDictionary();
+        }
         globalData.globalTime = DateTime.Now.ToString();
         string json = JsonUtility.ToJson(globalData);
         File.WriteAllText(Application.persistentDataPath + "/globalData.json", json);
@@ -279,15 +283,14 @@ public class GameManager : MonoBehaviour
 
     public void LoadMetaScene(float exp, bool isCompleted)
     {
-        if(isCompleted)
+        if (isCompleted)
         {
             globalData.totalExperience += exp;
             globalData.money += globalData.currentContract.reward;
             globalData.currentContract = null;
+            globalData.playerData.isContinuedContract = false;
         }
-        
-        
-        SaveData();//Сделать окно награды за контракт, блокирующее интерфейс меты.
+        SaveData();
 
         playerController.OnContractCompleated -= LoadMetaScene;
         coreUI.OnMetaLoaded -= LoadMetaScene;
