@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 public class ResearchSystem : MonoBehaviour
 {
-    public Action OnResearchStarted;
+    public Action<ResearchData> OnResearchStarted;
     public Action<ResearchData> OnResearchUpdated;
     public Action<ResearchData, float> OnResearchProcessed;
 
@@ -87,7 +87,9 @@ public class ResearchSystem : MonoBehaviour
 
     public void StartResearch(string researchName)
     {
-        
+        ResearchData currentResearch = null;
+        ResearchData.ResearchLevel levelData = new ResearchData.ResearchLevel();
+
         if (availableResearchSlots <= 0)
         {
             Debug.Log("No available slots for research!");
@@ -98,33 +100,35 @@ public class ResearchSystem : MonoBehaviour
             {
                 if(rd.researchName == researchName)
                 {
-                    if (rd.isCompleted || rd.currentLevel >= rd.levels.Count)
-                    {
-                        Debug.Log("Research is already at max level or completed!");
-                    }
-                    else
-                    {
-                        ResearchData.ResearchLevel levelData = rd.levels[rd.currentLevel];
-                        if (globalData.money >= levelData.costCurrency && globalData.totalExperience >= levelData.costExperience)
-                        {
-                            globalData.money -= levelData.costCurrency;
-                            globalData.totalExperience -= levelData.costExperience;
+                    currentResearch = rd;
+                    levelData = rd.levels[rd.currentLevel];
+                }
+            }
 
-                            availableResearchSlots--;
-                            researchTimer = 0;
-                            if(metaUI != null)
-                            {
-                                OnResearchStarted();
-                                OnResearchUpdated(rd);
-                            }
-                            globalData.activeResearch = rd;
-                            StartCoroutine(ResearchProcess(rd));
-                        }
-                        else
-                        {
-                            Debug.Log("Not enough resources!");
-                        }
+            if (currentResearch.isCompleted || currentResearch.currentLevel >= currentResearch.levels.Count)
+            {
+                Debug.Log("Research is already at max level or completed!");
+            }
+            else
+            {
+                if (globalData.money >= levelData.costCurrency && globalData.totalExperience >= levelData.costExperience)
+                {
+                    globalData.money -= levelData.costCurrency;
+                    globalData.totalExperience -= levelData.costExperience;
+
+                    availableResearchSlots--;
+                    researchTimer = 0;
+                    if (metaUI != null)
+                    {
+                        OnResearchStarted(currentResearch);
+                        //OnResearchUpdated(currentResearch);
                     }
+                    globalData.activeResearch = currentResearch;
+                    StartCoroutine(ResearchProcess(currentResearch));
+                }
+                else
+                {
+                    Debug.Log("Not enough resources!");
                 }
             }
         }
@@ -147,6 +151,8 @@ public class ResearchSystem : MonoBehaviour
                 
         globalData.researchLevels[research.researchName] = research.currentLevel;
         globalData.activeResearch = null;
+        availableResearchSlots++;
+
 
         if (research.currentLevel >= research.levels.Count)
         {
@@ -157,7 +163,6 @@ public class ResearchSystem : MonoBehaviour
             OnResearchUpdated(research);
         }
         
-        availableResearchSlots++;
         Debug.Log($"Research '{research.researchName}' completed! New Level: {research.currentLevel}");
     }
 }

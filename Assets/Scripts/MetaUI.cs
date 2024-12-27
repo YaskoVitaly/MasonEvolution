@@ -77,14 +77,30 @@ public class MetaUI : MonoBehaviour
         contractInfo.OnNextContractSelected -= UpdateContractInfo;
         contractInfo.OnPreviousContractSelected -= UpdateContractInfo;
         contractInfo.OnContractDeleted -= DeleteContract;
-
-
     }
 
-    private void UpdateResources()//Добавить проверку на активность кнопок в соответствии с свободными слотами и наличием ресурсов
+    private void UpdateResources(ResearchData rd)//Добавить проверку на активность кнопок в соответствии с свободными слотами и наличием ресурсов
     {
         moneyText.text = "Money: " + globalData.money;
         experienceText.text = "Exp: " + globalData.totalExperience.ToString("0");
+        foreach (Button button in researchButtons)
+        {
+            if (button.GetComponent<ResearchButton>().researchData.researchName == rd.researchName)
+            {
+                ResearchButton researchButton = button.GetComponent<ResearchButton>();
+                researchButton.researchData = rd;
+                researchButton.title.text = rd.researchName + " \nresearch";
+                researchButton.description.text = "Level: " + (rd.currentLevel + 1).ToString();
+                researchButton.priceMoney.text = "Money: " + rd.levels[rd.currentLevel + 1].costCurrency.ToString();
+                researchButton.priceExp.text = "Exp: " + rd.levels[rd.currentLevel + 1].costExperience.ToString();
+                researchButton.time.text = "Time: " + rd.levels[rd.currentLevel + 1].timeRequired / 60;
+                button.interactable = false;
+            }
+            if(researchSystem.availableResearchSlots == 0)
+            {
+                button.interactable = false;
+            }
+        }
     }
 
     private void UpdateResearchButton(Button button, ResearchData research)
@@ -96,10 +112,16 @@ public class MetaUI : MonoBehaviour
         researchButton.priceMoney.text = "Money: " +  research.levels[research.currentLevel].costCurrency.ToString();
         researchButton.priceExp.text = "Exp: " + research.levels[research.currentLevel].costExperience.ToString();
         researchButton.time.text = "Time: " + research.levels[research.currentLevel].timeRequired / 60;
-
-        if (globalData.money >= research.levels[research.currentLevel].costCurrency && globalData.totalExperience >= research.levels[research.currentLevel].costExperience)
+        if(researchSystem.availableResearchSlots > 0)
         {
-            button.interactable = true;
+            if (globalData.money >= research.levels[research.currentLevel].costCurrency && globalData.totalExperience >= research.levels[research.currentLevel].costExperience)
+            {
+                button.interactable = true;
+            }
+            else
+            {
+                button.interactable = false;
+            }
         }
         else
         {
@@ -141,7 +163,6 @@ public class MetaUI : MonoBehaviour
             {
                 UpdateResearchButton(button, research);
             }
-            
         }
     }
 
